@@ -88,6 +88,13 @@ export const SectionSchema = z.object({
 });
 export type Section = z.infer<typeof SectionSchema>;
 
+export const SectorPerfSchema = z.object({
+  sector: SectorSchema.optional(),
+  label: z.string(),
+  pct: z.number(),
+});
+export type SectorPerf = z.infer<typeof SectorPerfSchema>;
+
 export const MarketSummarySchema = z.object({
   indices: z.array(IndexQuoteSchema).default([]),
   movers: z
@@ -97,6 +104,7 @@ export const MarketSummarySchema = z.object({
     })
     .default({ gainers: [], losers: [] }),
   macro: z.array(MacroPointSchema).default([]),
+  sector_perf: z.array(SectorPerfSchema).default([]),
 });
 export type MarketSummary = z.infer<typeof MarketSummarySchema>;
 
@@ -127,14 +135,22 @@ export const TimelineEventSchema = z.object({
 });
 export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
 
+export const OilPointSchema = z.object({
+  label: z.string(),
+  value: z.number(),
+});
+
 export const GeoBriefSchema = z.object({
   headline: z.string(),
+  theater: z.string().default(""), // 분쟁 지역/명칭
   summary: z.string().default(""),
   escalation_level: z.number().min(1).max(5).default(3),
   escalation_label: z.string().default(""),
   actors: z.array(GeoActorSchema).default([]),
   timeline: z.array(TimelineEventSchema).default([]),
   watchpoints: z.array(z.string()).default([]),
+  market_note: z.string().default(""), // 시장 파급 요약
+  oil_series: z.array(OilPointSchema).default([]), // 유가 추이(미니차트)
 });
 export type GeoBrief = z.infer<typeof GeoBriefSchema>;
 
@@ -160,6 +176,11 @@ export const LlmReportOutputSchema = z.object({
   // Optional: index closes the dispatch agent researched. Preferred over live
   // quote fetching (which can be rate-limited/blocked on CI).
   indices: z.array(IndexQuoteSchema).optional(),
+  movers: z
+    .object({ gainers: z.array(MoverSchema).default([]), losers: z.array(MoverSchema).default([]) })
+    .optional(),
+  macro: z.array(MacroPointSchema).optional(),
+  sector_perf: z.array(SectorPerfSchema).optional(),
   headlines: z.array(FactSchema),
   sections: z.array(SectionSchema),
   geopolitics: GeoBriefSchema.optional(),

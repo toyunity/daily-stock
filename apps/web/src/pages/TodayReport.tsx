@@ -74,10 +74,6 @@ export default function TodayReport() {
 
   return (
     <div>
-      <div className="mb-6 flex items-baseline justify-between">
-        <h1 className="text-2xl font-bold">오늘의 리포트</h1>
-        <span className="text-sm text-slate-400">미국장 {data.date}</span>
-      </div>
       <ReportView
         content={data.content}
         cardImageUrl={data.cardImageUrl}

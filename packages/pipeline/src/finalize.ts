@@ -66,7 +66,12 @@ async function main() {
   const master: ReportContent = ReportContentSchema.parse({
     date: reportDate,
     headline_summary: extracted.headline_summary,
-    market_summary: { indices: quotes, movers: { gainers: [], losers: [] }, macro: [] },
+    market_summary: {
+      indices: quotes,
+      movers: extracted.movers ?? { gainers: [], losers: [] },
+      macro: extracted.macro ?? [],
+      sector_perf: extracted.sector_perf ?? [],
+    },
     headlines: extracted.headlines,
     sections: extracted.sections,
     geopolitics: extracted.geopolitics,

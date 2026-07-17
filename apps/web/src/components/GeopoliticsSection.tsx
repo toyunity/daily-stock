@@ -1,4 +1,6 @@
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { GeoBrief, GeoActor, GeoStance } from "@daily-stock/shared";
+import { StraitSchematic } from "./geo/StraitSchematic";
 
 const RUNGS = [
   { n: 5, label: "전면전", sub: "지속적 대규모 군사작전" },
@@ -44,12 +46,39 @@ function ActorCard({ actor }: { actor: GeoActor }) {
   );
 }
 
+function OilMiniChart({ series }: { series: { label: string; value: number }[] }) {
+  if (series.length < 2) return null;
+  return (
+    <div className="h-40 w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={series} margin={{ left: 4, right: 8, top: 8, bottom: 0 }}>
+          <defs>
+            <linearGradient id="oilfill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#e3b24a" stopOpacity={0.35} />
+              <stop offset="100%" stopColor="#e3b24a" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <XAxis dataKey="label" tick={{ fill: "#93a0b2", fontSize: 11 }} interval="preserveStartEnd" />
+          <YAxis tick={{ fill: "#93a0b2", fontSize: 11 }} width={38} domain={["auto", "auto"]} />
+          <Tooltip
+            contentStyle={{ background: "#0f172a", border: "1px solid #334155", borderRadius: 8 }}
+            formatter={(v: number) => [`$${v}`, "Brent"]}
+          />
+          <Area type="monotone" dataKey="value" stroke="#e3b24a" strokeWidth={2} fill="url(#oilfill)" />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
 export function GeopoliticsSection({ brief }: { brief: GeoBrief }) {
   const level = Math.min(5, Math.max(1, Math.round(brief.escalation_level)));
+  const hasImpact = brief.oil_series.length >= 2 || brief.market_note;
   return (
     <section className="rounded-2xl border border-amber-900/40 bg-gradient-to-b from-amber-950/20 to-slate-900 p-5">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="eyebrow text-accent">지정학 브리핑 · Geopolitics</span>
+        {brief.theater && <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">{brief.theater}</span>}
         <span className="h-px flex-1 bg-slate-800" />
       </div>
 
@@ -84,6 +113,21 @@ export function GeopoliticsSection({ brief }: { brief: GeoBrief }) {
           })}
         </div>
       </div>
+
+      {/* Market impact + Strait schematic */}
+      {hasImpact && (
+        <div className="mt-5 grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+            <div className="eyebrow mb-2 text-slate-500">요충지 · 호르무즈 해협</div>
+            <StraitSchematic />
+          </div>
+          <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+            <div className="eyebrow mb-2 text-slate-500">시장 파급 · 유가</div>
+            <OilMiniChart series={brief.oil_series} />
+            {brief.market_note && <p className="font-report mt-2 text-sm text-slate-300">{brief.market_note}</p>}
+          </div>
+        </div>
+      )}
 
       {/* Actor positions */}
       {brief.actors.length > 0 && (

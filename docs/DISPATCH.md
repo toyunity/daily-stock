@@ -55,6 +55,9 @@
 3) reports/report.json 파일을 아래 JSON 스키마로 정확히 작성(그 외 텍스트 금지):
    {
      "indices": IndexQuote[],                   // 주요 지수 종가(리서치한 값)
+     "macro": [{ "label","value","unit","change" }],       // 10Y·2Y·WTI·Brent·Fed 등
+     "movers": { "gainers":[{"ticker","pct"}], "losers":[{"ticker","pct"}] },
+     "sector_perf": [{ "sector"?, "label", "pct" }],       // 섹터 등락(히트맵)
      "headline_summary": string,               // 중립적 한 문단 요약(한국어)
      "headlines": Fact[],                       // 가장 중요한 사실 6~10개
      "sections": Section[],                     // 섹터/테마별 그룹 3~6개
@@ -70,11 +73,13 @@
    }
    Section = { "title": string, "sector"?: Sector, "facts": Fact[] }
    GeoBrief = {
-     "headline": string, "summary": string,
+     "headline": string, "theater": string, "summary": string,
      "escalation_level": 1~5,                   // 1 완화 … 5 전면전
      "escalation_label": string,                // 현 수위 짧은 라벨
      "actors": [{ "name","role","stance":"hard"|"mixed"|"soft","quotes":[{"text","source":{"name","url"}}] }],
      "timeline": [{ "date","title","detail","severity":"normal"|"high","sources":[{"name","url"}] }],
+     "market_note": string,                     // 시장 파급 요약
+     "oil_series": [{ "label","value" }],       // 유가 추이(미니차트, 2점 이상)
      "watchpoints": string[]
    }
    규칙: 원문에 없는 수치를 지어내지 말 것. 모든 fact/quote에 실제 출처. 메모리 반도체는 sector "memory". 발언은 주체에 귀속하고 중립적으로 기술.

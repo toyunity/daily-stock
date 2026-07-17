@@ -2,6 +2,7 @@ import type { ReportContent, Fact, IndexQuote } from "@daily-stock/shared";
 import { IndexChangeChart } from "./charts/IndexChart";
 import { SectionChart } from "./charts/SectionChart";
 import { GeopoliticsSection } from "./GeopoliticsSection";
+import { MarketExtras } from "./market/MarketExtras";
 
 function IndexTile({ q }: { q: IndexQuote }) {
   const up = q.change_pct >= 0;
@@ -63,15 +64,34 @@ export function ReportView({
   cardImageUrl,
   coverImageUrl,
   showCover = true,
+  title = "오늘의 리포트",
 }: {
   content: ReportContent;
   cardImageUrl?: string | null;
   coverImageUrl?: string | null;
   showCover?: boolean;
+  title?: string;
 }) {
   const { market_summary, headlines, sections, geopolitics } = content;
   return (
     <div className="space-y-10">
+      {/* Masthead */}
+      <header className="border-b border-slate-800 pb-5">
+        <div className="eyebrow text-accent">데일리 브리핑 · Daily Briefing</div>
+        <h1 className="font-report mt-2 text-3xl font-semibold tracking-tight text-slate-100">{title}</h1>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px]">
+          <span className="tnum rounded-full border border-slate-700 px-2.5 py-1 uppercase tracking-wider text-slate-400">
+            미국장 {content.date}
+          </span>
+          <span className="rounded-full border border-slate-700 px-2.5 py-1 uppercase tracking-wider text-slate-400">
+            팩트 기반 · 출처 표기
+          </span>
+          <span className="rounded-full border border-slate-700 px-2.5 py-1 uppercase tracking-wider text-slate-400">
+            정치적 중립
+          </span>
+        </div>
+      </header>
+
       {showCover && coverImageUrl && (
         <img
           src={coverImageUrl}
@@ -99,6 +119,7 @@ export function ReportView({
             <div className="eyebrow mb-2 text-slate-500">지수 등락률</div>
             <IndexChangeChart indices={market_summary.indices} />
           </div>
+          <MarketExtras market={market_summary} />
         </section>
       )}
 

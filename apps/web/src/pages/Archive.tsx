@@ -38,11 +38,11 @@ export default function Archive() {
           <button onClick={() => setSelected(null)} className="mb-4 text-sm text-sky-400 hover:underline">
             ← 목록으로
           </button>
-          <div className="mb-4 text-sm text-slate-400">미국장 {active.report_date}</div>
           <ReportView
             content={active.content}
             cardImageUrl={active.card_image_url}
             coverImageUrl={active.cover_image_url}
+            title={`${active.report_date} 리포트`}
           />
         </div>
       ) : (

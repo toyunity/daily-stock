@@ -4,6 +4,20 @@
     { "name": "나스닥 종합", "symbol": "^IXIC", "value": 25881.95, "change_pct": -1.47, "change_abs": -385.35 },
     { "name": "다우존스", "symbol": "^DJI", "value": 52552.97, "change_pct": -0.20, "change_abs": -105.67 }
   ],
+  "macro": [
+    { "label": "US 10Y", "value": 4.583, "unit": "%", "change": -0.02 },
+    { "label": "US 2Y", "value": 4.185, "unit": "%", "change": -0.07 },
+    { "label": "WTI", "value": 73.52, "unit": "$", "change": 3.09 },
+    { "label": "Brent", "value": 78.02, "unit": "$", "change": 3.86 },
+    { "label": "Fed Funds", "value": 3.75, "unit": "%", "change": 0 }
+  ],
+  "movers": {
+    "gainers": [],
+    "losers": [
+      { "ticker": "MU", "pct": -5.65 },
+      { "ticker": "GOOGL", "pct": -4.0 }
+    ]
+  },
   "headline_summary": "미국 증시는 반도체주 약세로 주요 지수가 동반 하락했다. S&P500은 0.51%, 나스닥은 1.47%, 다우는 0.20% 내렸다. TSMC의 자본지출 전망 상향 이후 칩 매도세가 확산됐고, 알파벳은 AI 모델 출시 지연 보도로 4% 넘게 하락했다. 메모리 반도체는 중국 CXMT의 대형 IPO와 미국의 HBM 수출 제한 검토 소식에 약세를 보였다. 한편 6월 소비자물가가 예상보다 크게 둔화하면서 국채 금리가 하락하고 7월 금리 인상 기대가 후퇴했다.",
   "headlines": [
     {
@@ -143,6 +157,13 @@
   ],
   "geopolitics": {
     "headline": "미국·이란 대치와 호르무즈 해협 위기",
+    "theater": "미국·이란 / 호르무즈",
+    "market_note": "브렌트유는 3월 배럴당 120달러를 돌파한 뒤 휴전 기대에 하락했으나, 7월 8일 미국의 타격과 '휴전 종료' 선언으로 +5.2% 반등해 78.02달러를 기록했다. 걸프 생산 감소와 7/17 제재 유예 만료가 추가 변수다. (CNBC·Bloomberg)",
+    "oil_series": [
+      { "label": "3월 고점", "value": 120 },
+      { "label": "5월(완화)", "value": 96 },
+      { "label": "7/8", "value": 78.02 }
+    ],
     "summary": "2026년 2월 미국·이스라엘의 대이란 공습으로 시작된 충돌이 호르무즈 해협 봉쇄를 축으로 장기화되고 있다. 트럼프 대통령은 휴전이 '끝났다'고 선언하고 민간 기반시설 타격까지 시사했으며, 혁명수비대(IRGC)는 해협을 '추가 통보 시까지 폐쇄'한다고 맞섰다. 에너지 시장 변동성과 공급 차질이 핵심 리스크다.",
     "escalation_level": 4,
     "escalation_label": "지속 타격·봉쇄",

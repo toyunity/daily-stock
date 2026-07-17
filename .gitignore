@@ -10,3 +10,4 @@ supabase/.branches/
 coverage/
 *.log
 packages/pipeline/out/
+*.tsbuildinfo
