@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "tsx src/index.ts",
+    "collect": "tsx src/collect.ts",
+    "finalize": "tsx src/finalize.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -4,14 +4,31 @@ function required(name: string): string {
   return v;
 }
 
+/**
+ * Lazy env accessors: required keys are validated only when actually read, so a
+ * script that doesn't need a key (e.g. `collect` needs no Supabase/Anthropic key)
+ * never fails just by importing this module.
+ */
 export const env = {
-  supabaseUrl: required("SUPABASE_URL"),
-  serviceRoleKey: required("SUPABASE_SERVICE_ROLE_KEY"),
-  anthropicApiKey: required("ANTHROPIC_API_KEY"),
+  get supabaseUrl() {
+    return required("SUPABASE_URL");
+  },
+  get serviceRoleKey() {
+    return required("SUPABASE_SERVICE_ROLE_KEY");
+  },
+  get anthropicApiKey() {
+    return required("ANTHROPIC_API_KEY");
+  },
   // Optional source keys — adapters skip themselves when absent.
-  finnhubKey: process.env.FINNHUB_API_KEY,
-  alphaVantageKey: process.env.ALPHAVANTAGE_API_KEY,
-  model: process.env.ANTHROPIC_MODEL, // optional override
+  get finnhubKey() {
+    return process.env.FINNHUB_API_KEY;
+  },
+  get alphaVantageKey() {
+    return process.env.ALPHAVANTAGE_API_KEY;
+  },
+  get model() {
+    return process.env.ANTHROPIC_MODEL;
+  },
   raw: process.env as Record<string, string | undefined>,
 };
 
