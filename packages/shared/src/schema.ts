@@ -28,6 +28,7 @@ export type Topic = z.infer<typeof TopicSchema>;
 
 export const SectorSchema = z.enum([
   "tech",
+  "memory",
   "finance",
   "energy",
   "healthcare",

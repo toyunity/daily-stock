@@ -1,5 +1,6 @@
 export const SECTORS = [
   { id: "tech", label: "기술" },
+  { id: "memory", label: "메모리 반도체" },
   { id: "finance", label: "금융" },
   { id: "energy", label: "에너지" },
   { id: "healthcare", label: "헬스케어" },

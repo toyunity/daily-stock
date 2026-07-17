@@ -55,7 +55,8 @@ Fact = {
   "fact": string,
   "sources": [{ "name": string, "url": string }],   // MUST come from the items below
   "tickers": string[],
-  "sector"?: "tech"|"finance"|"energy"|"healthcare"|"consumer"|"industrials"|"materials"|"utilities"|"realestate"|"communication",
+  "sector"?: "tech"|"memory"|"finance"|"energy"|"healthcare"|"consumer"|"industrials"|"materials"|"utilities"|"realestate"|"communication",
+  // "memory" = memory-semiconductor names (DRAM/NAND/HBM), e.g. Micron (MU); use it for memory-chip facts instead of generic "tech"
   "topic": "macro"|"earnings"|"fed"|"ipo"|"m&a"|"guidance"|"regulation"|"commodities"|"crypto"|"other"
 }
 
