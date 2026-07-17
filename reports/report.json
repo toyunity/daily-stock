@@ -1,0 +1,139 @@
+{
+  "headline_summary": "미국 증시는 반도체주 약세로 주요 지수가 동반 하락했다. S&P500은 0.51%, 나스닥은 1.47%, 다우는 0.20% 내렸다. TSMC의 자본지출 전망 상향 이후 칩 매도세가 확산됐고, 알파벳은 AI 모델 출시 지연 보도로 4% 넘게 하락했다. 메모리 반도체는 중국 CXMT의 대형 IPO와 미국의 HBM 수출 제한 검토 소식에 약세를 보였다. 한편 6월 소비자물가가 예상보다 크게 둔화하면서 국채 금리가 하락하고 7월 금리 인상 기대가 후퇴했다.",
+  "headlines": [
+    {
+      "fact": "S&P500이 0.51% 하락한 7,533.77, 나스닥종합이 1.47% 하락한 25,881.95, 다우존스가 0.20%(105.67포인트) 하락한 52,552.97로 마감했다.",
+      "sources": [
+        { "name": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/live/stock-market-today-thursday-july-16-dow-sp-500-nasdaq-103116735.html" },
+        { "name": "TheStreet", "url": "https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-july-16-2026" }
+      ],
+      "tickers": [],
+      "topic": "macro"
+    },
+    {
+      "fact": "TSMC가 자본지출 전망을 상향한 이후 반도체주 매도세가 확산되며 지수 하락을 주도했다.",
+      "sources": [
+        { "name": "TheStreet", "url": "https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-july-16-2026" }
+      ],
+      "tickers": ["TSM"],
+      "sector": "tech",
+      "topic": "guidance"
+    },
+    {
+      "fact": "알파벳 주가가 4% 넘게 하락했다. 블룸버그가 알파벳의 최상위 AI 모델 Gemini 3.5 Pro 출시가 지연되고 있다고 보도한 데 따른 것이다.",
+      "sources": [
+        { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/15/stock-market-today-live-updates.html" }
+      ],
+      "tickers": ["GOOGL"],
+      "sector": "communication",
+      "topic": "other"
+    },
+    {
+      "fact": "마이크론(MU)이 7월 16일 5.65% 하락한 853.20달러에 거래됐다. 중국 CXMT의 85억 달러 규모 IPO 발표와 미국 정부의 신규 HBM 수출 제한 검토가 배경으로 지목됐다.",
+      "sources": [
+        { "name": "TradingKey", "url": "https://www.tradingkey.com/news/market-movers/262032458-market-movers-mu-20260715" }
+      ],
+      "tickers": ["MU"],
+      "sector": "memory",
+      "topic": "regulation"
+    },
+    {
+      "fact": "마이크론은 회계연도 4분기 매출 가이던스로 500억 달러(±10억), 비GAAP 주당순이익 31.00달러(±1.00)를 제시했다.",
+      "sources": [
+        { "name": "SEC EDGAR (Form 8-K)", "url": "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000013/a2026q3ex991-pressrelease.htm" },
+        { "name": "24/7 Wall St.", "url": "https://247wallst.com/companies/mu/earnings/" }
+      ],
+      "tickers": ["MU"],
+      "sector": "memory",
+      "topic": "guidance"
+    },
+    {
+      "fact": "6월 소비자물가지수(CPI)가 전월 대비 0.4% 하락해 시장 예상보다 큰 폭으로 둔화했으며, 연간 상승률은 3.5%로 집계됐다. 다우존스 집계 예상치는 3.8%였다.",
+      "sources": [
+        { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/14/treasury-yields-rise-as-fed-rate-hike-expectations-grow.html" }
+      ],
+      "tickers": [],
+      "topic": "macro"
+    },
+    {
+      "fact": "10년물 미 국채 금리가 2bp 넘게 내린 4.583%, 2년물이 7bp 넘게 내린 4.185%, 30년물이 5.096%를 기록했다.",
+      "sources": [
+        { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/14/treasury-yields-rise-as-fed-rate-hike-expectations-grow.html" }
+      ],
+      "tickers": [],
+      "topic": "macro"
+    },
+    {
+      "fact": "예상보다 낮은 물가 지표에 스왑시장이 반영한 7월 연준 금리 인상 확률이 기존 40% 이상에서 약 20%로 하락했다. 연준은 6월 기준금리를 3.50~3.75%로 동결했다.",
+      "sources": [
+        { "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-14/treasuries-rally-as-cool-cpi-data-cuts-july-fed-hike-bets-to-20" },
+        { "name": "Trading Economics", "url": "https://tradingeconomics.com/united-states/interest-rate" }
+      ],
+      "tickers": [],
+      "topic": "fed"
+    }
+  ],
+  "sections": [
+    {
+      "title": "메모리 반도체",
+      "sector": "memory",
+      "facts": [
+        {
+          "fact": "마이크론(MU)이 7월 16일 5.65% 하락한 853.20달러에 거래됐다. 전일에는 중국 CXMT의 85억 달러 IPO와 미국의 HBM 수출 제한 검토 소식에 약 7% 하락했다.",
+          "sources": [
+            { "name": "TradingKey", "url": "https://www.tradingkey.com/news/market-movers/262032458-market-movers-mu-20260715" }
+          ],
+          "tickers": ["MU"],
+          "sector": "memory",
+          "topic": "regulation"
+        },
+        {
+          "fact": "마이크론의 회계연도 3분기 매출은 414.6억 달러, 주당순이익은 25.11달러로 시장 예상(매출 352.5억, EPS 20.28달러)을 상회했다.",
+          "sources": [
+            { "name": "24/7 Wall St.", "url": "https://247wallst.com/companies/mu/earnings/" }
+          ],
+          "tickers": ["MU"],
+          "sector": "memory",
+          "topic": "earnings"
+        }
+      ]
+    },
+    {
+      "title": "매크로·연준",
+      "facts": [
+        {
+          "fact": "6월 CPI가 전월 대비 0.4% 하락(연 3.5%)하며 예상을 하회하자 미 국채가 강세를 보였고, 7월 금리 인상 기대가 후퇴했다.",
+          "sources": [
+            { "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-14/treasuries-rally-as-cool-cpi-data-cuts-july-fed-hike-bets-to-20" }
+          ],
+          "tickers": [],
+          "topic": "fed"
+        }
+      ]
+    },
+    {
+      "title": "기술·AI",
+      "sector": "tech",
+      "facts": [
+        {
+          "fact": "TSMC의 자본지출 전망 상향 이후 반도체 섹터 전반에 매도세가 나타났다.",
+          "sources": [
+            { "name": "TheStreet", "url": "https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-july-16-2026" }
+          ],
+          "tickers": ["TSM"],
+          "sector": "tech",
+          "topic": "guidance"
+        },
+        {
+          "fact": "알파벳이 Gemini 3.5 Pro 출시 지연 보도로 4% 넘게 하락했다.",
+          "sources": [
+            { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/15/stock-market-today-live-updates.html" }
+          ],
+          "tickers": ["GOOGL"],
+          "sector": "communication",
+          "topic": "other"
+        }
+      ]
+    }
+  ]
+}
