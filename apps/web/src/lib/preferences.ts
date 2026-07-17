@@ -38,15 +38,24 @@ export async function savePreferences(userId: string, prefs: PrefValue): Promise
   if (error) throw error;
 }
 
-/** Ask the edge function to regenerate the caller's latest personalized report. */
+/**
+ * Ask the edge function to regenerate the caller's latest personalized report.
+ * Best-effort and non-blocking: bounded by a short timeout so a missing/slow
+ * function can never hang the Save button. The daily pipeline also refreshes it.
+ */
 export async function repersonalize(): Promise<void> {
-  const { data } = await supabase.auth.getSession();
-  const token = data.session?.access_token;
-  if (!token) return;
-  await fetch(`${FUNCTIONS_URL}/personalize`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "content-type": "application/json" },
-  }).catch(() => {
-    /* best-effort; the next daily run will also refresh it */
-  });
+  try {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    await fetch(`${FUNCTIONS_URL}/personalize`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "content-type": "application/json" },
+      signal: controller.signal,
+    }).finally(() => clearTimeout(timer));
+  } catch {
+    /* best-effort; ignore missing function / timeout / network errors */
+  }
 }

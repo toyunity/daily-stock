@@ -8,6 +8,7 @@ export default function Settings() {
   const [prefs, setPrefs] = useState(EMPTY_PREFS);
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) loadPreferences(user.id).then(setPrefs);
@@ -17,11 +18,17 @@ export default function Settings() {
     if (!user) return;
     setBusy(true);
     setSaved(false);
-    await savePreferences(user.id, prefs);
-    await repersonalize();
-    setBusy(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
+    setError(null);
+    try {
+      await savePreferences(user.id, prefs);
+      void repersonalize(); // fire-and-forget; must not block the UI
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch (e) {
+      setError((e as Error).message ?? "저장에 실패했습니다.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -31,6 +38,7 @@ export default function Settings() {
         <PreferenceEditor value={prefs} onChange={setPrefs} />
       </div>
       <div className="mt-6 flex items-center justify-end gap-4">
+        {error && <span className="text-sm text-red-400">저장 오류: {error}</span>}
         {saved && <span className="text-sm text-emerald-400">저장되었습니다 ✓</span>}
         <button
           onClick={save}

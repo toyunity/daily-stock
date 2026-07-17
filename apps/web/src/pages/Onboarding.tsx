@@ -9,6 +9,7 @@ export default function Onboarding() {
   const navigate = useNavigate();
   const [prefs, setPrefs] = useState(EMPTY_PREFS);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) loadPreferences(user.id).then(setPrefs);
@@ -17,10 +18,16 @@ export default function Onboarding() {
   async function save() {
     if (!user) return;
     setBusy(true);
-    await savePreferences(user.id, prefs);
-    await repersonalize();
-    setBusy(false);
-    navigate("/");
+    setError(null);
+    try {
+      await savePreferences(user.id, prefs);
+      void repersonalize(); // fire-and-forget; must not block navigation
+      navigate("/");
+    } catch (e) {
+      setError((e as Error).message ?? "저장에 실패했습니다.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -32,6 +39,7 @@ export default function Onboarding() {
       <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6">
         <PreferenceEditor value={prefs} onChange={setPrefs} />
       </div>
+      {error && <p className="mt-4 text-sm text-red-400">저장 오류: {error}</p>}
       <div className="mt-6 flex justify-end gap-3">
         <button onClick={() => navigate("/")} className="rounded-lg px-4 py-2 text-sm text-slate-400 hover:text-white">
           건너뛰기
