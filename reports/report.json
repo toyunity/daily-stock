@@ -114,6 +114,33 @@
           "tickers": ["MU"],
           "sector": "memory",
           "topic": "earnings"
+        },
+        {
+          "fact": "SK하이닉스는 6월 말부터 엔비디아에 12단 HBM4 양산 공급을 시작하며 출하를 늘리고 있다. HBM 시장 점유율은 50~55%로 1위이며, 삼성전자 35~40%, 마이크론 5~10%로 집계됐다.",
+          "sources": [
+            { "name": "TweakTown", "url": "https://www.tweaktown.com/news/109495/sk-hynix-samsung-and-micron-fighting-for-nvidia-supply-contracts-for-new-16-hi-hbm4-orders/index.html" }
+          ],
+          "tickers": ["000660.KS", "005930.KS", "MU"],
+          "sector": "memory",
+          "topic": "guidance"
+        },
+        {
+          "fact": "SK하이닉스는 265억 달러 규모의 나스닥 증자를 확정해 DRAM 웨이퍼 증설과 첨단 패키징 투자 재원을 확보했으며, 1c 공정 월 생산능력을 연말까지 약 8~9배로 늘릴 계획이다. 삼성전자는 2026년 HBM 생산능력을 약 50% 확대할 방침이다.",
+          "sources": [
+            { "name": "Silicon Analysts", "url": "https://siliconanalysts.com/analysis/sk-hynix-samsung-2026-memory-capex-hbm4-qualification-race" }
+          ],
+          "tickers": ["000660.KS", "005930.KS"],
+          "sector": "memory",
+          "topic": "guidance"
+        },
+        {
+          "fact": "중국 CXMT가 7월 16일 상하이 STAR 마켓에 상장하며 최소 579억 위안(약 86억 달러)을 조달, 2026년 아시아 최대 규모 IPO가 될 전망이다. CXMT의 DRAM 평균판매가격은 삼성·SK하이닉스·마이크론 대비 5~10% 낮은 수준으로, 중장기 경쟁 변수로 부각된다.",
+          "sources": [
+            { "name": "SCMP", "url": "https://www.scmp.com/tech/big-tech/article/3359168/inside-cxmts-us43b-ipo-soaring-profits-meet-us-export-threat-and-high-stakes-hbm-race" }
+          ],
+          "tickers": ["000660.KS", "005930.KS", "MU"],
+          "sector": "memory",
+          "topic": "ipo"
         }
       ]
     },

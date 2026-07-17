@@ -11,3 +11,6 @@ coverage/
 *.log
 packages/pipeline/out/
 *.tsbuildinfo
+briefing.html
+*.mockup.html
+briefing-light.html

@@ -12,6 +12,8 @@ export interface Company {
 export const COMPANY_DIRECTORY: Company[] = [
   // Memory / storage semiconductors
   { ticker: "MU", name: "Micron Technology", aliases: ["마이크론", "메모리", "DRAM", "HBM"] },
+  { ticker: "000660.KS", name: "SK하이닉스 (SK hynix)", aliases: ["하이닉스", "SK하이닉스", "sk hynix", "HBM", "메모리"] },
+  { ticker: "005930.KS", name: "삼성전자 (Samsung Electronics)", aliases: ["삼성", "삼성전자", "samsung", "메모리"] },
   { ticker: "WDC", name: "Western Digital", aliases: ["웨스턴디지털", "낸드", "NAND"] },
   { ticker: "STX", name: "Seagate Technology", aliases: ["시게이트", "스토리지"] },
   { ticker: "SIMO", name: "Silicon Motion", aliases: ["실리콘모션", "컨트롤러"] },
@@ -67,7 +69,7 @@ export const COMPANY_DIRECTORY: Company[] = [
 
 /** Tickers auto-added when a sector is selected. */
 export const SECTOR_TICKERS: Record<string, string[]> = {
-  memory: ["MU", "WDC", "STX", "SIMO"],
+  memory: ["MU", "000660.KS", "005930.KS", "WDC", "STX", "SIMO"],
 };
 
 /** Simple case-insensitive search over ticker, name, and aliases. */

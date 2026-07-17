@@ -54,6 +54,7 @@ export const MoverSchema = z.object({
   ticker: z.string(),
   pct: z.number(),
 });
+export type Mover = z.infer<typeof MoverSchema>;
 
 export const MacroPointSchema = z.object({
   label: z.string(),
@@ -61,6 +62,7 @@ export const MacroPointSchema = z.object({
   unit: z.string().default(""),
   change: z.number().default(0),
 });
+export type MacroPoint = z.infer<typeof MacroPointSchema>;
 
 export const ChartSpecSchema = z.object({
   type: z.enum(["bar", "line", "heatmap"]),

@@ -1,39 +1,40 @@
-/** Schematic (not-to-scale) diagram of the Strait of Hormuz for the briefing. */
+/** Light editorial schematic (not-to-scale) of the Strait of Hormuz. */
 export function StraitSchematic() {
   return (
-    <div className="w-full overflow-x-auto">
-      <svg viewBox="0 0 480 250" role="img" aria-label="호르무즈 해협 개념도" className="h-auto w-full">
-        <rect x="0" y="0" width="480" height="250" fill="#0f2434" opacity="0.5" />
-        {/* Iran (north) */}
-        <path
-          d="M0,0 H480 V66 C400,88 360,60 300,82 C240,104 200,76 120,92 C70,102 40,84 0,96 Z"
-          fill="#18222f"
-          stroke="rgba(255,255,255,0.16)"
-        />
-        {/* Oman / UAE (south) */}
-        <path
-          d="M0,250 H480 V176 C400,164 350,192 300,176 C250,160 210,186 150,172 C100,160 50,184 0,174 Z"
-          fill="#18222f"
-          stroke="rgba(255,255,255,0.16)"
-        />
-        <text x="22" y="42" fontSize="13" fontWeight="700" fill="#e7ecf3">이란 · IRAN</text>
-        <text x="22" y="224" fontSize="13" fontWeight="700" fill="#e7ecf3">오만 · UAE</text>
-        {/* shipping lane */}
-        <path
-          d="M40,146 C160,116 250,146 300,128 C360,106 420,128 470,116"
-          fill="none"
-          stroke="#e3b24a"
-          strokeWidth="2.5"
-          strokeDasharray="7 6"
-        />
-        <text x="66" y="138" fontSize="10.5" fill="#96a3b5">주요 유조선 항로</text>
-        {/* chokepoint */}
-        <circle cx="300" cy="128" r="7" fill="#e5605c" />
-        <circle cx="300" cy="128" r="13" fill="none" stroke="#e5605c" strokeOpacity="0.5" />
-        <text x="300" y="108" textAnchor="middle" fontSize="11" fontWeight="700" fill="#e5605c">
-          최협부 · Chokepoint
-        </text>
-      </svg>
-    </div>
+    <svg viewBox="0 0 520 240" width="100%" role="img" aria-label="호르무즈 해협 개략도">
+      <rect x="0" y="0" width="520" height="240" fill="#eef4f2" />
+      <path
+        d="M0,0 H520 V78 C430,86 380,58 300,74 C232,88 200,52 120,66 C70,74 30,60 0,72 Z"
+        fill="#e7ded0"
+        stroke="#c9bfa8"
+        strokeWidth="1.4"
+      />
+      <text x="30" y="34" fontFamily="Noto Sans KR, system-ui, sans-serif" fontSize="13" fontWeight="700" fill="#6b6252" letterSpacing="2">
+        이란 · IRAN
+      </text>
+      <path
+        d="M0,240 H520 V150 C420,140 380,172 300,160 C238,150 210,182 130,170 C78,162 34,182 0,168 Z"
+        fill="#e7ded0"
+        stroke="#c9bfa8"
+        strokeWidth="1.4"
+      />
+      <text x="490" y="222" textAnchor="end" fontFamily="Noto Sans KR, system-ui, sans-serif" fontSize="13" fontWeight="700" fill="#6b6252" letterSpacing="2">
+        오만 · 아랍에미리트
+      </text>
+      <path d="M20,118 C160,112 220,128 300,116 C380,104 440,120 500,112" fill="none" stroke="#6e1d29" strokeWidth="2" strokeDasharray="7 6" />
+      <polygon points="500,112 490,107 490,117" fill="#6e1d29" />
+      <line x1="300" y1="74" x2="300" y2="160" stroke="#b0301f" strokeWidth="1.4" strokeDasharray="3 4" />
+      <circle cx="300" cy="116" r="7" fill="#b0301f" />
+      <circle cx="300" cy="116" r="13" fill="none" stroke="#b0301f" strokeWidth="1.3" opacity="0.5" />
+      <text x="300" y="205" textAnchor="middle" fontFamily="Noto Sans KR, system-ui, sans-serif" fontSize="11" fontWeight="700" fill="#b0301f" letterSpacing="1">
+        최협부 · 폐쇄 위협
+      </text>
+      <text x="30" y="105" fontFamily="IBM Plex Mono, ui-monospace, monospace" fontSize="10.5" fill="#6b6252">
+        ← 페르시아만
+      </text>
+      <text x="490" y="105" textAnchor="end" fontFamily="IBM Plex Mono, ui-monospace, monospace" fontSize="10.5" fill="#6b6252">
+        오만만 →
+      </text>
+    </svg>
   );
 }
