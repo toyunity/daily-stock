@@ -35,3 +35,6 @@ jobs:
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
           ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
+          AI_HEADER_ENABLED: ${{ vars.AI_HEADER_ENABLED }}
+          IMAGE_API_URL: ${{ vars.IMAGE_API_URL }}
+          IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}

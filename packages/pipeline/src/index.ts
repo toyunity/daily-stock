@@ -8,6 +8,7 @@ import {
 } from "@daily-stock/shared";
 import { env, usEasternDate } from "./env";
 import { renderReportCard } from "./render";
+import { generateAiHeader, renderMoodBanner } from "./header";
 
 const FOCUS_TICKERS = ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA"];
 
@@ -98,24 +99,24 @@ async function main() {
       sections: extracted.sections,
     });
 
-    // 5) Render shareable card image (optional; never blocks the report).
+    // 5) Render images (all optional; none may block the report).
     let cardUrl: string | null = null;
+    let coverUrl: string | null = null;
     try {
       const font = await loadFont();
       if (font) {
-        const png = await renderReportCard(master, font);
-        const path = `cards/${reportDate}.png`;
-        const up = await supabase.storage
-          .from("report-images")
-          .upload(path, png, { contentType: "image/png", upsert: true });
-        if (!up.error) {
-          cardUrl = supabase.storage.from("report-images").getPublicUrl(path).data.publicUrl;
-        } else {
-          console.warn(`[pipeline] card upload failed: ${up.error.message}`);
-        }
+        // Shareable card (summary + headlines).
+        const cardPng = await renderReportCard(master, font);
+        cardUrl = await uploadPng(supabase, `cards/${reportDate}.png`, cardPng);
+
+        // Cover header: AI illustration if opted in, else procedural mood banner.
+        const aiPng = await generateAiHeader(master, env.raw);
+        const coverPng = aiPng ?? (await renderMoodBanner(master, font));
+        console.log(`[pipeline] cover: ${aiPng ? "AI header" : "procedural mood banner"}`);
+        coverUrl = await uploadPng(supabase, `covers/${reportDate}.png`, coverPng);
       }
     } catch (e) {
-      console.warn(`[pipeline] card render skipped: ${(e as Error).message}`);
+      console.warn(`[pipeline] image render skipped: ${(e as Error).message}`);
     }
 
     // 6) Persist master report as ready.
@@ -126,6 +127,7 @@ async function main() {
           report_date: reportDate,
           content: master,
           card_image_url: cardUrl,
+          cover_image_url: coverUrl,
           status: "ready",
           pipeline_meta: {
             items: items.length,
@@ -208,6 +210,21 @@ function emptyContent(date: string): ReportContent {
     headlines: [],
     sections: [],
   });
+}
+
+async function uploadPng(
+  supabase: SupabaseClient,
+  path: string,
+  png: Buffer,
+): Promise<string | null> {
+  const up = await supabase.storage
+    .from("report-images")
+    .upload(path, png, { contentType: "image/png", upsert: true });
+  if (up.error) {
+    console.warn(`[pipeline] upload ${path} failed: ${up.error.message}`);
+    return null;
+  }
+  return supabase.storage.from("report-images").getPublicUrl(path).data.publicUrl;
 }
 
 async function loadFont(): Promise<ArrayBuffer | null> {

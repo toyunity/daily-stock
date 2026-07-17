@@ -87,8 +87,9 @@ export async function renderReportCard(
         {
           type: "div",
           props: {
+            // ASCII chrome: the Satori font is Latin-only. Korean UI lives in the app.
             style: { fontSize: "22px", color: "#64748b", marginTop: "24px" },
-            children: content.disclaimer,
+            children: "For information only. Not investment advice.",
           },
         },
       ],

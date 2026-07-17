@@ -8,6 +8,8 @@ import { ReportView } from "../components/ReportView";
 interface LoadedReport {
   content: ReportContent;
   cardImageUrl: string | null;
+  coverImageUrl: string | null;
+  showCover: boolean;
   date: string;
 }
 
@@ -23,16 +25,26 @@ async function fetchLatestReport(userId: string): Promise<LoadedReport | null> {
 
   const { data: master } = await supabase
     .from("daily_reports")
-    .select("content, card_image_url, report_date")
+    .select("content, card_image_url, cover_image_url, report_date")
     .eq("status", "ready")
     .order("report_date", { ascending: false })
     .limit(1)
     .maybeSingle();
 
+  // The per-user ai_header toggle controls whether the cover banner is shown.
+  const { data: prefs } = await supabase
+    .from("preferences")
+    .select("ai_header")
+    .eq("user_id", userId)
+    .maybeSingle();
+  const showCover = prefs?.ai_header ?? true;
+
   if (personal && master && personal.report_date === master.report_date) {
     return {
       content: personal.content as ReportContent,
       cardImageUrl: (master.card_image_url as string) ?? null,
+      coverImageUrl: (master.cover_image_url as string) ?? null,
+      showCover,
       date: personal.report_date,
     };
   }
@@ -40,6 +52,8 @@ async function fetchLatestReport(userId: string): Promise<LoadedReport | null> {
     return {
       content: master.content as ReportContent,
       cardImageUrl: (master.card_image_url as string) ?? null,
+      coverImageUrl: (master.cover_image_url as string) ?? null,
+      showCover,
       date: master.report_date,
     };
   }
@@ -64,7 +78,12 @@ export default function TodayReport() {
         <h1 className="text-2xl font-bold">오늘의 리포트</h1>
         <span className="text-sm text-slate-400">미국장 {data.date}</span>
       </div>
-      <ReportView content={data.content} cardImageUrl={data.cardImageUrl} />
+      <ReportView
+        content={data.content}
+        cardImageUrl={data.cardImageUrl}
+        coverImageUrl={data.coverImageUrl}
+        showCover={data.showCover}
+      />
     </div>
   );
 }

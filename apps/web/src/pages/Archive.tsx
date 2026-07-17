@@ -8,12 +8,13 @@ interface ArchiveRow {
   report_date: string;
   content: ReportContent;
   card_image_url: string | null;
+  cover_image_url: string | null;
 }
 
 async function fetchArchive(): Promise<ArchiveRow[]> {
   const { data, error } = await supabase
     .from("daily_reports")
-    .select("report_date, content, card_image_url")
+    .select("report_date, content, card_image_url, cover_image_url")
     .eq("status", "ready")
     .order("report_date", { ascending: false })
     .limit(30);
@@ -38,7 +39,11 @@ export default function Archive() {
             ← 목록으로
           </button>
           <div className="mb-4 text-sm text-slate-400">미국장 {active.report_date}</div>
-          <ReportView content={active.content} cardImageUrl={active.card_image_url} />
+          <ReportView
+            content={active.content}
+            cardImageUrl={active.card_image_url}
+            coverImageUrl={active.cover_image_url}
+          />
         </div>
       ) : (
         <ul className="divide-y divide-slate-800 rounded-2xl border border-slate-800 bg-slate-900">

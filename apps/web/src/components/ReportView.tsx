@@ -48,10 +48,27 @@ function FactItem({ fact }: { fact: Fact }) {
   );
 }
 
-export function ReportView({ content, cardImageUrl }: { content: ReportContent; cardImageUrl?: string | null }) {
+export function ReportView({
+  content,
+  cardImageUrl,
+  coverImageUrl,
+  showCover = true,
+}: {
+  content: ReportContent;
+  cardImageUrl?: string | null;
+  coverImageUrl?: string | null;
+  showCover?: boolean;
+}) {
   const { market_summary, headlines, sections } = content;
   return (
     <div className="space-y-8">
+      {showCover && coverImageUrl && (
+        <img
+          src={coverImageUrl}
+          alt="리포트 헤더"
+          className="aspect-[1200/420] w-full rounded-2xl border border-slate-800 object-cover"
+        />
+      )}
       <section>
         <p className="text-slate-300">{content.headline_summary}</p>
       </section>
