@@ -49,6 +49,7 @@
    - 직전 미국장(가장 최근 거래일)의 지수 마감: S&P500, Nasdaq, Dow, Russell2000, VIX
    - 주요 급등락 종목(티커 포함), 실적 발표, 연준/매크로(금리·CPI·고용 등)
    - 섹터별 이슈: 기술, 메모리 반도체(MU 등 DRAM/NAND/HBM), 금융, 에너지, 헬스케어 등
+   - 지정학/전쟁: 주요 분쟁(미국·이란/중동, 우크라이나 등)의 최신 전개 — 정상·정부·군(트럼프 발언, 이란 정부·혁명수비대 IRGC 성명·행동 등)의 발언·행동과 시장 파급. 발언은 반드시 해당 주체에 귀속.
    - 각 사실의 출처 URL을 반드시 확보. 정치적 논평·추측·감정적 수식어는 제외하고 검증 가능한 사실만.
 
 3) reports/report.json 파일을 아래 JSON 스키마로 정확히 작성(그 외 텍스트 금지):
@@ -56,19 +57,27 @@
      "indices": IndexQuote[],                   // 주요 지수 종가(리서치한 값)
      "headline_summary": string,               // 중립적 한 문단 요약(한국어)
      "headlines": Fact[],                       // 가장 중요한 사실 6~10개
-     "sections": Section[]                      // 섹터/테마별 그룹 3~6개
+     "sections": Section[],                     // 섹터/테마별 그룹 3~6개
+     "geopolitics": GeoBrief                    // 지정학/전쟁 브리핑 (분쟁이 있을 때)
    }
    IndexQuote = { "name": string, "symbol": string, "value": number, "change_pct": number, "change_abs": number }
-   // 예: S&P500, 나스닥 종합, 다우존스, 러셀2000, VIX (WebSearch로 확인한 종가/등락)
    Fact = {
-     "fact": string,                            // 한국어, 사실 1건
+     "fact": string,
      "sources": [{ "name": string, "url": string }],   // 반드시 실제 검색 출처
      "tickers": string[],
      "sector"?: "tech"|"memory"|"finance"|"energy"|"healthcare"|"consumer"|"industrials"|"materials"|"utilities"|"realestate"|"communication",
      "topic": "macro"|"earnings"|"fed"|"ipo"|"m&a"|"guidance"|"regulation"|"commodities"|"crypto"|"other"
    }
    Section = { "title": string, "sector"?: Sector, "facts": Fact[] }
-   규칙: 원문에 없는 수치를 지어내지 말 것. 모든 fact에 출처가 있어야 함. 메모리 반도체 관련은 sector를 "memory"로.
+   GeoBrief = {
+     "headline": string, "summary": string,
+     "escalation_level": 1~5,                   // 1 완화 … 5 전면전
+     "escalation_label": string,                // 현 수위 짧은 라벨
+     "actors": [{ "name","role","stance":"hard"|"mixed"|"soft","quotes":[{"text","source":{"name","url"}}] }],
+     "timeline": [{ "date","title","detail","severity":"normal"|"high","sources":[{"name","url"}] }],
+     "watchpoints": string[]
+   }
+   규칙: 원문에 없는 수치를 지어내지 말 것. 모든 fact/quote에 실제 출처. 메모리 반도체는 sector "memory". 발언은 주체에 귀속하고 중립적으로 기술.
 
 4) 검증: reports/report.json이 위 스키마의 유효한 JSON인지 확인(node -e 로 JSON.parse 체크).
 

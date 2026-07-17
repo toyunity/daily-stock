@@ -140,5 +140,55 @@
         }
       ]
     }
-  ]
+  ],
+  "geopolitics": {
+    "headline": "미국·이란 대치와 호르무즈 해협 위기",
+    "summary": "2026년 2월 미국·이스라엘의 대이란 공습으로 시작된 충돌이 호르무즈 해협 봉쇄를 축으로 장기화되고 있다. 트럼프 대통령은 휴전이 '끝났다'고 선언하고 민간 기반시설 타격까지 시사했으며, 혁명수비대(IRGC)는 해협을 '추가 통보 시까지 폐쇄'한다고 맞섰다. 에너지 시장 변동성과 공급 차질이 핵심 리스크다.",
+    "escalation_level": 4,
+    "escalation_label": "지속 타격·봉쇄",
+    "actors": [
+      {
+        "name": "미국 · 트럼프",
+        "role": "Donald Trump / US",
+        "stance": "mixed",
+        "quotes": [
+          { "text": "휴전은 '끝났다'며, 테헤란이 다시 선박을 공격하면 타격이 '훨씬 심해질 것'이라 경고.", "source": { "name": "Al Jazeera (7/8)", "url": "https://www.aljazeera.com/news/2026/7/8/trump-says-ceasefire-over-after-us-iran-trade-attacks" } },
+          { "text": "NATO 정상회의에서 이란 발전소·담수 시설 등 민간 기반시설 타격 가능성을 시사.", "source": { "name": "CNN (7/8)", "url": "https://www.cnn.com/2026/07/08/world/live-news/iran-war-nato-summit-ukraine-trump" } },
+          { "text": "'그것은 합의된 사안이었는데 그들이 깼다'며 불신을 표명하면서도, '이란이 만나 협상을 원한다'며 대화 여지도 언급.", "source": { "name": "CNBC (7/15)", "url": "https://www.cnbc.com/2026/07/15/trump-iran-hormuz-strikes-power-plants-targeted.html" } }
+        ]
+      },
+      {
+        "name": "이란 정부",
+        "role": "Government of Iran",
+        "stance": "hard",
+        "quotes": [
+          { "text": "2월 28일 미·이스라엘 공습으로 최고지도자 하메네이 사망 후, 이스라엘 도시와 걸프 내 미군 기지(UAE·카타르·바레인)에 미사일로 보복.", "source": { "name": "Wikipedia", "url": "https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" } },
+          { "text": "3월 4일 호르무즈 해협 '폐쇄'를 선언하고 통항 선박 공격을 위협. 7월 12일 미국 폭격 이후 걸프 5개국을 겨냥한 공격과 함께 해협을 봉쇄.", "source": { "name": "Al Jazeera (7/12)", "url": "https://www.aljazeera.com/news/2026/7/12/iran-attacks-five-gulf-nations-shuts-hormuz-after-us-bombing-all-to-know" } }
+        ]
+      },
+      {
+        "name": "혁명수비대 · IRGC",
+        "role": "Islamic Revolutionary Guard Corps",
+        "stance": "hard",
+        "quotes": [
+          { "text": "해협을 '추가 통보 시까지, 그리고 이 지역에서 미국의 개입이 끝날 때까지 폐쇄하며 어떤 선박도 통과할 수 없다'고 선언.", "source": { "name": "Times of Israel (7/11)", "url": "https://www.timesofisrael.com/us-strikes-iran-again-after-irgc-attacks-ship-in-hormuz-and-declares-strait-closed-until-further-notice/" } },
+          { "text": "IRGC 해군: '외세는 이 땅과 호르무즈 해협에 설 자리가 없다'며 미국 개입 시 '분쇄적 대응'을 경고.", "source": { "name": "Iran International (7/9)", "url": "https://www.iranintl.com/en/202607095630" } },
+          { "text": "미–이란 직통 '핫라인' 개설 보도를 '완전한 거짓'이라 일축. 이후 허가 선박에 한해 통항을 전쟁 전의 약 50%로 회복했다고 주장.", "source": { "name": "Al Jazeera (6/27)", "url": "https://www.aljazeera.com/news/2026/6/27/pick-up-the-phone-irgc-appears-to-rebuff-us-strait-of-hormuz-hotline" } }
+        ]
+      }
+    ],
+    "timeline": [
+      { "date": "02-28", "title": "미·이스라엘 공습 개시 (Operation Epic Fury)", "detail": "군·핵시설·지도부 표적 공습, 최고지도자 하메네이 사망. 이란은 미사일로 보복.", "severity": "high", "sources": [{ "name": "Wikipedia", "url": "https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" }] },
+      { "date": "03-04", "title": "이란, 호르무즈 '폐쇄' 선언", "detail": "브렌트유 120달러 돌파, QatarEnergy 불가항력 선언.", "severity": "high", "sources": [{ "name": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war" }] },
+      { "date": "07-08", "title": "트럼프 '휴전 종료' 선언", "detail": "재타격·민간 기반시설 타격 시사. 브렌트 +5.2%($78.02).", "severity": "high", "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/08/oil-prices-brent-wti-iran-us-hormuz.html" }] },
+      { "date": "07-11", "title": "IRGC '해협 폐쇄' · 상호 타격", "detail": "미국과 이란이 공격을 주고받음.", "severity": "high", "sources": [{ "name": "Axios", "url": "https://www.axios.com/2026/07/11/iran-strikes-cargo-ship-in-strait-of-hormuz-defying-us-ultimatum" }] },
+      { "date": "07-15", "title": "12시간 내 두 차례 타격", "detail": "분석가들은 '장기전(forever war)' 위험 경고.", "severity": "normal", "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/15/trump-iran-hormuz-strikes-power-plants-targeted.html" }] },
+      { "date": "07-17", "title": "이란산 원유 제재 유예 만료", "detail": "미 재무부 60일 유예 종료 — EDT 00:01부 거래 금지.", "severity": "high", "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/15/trump-iran-hormuz-strikes-power-plants-targeted.html" }] }
+    ],
+    "watchpoints": [
+      "호르무즈 통항 재개 여부와 유조선 추가 피격 — 브렌트유 급등락 직결",
+      "이란산 원유 제재 유예 만료(7/17) 이후 공급·가격 파급",
+      "미–이란 협상 채널 재가동 신호 대 IRGC의 강경 봉쇄 지속"
+    ]
+  }
 }

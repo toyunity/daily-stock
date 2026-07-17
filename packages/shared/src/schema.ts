@@ -100,12 +100,51 @@ export const MarketSummarySchema = z.object({
 });
 export type MarketSummary = z.infer<typeof MarketSummarySchema>;
 
+// --- Geopolitics briefing (war/conflict, statements, escalation) ---
+
+export const GeoStanceSchema = z.enum(["hard", "mixed", "soft"]);
+export type GeoStance = z.infer<typeof GeoStanceSchema>;
+
+export const GeoQuoteSchema = z.object({
+  text: z.string(),
+  source: SourceRefSchema,
+});
+
+export const GeoActorSchema = z.object({
+  name: z.string(),
+  role: z.string().default(""),
+  stance: GeoStanceSchema.default("mixed"),
+  quotes: z.array(GeoQuoteSchema).default([]),
+});
+export type GeoActor = z.infer<typeof GeoActorSchema>;
+
+export const TimelineEventSchema = z.object({
+  date: z.string(),
+  title: z.string(),
+  detail: z.string().default(""),
+  sources: z.array(SourceRefSchema).default([]),
+  severity: z.enum(["normal", "high"]).default("normal"),
+});
+export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
+
+export const GeoBriefSchema = z.object({
+  headline: z.string(),
+  summary: z.string().default(""),
+  escalation_level: z.number().min(1).max(5).default(3),
+  escalation_label: z.string().default(""),
+  actors: z.array(GeoActorSchema).default([]),
+  timeline: z.array(TimelineEventSchema).default([]),
+  watchpoints: z.array(z.string()).default([]),
+});
+export type GeoBrief = z.infer<typeof GeoBriefSchema>;
+
 export const ReportContentSchema = z.object({
   date: z.string(), // ISO date, US market session date
   headline_summary: z.string(), // one-paragraph neutral overview
   market_summary: MarketSummarySchema,
   headlines: z.array(FactSchema).default([]),
   sections: z.array(SectionSchema).default([]),
+  geopolitics: GeoBriefSchema.optional(),
   neutrality_note: z
     .string()
     .default("정치적 논평은 제거되었으며 모든 항목에 출처가 있습니다."),
@@ -123,5 +162,6 @@ export const LlmReportOutputSchema = z.object({
   indices: z.array(IndexQuoteSchema).optional(),
   headlines: z.array(FactSchema),
   sections: z.array(SectionSchema),
+  geopolitics: GeoBriefSchema.optional(),
 });
 export type LlmReportOutput = z.infer<typeof LlmReportOutputSchema>;

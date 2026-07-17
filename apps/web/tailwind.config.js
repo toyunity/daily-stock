@@ -5,8 +5,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        up: "#16a34a",
-        down: "#dc2626",
+        up: "#46be86",
+        down: "#e5605c",
+        accent: "#e3b24a",
+        crit: "#e5605c",
+        warn: "#e0a93e",
+        ok: "#46be86",
+        info: "#5d9bd6",
+      },
+      fontFamily: {
+        serif: ['Georgia', '"Times New Roman"', "ui-serif", "serif"],
+        mono: ["ui-monospace", '"SF Mono"', "Consolas", "monospace"],
       },
     },
   },

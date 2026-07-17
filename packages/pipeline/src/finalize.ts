@@ -69,6 +69,7 @@ async function main() {
     market_summary: { indices: quotes, movers: { gainers: [], losers: [] }, macro: [] },
     headlines: extracted.headlines,
     sections: extracted.sections,
+    geopolitics: extracted.geopolitics,
   });
 
   const supabase = createClient(env.supabaseUrl, env.serviceRoleKey, {
