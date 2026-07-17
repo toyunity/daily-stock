@@ -1,0 +1,19 @@
+{
+  "name": "daily-stock",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Daily US stock report — fact-based, visualized, personalized reports for authenticated users",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace apps/web",
+    "build": "npm run build --workspace apps/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@daily-stock/pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@daily-stock/shared": "*",
+    "@supabase/supabase-js": "^2.45.0",
+    "satori": "^0.10.13",
+    "@resvg/resvg-js": "^2.6.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4",
+    "@types/node": "^20.14.0"
+  }
+}
