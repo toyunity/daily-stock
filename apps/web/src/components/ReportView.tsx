@@ -1,5 +1,6 @@
 import type { ReportContent, Fact, IndexQuote, MacroPoint, Mover } from "@daily-stock/shared";
 import { GeopoliticsSection } from "./GeopoliticsSection";
+import { FocusSection } from "./FocusSection";
 import "../styles/report.css";
 
 function sparkPoints(up: boolean): string {
@@ -163,6 +164,9 @@ export function ReportView({
             </div>
           </section>
         )}
+
+        {/* FOCUS DEEP-DIVE (lead) */}
+        {content.focus && <FocusSection focus={content.focus} />}
 
         {/* MARKETS */}
         {market_summary.indices.length > 0 && (

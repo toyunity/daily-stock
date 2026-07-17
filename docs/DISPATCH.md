@@ -50,6 +50,7 @@
    - 주요 급등락 종목(티커 포함), 실적 발표, 연준/매크로(금리·CPI·고용 등)
    - 섹터별 이슈: 기술, 메모리 반도체(마이크론 MU·SK하이닉스 000660.KS·삼성전자 005930.KS·WDC 등 DRAM/NAND/HBM, 중국 CXMT 동향 포함), 금융, 에너지, 헬스케어 등
    - 지정학/전쟁: 주요 분쟁(미국·이란/중동, 우크라이나 등)의 최신 전개 — 정상·정부·군(트럼프 발언, 이란 정부·혁명수비대 IRGC 성명·행동 등)의 발언·행동과 시장 파급. 발언은 반드시 해당 주체에 귀속.
+   - ★ 심층 분석 대상(기본: SK하이닉스 000660.KS): 현재가·등락, 52주 고점/저점·연초대비, 최근 주가 추이(수치), 애널리스트 컨센서스·목표가, 상승 동인/하락 리스크, 촉매 일정, 강세·기본·약세 시나리오(조건+방향)를 리서치. HBM4·엔비디아·삼성·마이크론·CXMT·수급/사이클을 함께 파악.
    - 각 사실의 출처 URL을 반드시 확보. 정치적 논평·추측·감정적 수식어는 제외하고 검증 가능한 사실만.
 
 3) reports/report.json 파일을 아래 JSON 스키마로 정확히 작성(그 외 텍스트 금지):
@@ -58,7 +59,8 @@
      "macro": [{ "label","value","unit","change" }],       // 10Y·2Y·WTI·Brent·Fed 등
      "movers": { "gainers":[{"ticker","pct"}], "losers":[{"ticker","pct"}] },
      "sector_perf": [{ "sector"?, "label", "pct" }],       // 섹터 등락(히트맵)
-     "headline_summary": string,               // 중립적 한 문단 요약(한국어)
+     "focus": FocusAnalysis,                    // ★ 심층 분석(기본 SK하이닉스) — 주가 동향+시나리오
+     "headline_summary": string,               // 중립적 한 문단 요약(한국어, 심층분석 대상을 중심으로)
      "headlines": Fact[],                       // 가장 중요한 사실 6~10개
      "sections": Section[],                     // 섹터/테마별 그룹 3~6개
      "geopolitics": GeoBrief                    // 지정학/전쟁 브리핑 (분쟁이 있을 때)
@@ -72,6 +74,20 @@
      "topic": "macro"|"earnings"|"fed"|"ipo"|"m&a"|"guidance"|"regulation"|"commodities"|"crypto"|"other"
    }
    Section = { "title": string, "sector"?: Sector, "facts": Fact[] }
+   FocusAnalysis = {
+     "ticker","name",
+     "price": { "value":number,"currency":"KRW"|"USD","change_pct":number,"change_abs":number,"as_of":string },
+     "price_context": string,                  // 52주 고저·연초대비 등
+     "price_series": [{ "label","value" }],     // 주가 추이(2점 이상)
+     "thesis": string,                          // 핵심 논지(간단 <b> 강조 가능)
+     "rating": string,                          // 컨센서스 등급
+     "target": { "avg":number,"high":number,"low":number,"currency":string },
+     "drivers": [{ "point","source":{"name","url"} }],   // 상승 동인
+     "risks":   [{ "point","source":{"name","url"} }],   // 하락 리스크
+     "catalysts":[{ "date","event" }],
+     "scenarios":[{ "kind":"bull"|"base"|"bear","label","condition","implication" }],
+     "watch": string[]
+   }
    GeoBrief = {
      "headline": string, "theater": string, "summary": string,
      "escalation_level": 1~5,                   // 1 완화 … 5 전면전

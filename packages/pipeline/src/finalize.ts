@@ -72,6 +72,7 @@ async function main() {
       macro: extracted.macro ?? [],
       sector_perf: extracted.sector_perf ?? [],
     },
+    focus: extracted.focus,
     headlines: extracted.headlines,
     sections: extracted.sections,
     geopolitics: extracted.geopolitics,

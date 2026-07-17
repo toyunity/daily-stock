@@ -18,8 +18,60 @@
       { "ticker": "GOOGL", "pct": -4.0 }
     ]
   },
-  "headline_summary": "미국 증시는 반도체주 약세로 주요 지수가 동반 하락했다. S&P500은 0.51%, 나스닥은 1.47%, 다우는 0.20% 내렸다. TSMC의 자본지출 전망 상향 이후 칩 매도세가 확산됐고, 알파벳은 AI 모델 출시 지연 보도로 4% 넘게 하락했다. 메모리 반도체는 중국 CXMT의 대형 IPO와 미국의 HBM 수출 제한 검토 소식에 약세를 보였다. 한편 6월 소비자물가가 예상보다 크게 둔화하면서 국채 금리가 하락하고 7월 금리 인상 기대가 후퇴했다.",
+  "focus": {
+    "ticker": "000660.KS · KRX",
+    "name": "SK하이닉스",
+    "price": { "value": 1729000, "currency": "KRW", "change_pct": -12.66, "change_abs": -250600, "as_of": "7/14" },
+    "price_context": "52주 고점 ₩2,987,000(6/25) 대비 −37% · 최근 12개월 약 6배",
+    "price_series": [
+      { "label": "12개월 전(약)", "value": 290000 },
+      { "label": "6/25 고점", "value": 2987000 },
+      { "label": "7/14", "value": 1729000 }
+    ],
+    "thesis": "AI 메모리 슈퍼사이클의 최선호주였던 SK하이닉스는 <b>HBM4 선행 양산과 엔비디아 공급</b>으로 12개월간 약 6배 올랐으나, 6월 말 사상 최고가 이후 <b>장기계약에 따른 ASP 상한·삼성 HBM4 진입·중국 CXMT 변수</b>가 부각되며 고점 대비 37% 조정됐다. 향후 주가는 HBM 수급 타이트 지속 여부와 점유율 방어에 달려 있다.",
+    "rating": "컨센서스 Strong Buy · 37인",
+    "target": { "avg": 3408502, "high": 5300000, "low": 1200000, "currency": "KRW" },
+    "drivers": [
+      { "point": "HBM 시장 점유율 50~55%로 1위, 6월 말부터 엔비디아에 12단 HBM4 양산 공급을 개시.", "source": { "name": "TweakTown", "url": "https://www.tweaktown.com/news/109495/sk-hynix-samsung-and-micron-fighting-for-nvidia-supply-contracts-for-new-16-hi-hbm4-orders/index.html" } },
+      { "point": "HBM 수요가 향후 수년간 공급을 초과 — 일부 분석은 2028년까지 공급부족 전망.", "source": { "name": "TradingKey", "url": "https://www.tradingkey.com/analysis/stocks/more/261879241-sk-hynix-hbm-shortage-samsung-tracker-valuation-tradingkey" } },
+      { "point": "Q1 매출 52.58조원(+198%), 영업이익 37.61조원(+405%), 영업이익률 72%의 기록적 실적.", "source": { "name": "TechTimes", "url": "https://www.techtimes.com/articles/320352/20260713/sk-hynix-posts-worst-seoul-session-record-hbm-contracts-limit-earnings-upside.htm" } },
+      { "point": "265억 달러 나스닥 증자로 증설 재원 확보, 1c 공정 연말까지 8~9배 확대 계획.", "source": { "name": "Silicon Analysts", "url": "https://siliconanalysts.com/analysis/sk-hynix-samsung-2026-memory-capex-hbm4-qualification-race" } }
+    ],
+    "risks": [
+      { "point": "HBM 물량 상당분을 장기계약으로 묶어 평균판매가(ASP)가 상한에 걸려 현물 급등을 못 누림 → 7/13 −15.4%(사상 최악의 서울 세션).", "source": { "name": "TechTimes", "url": "https://www.techtimes.com/articles/320352/20260713/sk-hynix-posts-worst-seoul-session-record-hbm-contracts-limit-earnings-upside.htm" } },
+      { "point": "삼성전자가 엔비디아·AMD HBM4 품질 테스트를 통과, 하반기 양산 시 하이닉스 점유율이 50~60%로 하락 가능.", "source": { "name": "Silicon Analysts", "url": "https://siliconanalysts.com/analysis/sk-hynix-samsung-2026-memory-capex-hbm4-qualification-race" } },
+      { "point": "중국 CXMT의 STAR 상장과 저가(대비 5~10%↓) DRAM 확대, 미국의 HBM 수출 통제 검토가 중장기 변수.", "source": { "name": "SCMP", "url": "https://www.scmp.com/tech/big-tech/article/3359168/inside-cxmts-us43b-ipo-soaring-profits-meet-us-export-threat-and-high-stakes-hbm-race" } },
+      { "point": "메모리 사이클 특성상 수급이 균형에 도달하거나 AI 투자가 둔화되면 높은 영업레버리지가 빠르게 역전(약세 목표 ₩1.2M대).", "source": { "name": "Investing.com", "url": "https://www.investing.com/equities/sk-hynix-inc-consensus-estimates" } }
+    ],
+    "catalysts": [
+      { "date": "3Q26", "event": "HBM4 본격 양산 개시" },
+      { "date": "하반기", "event": "삼성 HBM4 양산 램프업" },
+      { "date": "분기", "event": "SK하이닉스 2분기 실적 발표" },
+      { "date": "7/16", "event": "중국 CXMT 상하이 STAR 상장" }
+    ],
+    "scenarios": [
+      { "kind": "bull", "label": "₩3.4M+ (상단 ₩5.3M)", "condition": "HBM4 선점 유지 + 수급 2028년까지 타이트 + 마진 방어", "implication": "고점 회복 및 추가 상승 여지" },
+      { "kind": "base", "label": "₩2.0~2.7M", "condition": "조정 후 점유율 50~55% 유지, 계약가 상한으로 실적 상단 제한", "implication": "박스권 등락, 컨센서스 근접" },
+      { "kind": "bear", "label": "₩1.2~1.3M대", "condition": "삼성·CXMT 점유율 잠식 + AI 투자 둔화 + 사이클 하강", "implication": "영업레버리지 역전, 추가 하락 위험" }
+    ],
+    "watch": [
+      "HBM4 공급-수요 균형 및 스팟/계약가 추이",
+      "삼성 HBM4 엔비디아 최종 양산 승인·물량",
+      "중국 CXMT 확장·미국 HBM 수출통제 진행",
+      "엔비디아 등 AI 가속기 발주·데이터센터 capex"
+    ]
+  },
+  "headline_summary": "이번 주 시장의 중심은 SK하이닉스다. AI 메모리 대장주로 12개월간 약 6배 오른 하이닉스는 6월 말 사상 최고가(₩2,987,000) 이후 장기계약에 따른 실적 상단 제약과 삼성·중국 CXMT 경쟁 우려로 급락, 7월 14일 ₩1,729,000까지 밀리며 고점 대비 37% 조정됐다. 미국 증시도 반도체 매도로 S&P500 −0.51%, 나스닥 −1.47% 하락했고, 미국·이란 호르무즈 위기가 유가·공급 리스크를 더한다.",
   "headlines": [
+    {
+      "fact": "SK하이닉스가 7월 14일 12.66% 하락한 172만9천원에 거래되며 6월 25일 사상 최고가(298만7천원) 대비 약 37% 조정됐다. 장기 HBM 공급계약이 실적 상단을 제한한다는 우려가 급락을 촉발했다.",
+      "sources": [
+        { "name": "TechTimes", "url": "https://www.techtimes.com/articles/320352/20260713/sk-hynix-posts-worst-seoul-session-record-hbm-contracts-limit-earnings-upside.htm" }
+      ],
+      "tickers": ["000660.KS"],
+      "sector": "memory",
+      "topic": "guidance"
+    },
     {
       "fact": "S&P500이 0.51% 하락한 7,533.77, 나스닥종합이 1.47% 하락한 25,881.95, 다우존스가 0.20%(105.67포인트) 하락한 52,552.97로 마감했다.",
       "sources": [

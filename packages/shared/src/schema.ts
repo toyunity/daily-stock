@@ -156,10 +156,68 @@ export const GeoBriefSchema = z.object({
 });
 export type GeoBrief = z.infer<typeof GeoBriefSchema>;
 
+// --- Featured deep-dive analysis (e.g. SK Hynix) ---
+
+export const DriverSchema = z.object({
+  point: z.string(),
+  source: SourceRefSchema.optional(),
+});
+export type Driver = z.infer<typeof DriverSchema>;
+
+export const CatalystSchema = z.object({
+  date: z.string(), // e.g. "3Q26", "07-25"
+  event: z.string(),
+  source: SourceRefSchema.optional(),
+});
+
+export const ScenarioSchema = z.object({
+  kind: z.enum(["bull", "base", "bear"]),
+  label: z.string(), // short target/level label
+  condition: z.string(), // what has to happen
+  implication: z.string(), // directional read
+});
+export type Scenario = z.infer<typeof ScenarioSchema>;
+
+export const PricePointSchema = z.object({
+  label: z.string(),
+  value: z.number(),
+});
+
+export const FocusAnalysisSchema = z.object({
+  ticker: z.string(),
+  name: z.string(),
+  price: z.object({
+    value: z.number(),
+    currency: z.string().default("KRW"),
+    change_pct: z.number().default(0),
+    change_abs: z.number().default(0),
+    as_of: z.string().default(""),
+  }),
+  price_context: z.string().default(""), // 52w range, YTD, etc.
+  price_series: z.array(PricePointSchema).default([]),
+  thesis: z.string().default(""),
+  rating: z.string().default(""), // consensus rating
+  target: z
+    .object({
+      avg: z.number(),
+      high: z.number().optional(),
+      low: z.number().optional(),
+      currency: z.string().default("KRW"),
+    })
+    .optional(),
+  drivers: z.array(DriverSchema).default([]),
+  risks: z.array(DriverSchema).default([]),
+  catalysts: z.array(CatalystSchema).default([]),
+  scenarios: z.array(ScenarioSchema).default([]),
+  watch: z.array(z.string()).default([]),
+});
+export type FocusAnalysis = z.infer<typeof FocusAnalysisSchema>;
+
 export const ReportContentSchema = z.object({
   date: z.string(), // ISO date, US market session date
   headline_summary: z.string(), // one-paragraph neutral overview
   market_summary: MarketSummarySchema,
+  focus: FocusAnalysisSchema.optional(),
   headlines: z.array(FactSchema).default([]),
   sections: z.array(SectionSchema).default([]),
   geopolitics: GeoBriefSchema.optional(),
@@ -183,6 +241,7 @@ export const LlmReportOutputSchema = z.object({
     .optional(),
   macro: z.array(MacroPointSchema).optional(),
   sector_perf: z.array(SectorPerfSchema).optional(),
+  focus: FocusAnalysisSchema.optional(),
   headlines: z.array(FactSchema),
   sections: z.array(SectionSchema),
   geopolitics: GeoBriefSchema.optional(),
