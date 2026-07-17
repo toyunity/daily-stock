@@ -53,10 +53,13 @@
 
 3) reports/report.json 파일을 아래 JSON 스키마로 정확히 작성(그 외 텍스트 금지):
    {
+     "indices": IndexQuote[],                   // 주요 지수 종가(리서치한 값)
      "headline_summary": string,               // 중립적 한 문단 요약(한국어)
      "headlines": Fact[],                       // 가장 중요한 사실 6~10개
      "sections": Section[]                      // 섹터/테마별 그룹 3~6개
    }
+   IndexQuote = { "name": string, "symbol": string, "value": number, "change_pct": number, "change_abs": number }
+   // 예: S&P500, 나스닥 종합, 다우존스, 러셀2000, VIX (WebSearch로 확인한 종가/등락)
    Fact = {
      "fact": string,                            // 한국어, 사실 1건
      "sources": [{ "name": string, "url": string }],   // 반드시 실제 검색 출처

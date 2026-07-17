@@ -1,4 +1,9 @@
 {
+  "indices": [
+    { "name": "S&P 500", "symbol": "^GSPC", "value": 7533.77, "change_pct": -0.51, "change_abs": -38.62 },
+    { "name": "나스닥 종합", "symbol": "^IXIC", "value": 25881.95, "change_pct": -1.47, "change_abs": -385.35 },
+    { "name": "다우존스", "symbol": "^DJI", "value": 52552.97, "change_pct": -0.20, "change_abs": -105.67 }
+  ],
   "headline_summary": "미국 증시는 반도체주 약세로 주요 지수가 동반 하락했다. S&P500은 0.51%, 나스닥은 1.47%, 다우는 0.20% 내렸다. TSMC의 자본지출 전망 상향 이후 칩 매도세가 확산됐고, 알파벳은 AI 모델 출시 지연 보도로 4% 넘게 하락했다. 메모리 반도체는 중국 CXMT의 대형 IPO와 미국의 HBM 수출 제한 검토 소식에 약세를 보였다. 한편 6월 소비자물가가 예상보다 크게 둔화하면서 국채 금리가 하락하고 7월 금리 인상 기대가 후퇴했다.",
   "headlines": [
     {

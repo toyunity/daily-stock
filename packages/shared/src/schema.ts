@@ -118,6 +118,9 @@ export type ReportContent = z.infer<typeof ReportContentSchema>;
 /** The JSON the LLM is asked to produce during the "structure" step. */
 export const LlmReportOutputSchema = z.object({
   headline_summary: z.string(),
+  // Optional: index closes the dispatch agent researched. Preferred over live
+  // quote fetching (which can be rate-limited/blocked on CI).
+  indices: z.array(IndexQuoteSchema).optional(),
   headlines: z.array(FactSchema),
   sections: z.array(SectionSchema),
 });

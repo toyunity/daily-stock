@@ -38,12 +38,16 @@ async function main() {
   const articles = existsSync(ARTICLES_PATH) ? readJson<ArticlesFile>(ARTICLES_PATH) : null;
   const reportDate = articles?.date ?? usEasternDate();
 
-  // Quotes: prefer a fresh live fetch (open network on CI); fall back to file.
-  let quotes: IndexQuote[] = [];
-  try {
-    quotes = await sources.fetchIndexQuotes();
-  } catch {
-    /* ignore; fall through to file/empty */
+  // Quotes: prefer the agent's researched index closes; else a live fetch; else
+  // collect's file. Live sources can be rate-limited/blocked on CI, so the
+  // agent-provided numbers are the most reliable.
+  let quotes: IndexQuote[] = extracted.indices ?? [];
+  if (quotes.length === 0) {
+    try {
+      quotes = await sources.fetchIndexQuotes();
+    } catch {
+      /* ignore; fall through to file/empty */
+    }
   }
   if (quotes.length === 0 && existsSync(QUOTES_PATH)) {
     quotes = readJson<IndexQuote[]>(QUOTES_PATH);
