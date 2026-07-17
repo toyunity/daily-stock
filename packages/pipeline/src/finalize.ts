@@ -1,23 +1,27 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import {
   ReportContentSchema,
   LlmReportOutputSchema,
   personalizeReport,
+  sources,
   llm,
   type ReportContent,
   type IndexQuote,
 } from "@daily-stock/shared";
-import { env } from "./env";
+import { env, usEasternDate } from "./env";
 import { ARTICLES_PATH, QUOTES_PATH, REPORT_PATH, type ArticlesFile } from "./paths";
 import { renderReportCard } from "./render";
 import { generateAiHeader, renderMoodBanner } from "./header";
 
 /**
- * Stage 3 of the dispatch pipeline: take the agent-produced report.json, the
- * collected quotes, validate + assemble the master report, render images, and
- * persist to Supabase (daily_reports) with per-user personalization fan-out.
- * No Anthropic key needed — the LLM step was done by the dispatch agent.
+ * Finalize stage (runs on GitHub Actions, open network). Takes the dispatch
+ * agent's report.json, fetches authoritative index quotes, renders images, and
+ * upserts to Supabase with per-user personalization fan-out.
+ *
+ * Self-sufficient: needs only report.json + Supabase creds. Quotes are fetched
+ * live; collect's articles.json/quotes.json are used opportunistically if present.
+ * No Anthropic key — the LLM step was done by the dispatch agent on Max.
  */
 
 function readJson<T>(path: string): T {
@@ -25,19 +29,35 @@ function readJson<T>(path: string): T {
 }
 
 async function main() {
-  const articles = readJson<ArticlesFile>(ARTICLES_PATH);
-  const quotes = readJson<IndexQuote[]>(QUOTES_PATH);
-  const reportDate = articles.date;
   const runStart = Date.now();
 
-  // Validate the agent's extraction against the shared contract.
+  // Required: the agent-produced report.
   const extracted = LlmReportOutputSchema.parse(readJson(REPORT_PATH));
 
-  // Anti-hallucination guardrail: drop facts citing numbers absent from sources.
-  const corpus = articles.items.map((a) => `${a.title} ${a.body}`).join(" ");
-  const dropped = llm.dropUnsupportedNumericFacts(extracted.headlines, corpus);
-  for (const s of extracted.sections) llm.dropUnsupportedNumericFacts(s.facts, corpus);
-  if (dropped) console.log(`[finalize] dropped ${dropped} headline facts w/ unsupported numbers`);
+  // Optional collect artifacts (present when collect ran first).
+  const articles = existsSync(ARTICLES_PATH) ? readJson<ArticlesFile>(ARTICLES_PATH) : null;
+  const reportDate = articles?.date ?? usEasternDate();
+
+  // Quotes: prefer a fresh live fetch (open network on CI); fall back to file.
+  let quotes: IndexQuote[] = [];
+  try {
+    quotes = await sources.fetchIndexQuotes();
+  } catch {
+    /* ignore; fall through to file/empty */
+  }
+  if (quotes.length === 0 && existsSync(QUOTES_PATH)) {
+    quotes = readJson<IndexQuote[]>(QUOTES_PATH);
+  }
+  console.log(`[finalize] ${quotes.length} index quotes, session ${reportDate}`);
+
+  // Anti-hallucination guardrail only when we have a source corpus to check
+  // against (collect path). Dispatch-authored facts carry their own citations.
+  if (articles && articles.items.length > 0) {
+    const corpus = articles.items.map((a) => `${a.title} ${a.body}`).join(" ");
+    const dropped = llm.dropUnsupportedNumericFacts(extracted.headlines, corpus);
+    for (const s of extracted.sections) llm.dropUnsupportedNumericFacts(s.facts, corpus);
+    if (dropped) console.log(`[finalize] dropped ${dropped} headline facts w/ unsupported numbers`);
+  }
 
   const master: ReportContent = ReportContentSchema.parse({
     date: reportDate,
@@ -78,8 +98,8 @@ async function main() {
         status: "ready",
         pipeline_meta: {
           source: "dispatch",
-          items: articles.count,
-          source_errors: articles.errors,
+          quotes: quotes.length,
+          collected_items: articles?.count ?? null,
           duration_ms: Date.now() - runStart,
         },
       },

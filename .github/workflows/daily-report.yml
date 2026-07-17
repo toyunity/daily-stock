@@ -1,9 +1,9 @@
 name: daily-report
 
+# Alternative all-in-one path that runs collect + Claude-API extraction + persist
+# on GitHub (requires ANTHROPIC_API_KEY). The default path is the Max dispatch +
+# finalize.yml, so this is manual-only to avoid daily failures when no API key is set.
 on:
-  schedule:
-    # 21:15 UTC == 06:15 Asia/Seoul. GitHub cron may drift a few minutes.
-    - cron: "15 21 * * *"
   workflow_dispatch: {}
 
 concurrency:
