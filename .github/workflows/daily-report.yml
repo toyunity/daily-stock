@@ -14,8 +14,10 @@ name: daily-report
 # Runs on Actions' open network with the repo checked out, so it does not suffer
 # the scheduled-container "no repo cloned" failure the Max-dispatch path hit.
 on:
-  schedule:
-    - cron: "50 20 * * *" # 05:50 KST (20:50 UTC) — baseline done well before 06:15
+  # Manual-only break-glass. The daily driver is the Claude "Daily Stock Report"
+  # Routine (claude.ai/code/routines) — a scheduled session with the repo
+  # attached that authors report.json and pushes; finalize.yml then persists.
+  # Run this gpt-4o baseline by hand only if the Claude routine misses a day.
   workflow_dispatch: {}
 
 concurrency:

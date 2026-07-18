@@ -169,13 +169,17 @@ async function main() {
   console.log(`[generate] calling GitHub Models (${cfg.model ?? "openai/gpt-4o"})…`);
   const raw = await chatJson(cfg, system, user);
 
-  let parsed: unknown;
+  let parsed: any;
   try {
     parsed = JSON.parse(raw);
   } catch (e) {
     console.error("[generate] model did not return valid JSON:\n", raw.slice(0, 1000));
     throw e;
   }
+
+  // Repair common gpt-4o schema gaps before validation — the numbers are
+  // KIS-overwritten at finalize anyway, so placeholders are safe.
+  repairForSchema(parsed);
 
   const result = LlmReportOutputSchema.safeParse(parsed);
   if (!result.success) {
@@ -194,6 +198,47 @@ async function main() {
   mkdirSync(dirname(REPORT_PATH), { recursive: true });
   writeFileSync(REPORT_PATH, JSON.stringify(out, null, 2));
   console.log(`[generate] wrote ${REPORT_PATH} (headlines=${out.headlines.length}, sections=${out.sections.length}, focus=${out.focus ? "yes" : "no"}, geo=${out.geopolitics ? "yes" : "no"})`);
+}
+
+// Indices seeded when stooq is unavailable on the runner. finalize KIS-anchors
+// ^GSPC/^IXIC/^DJI, so 0-value placeholders get replaced with real closes.
+const SEED_INDICES = [
+  { name: "S&P 500", symbol: "^GSPC", value: 0, change_pct: 0, change_abs: 0 },
+  { name: "나스닥 종합", symbol: "^IXIC", value: 0, change_pct: 0, change_abs: 0 },
+  { name: "다우존스", symbol: "^DJI", value: 0, change_pct: 0, change_abs: 0 },
+];
+
+/**
+ * Coerce imperfect model output toward LlmReportOutputSchema. gpt-4o often omits
+ * focus.price or emits facts without sources; rather than fail the whole run, we
+ * patch placeholders (KIS overwrites numbers at finalize) and drop unsourced
+ * facts so a valid report always ships.
+ */
+function repairForSchema(o: any): void {
+  if (!o || typeof o !== "object") return;
+
+  if (!Array.isArray(o.indices) || o.indices.length === 0) o.indices = SEED_INDICES.map((x) => ({ ...x }));
+
+  if (o.focus && typeof o.focus === "object") {
+    if (!o.focus.price || typeof o.focus.price !== "object") {
+      o.focus.price = { value: 0, currency: "KRW", change_pct: 0, change_abs: 0, as_of: "" };
+    }
+    if (typeof o.focus.price.value !== "number") o.focus.price.value = 0;
+  }
+
+  const validUrl = (u: unknown) => typeof u === "string" && /^https?:\/\//.test(u);
+  const cleanFacts = (arr: any): any[] =>
+    Array.isArray(arr)
+      ? arr
+          .filter((f) => f && typeof f.fact === "string" && f.fact && Array.isArray(f.sources) && f.sources.some((s: any) => s && validUrl(s.url)))
+          .map((f) => ({ ...f, sources: f.sources.filter((s: any) => s && validUrl(s.url)) }))
+      : [];
+  o.headlines = cleanFacts(o.headlines);
+  if (Array.isArray(o.sections)) {
+    o.sections = o.sections.map((s: any) => ({ ...s, facts: cleanFacts(s?.facts) }));
+  } else {
+    o.sections = [];
+  }
 }
 
 function dedupeNews(items: NewsItem[]): NewsItem[] {
