@@ -1,14 +1,26 @@
 name: daily-report
 
-# Alternative all-in-one path that runs collect + Claude-API extraction + persist
-# on GitHub (requires ANTHROPIC_API_KEY). The default path is the Max dispatch +
-# finalize.yml, so this is manual-only to avoid daily failures when no API key is set.
+# Fully automated daily path (no cost, no API key):
+#   1) generate.ts  — free market data (stooq) + real news (Google News RSS)
+#                     turned into report.json by GitHub Models (gpt-4o) via the
+#                     built-in GITHUB_TOKEN (permissions: models: read).
+#   2) finalize.ts  — fetch quotes, render images, upsert Supabase.
+#   3) commit reports/report.json as an audit trail ([skip ci] — no re-trigger).
+#
+# Runs on Actions' open network with the repo checked out, so it does not suffer
+# the scheduled-container "no repo cloned" failure the Max-dispatch path hit.
 on:
+  schedule:
+    - cron: "15 21 * * *" # 06:15 KST (21:15 UTC)
   workflow_dispatch: {}
 
 concurrency:
   group: daily-report
   cancel-in-progress: false
+
+permissions:
+  contents: write
+  models: read
 
 jobs:
   build:
@@ -25,16 +37,34 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      - name: Run pipeline
+      - name: Generate report.json (free data + GitHub Models)
         working-directory: packages/pipeline
-        run: npm run start
+        run: npm run generate
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_MODELS_MODEL: ${{ vars.GITHUB_MODELS_MODEL }}
+          GITHUB_MODELS_ENDPOINT: ${{ vars.GITHUB_MODELS_ENDPOINT }}
+          PIPELINE_OUT: ${{ github.workspace }}/reports
+
+      - name: Finalize + persist to Supabase
+        working-directory: packages/pipeline
+        run: npm run finalize
+        env:
+          PIPELINE_OUT: ${{ github.workspace }}/reports
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
-          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
-          ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
           AI_HEADER_ENABLED: ${{ vars.AI_HEADER_ENABLED }}
           IMAGE_API_URL: ${{ vars.IMAGE_API_URL }}
           IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
+
+      - name: Commit report.json (audit trail)
+        run: |
+          if ! git diff --quiet -- reports/report.json; then
+            git config user.name "daily-report-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add reports/report.json
+            git commit -m "chore(report): $(date -u +%Y-%m-%d) daily report [skip ci]"
+            git push
+          else
+            echo "report.json unchanged; nothing to commit"
+          fi

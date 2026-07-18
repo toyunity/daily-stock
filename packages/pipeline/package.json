@@ -6,6 +6,7 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "collect": "tsx src/collect.ts",
+    "generate": "tsx src/generate.ts",
     "finalize": "tsx src/finalize.ts",
     "validate": "tsx src/validate.ts",
     "typecheck": "tsc --noEmit"
