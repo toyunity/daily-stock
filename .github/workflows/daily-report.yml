@@ -15,7 +15,7 @@ name: daily-report
 # the scheduled-container "no repo cloned" failure the Max-dispatch path hit.
 on:
   schedule:
-    - cron: "15 21 * * *" # 06:15 KST (21:15 UTC)
+    - cron: "50 20 * * *" # 05:50 KST (20:50 UTC) — baseline done well before 06:15
   workflow_dispatch: {}
 
 concurrency:
