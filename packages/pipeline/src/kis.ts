@@ -42,9 +42,14 @@ export function kisCredsFromEnv(): KisCreds | null {
 
 let cachedToken: { token: string; domain: string } | null = null;
 
-export async function getAccessToken(creds: KisCreds): Promise<string> {
+/**
+ * Raw token issuance. KIS enforces a strict "issue once, reuse for 24h" policy
+ * — reissuing frequently gets rate-limited — so callers should persist the
+ * returned token (see finalize's Supabase-backed cache) rather than call this
+ * every run. Returns the token and its lifetime in seconds (~86400).
+ */
+export async function issueAccessToken(creds: KisCreds): Promise<{ token: string; expiresIn: number }> {
   const domain = creds.domain || REAL_DOMAIN;
-  if (cachedToken && cachedToken.domain === domain) return cachedToken.token;
   const res = await fetch(`${domain}/oauth2/tokenP`, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -57,10 +62,18 @@ export async function getAccessToken(creds: KisCreds): Promise<string> {
   if (!res.ok) {
     throw new Error(`KIS token ${res.status}: ${(await res.text()).slice(0, 200)}`);
   }
-  const data = (await res.json()) as { access_token?: string };
+  const data = (await res.json()) as { access_token?: string; expires_in?: number };
   if (!data.access_token) throw new Error("KIS token: no access_token in response");
-  cachedToken = { token: data.access_token, domain };
-  return data.access_token;
+  return { token: data.access_token, expiresIn: data.expires_in ?? 86400 };
+}
+
+/** Convenience: issue + in-process cache (single-process use only). */
+export async function getAccessToken(creds: KisCreds): Promise<string> {
+  const domain = creds.domain || REAL_DOMAIN;
+  if (cachedToken && cachedToken.domain === domain) return cachedToken.token;
+  const { token } = await issueAccessToken(creds);
+  cachedToken = { token, domain };
+  return token;
 }
 
 function headers(creds: KisCreds, token: string, trId: string) {

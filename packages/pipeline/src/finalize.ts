@@ -15,11 +15,12 @@ import { renderReportCard } from "./render";
 import { generateAiHeader, renderMoodBanner } from "./header";
 import {
   kisCredsFromEnv,
-  getAccessToken,
+  issueAccessToken,
   getDomesticQuote,
   getDomesticDaily,
   getOverseasQuote,
   getOverseasIndex,
+  type KisCreds,
 } from "./kis";
 
 /**
@@ -42,12 +43,29 @@ async function main() {
   // Required: the agent-produced report.
   const extracted = LlmReportOutputSchema.parse(readJson(REPORT_PATH));
 
-  // Anchor Korean (focus) + US (movers) numbers to authoritative KIS quotes
-  // when credentials are present. The narrative stays as written; only the
-  // structured numbers are corrected. Best-effort — never blocks the report.
-  await enrichFocusWithKis(extracted);
-  await enrichMoversWithKis(extracted);
-  await enrichIndicesWithKis(extracted);
+  const supabase = createClient(env.supabaseUrl, env.serviceRoleKey, {
+    auth: { persistSession: false },
+  });
+
+  // Anchor Korean (focus) + US (movers/indices) numbers to authoritative KIS
+  // quotes when credentials are present. The narrative stays as written; only
+  // the structured numbers are corrected. Best-effort — never blocks the report.
+  // The KIS token is issued at most once/day (strict provider limit) and reused
+  // from Supabase across runs.
+  const kisCreds = kisCredsFromEnv();
+  if (kisCreds) {
+    let token: string | null = null;
+    try {
+      token = await getKisTokenCached(kisCreds, supabase);
+    } catch (e) {
+      console.warn(`[finalize] KIS token unavailable: ${(e as Error).message}`);
+    }
+    if (token) {
+      await enrichFocusWithKis(extracted, kisCreds, token);
+      await enrichMoversWithKis(extracted, kisCreds, token);
+      await enrichIndicesWithKis(extracted, kisCreds, token);
+    }
+  }
 
   // Optional collect artifacts (present when collect ran first).
   const articles = existsSync(ARTICLES_PATH) ? readJson<ArticlesFile>(ARTICLES_PATH) : null;
@@ -91,10 +109,6 @@ async function main() {
     headlines: extracted.headlines,
     sections: extracted.sections,
     geopolitics: extracted.geopolitics,
-  });
-
-  const supabase = createClient(env.supabaseUrl, env.serviceRoleKey, {
-    auth: { persistSession: false },
   });
 
   // Images (optional; never block the report).
@@ -145,15 +159,48 @@ async function main() {
  * quotes (SK Hynix etc.). No-op when creds are absent or the focus ticker is
  * not a 6-digit KRX code. Never throws — accuracy is a bonus, not a blocker.
  */
-async function enrichFocusWithKis(extracted: { focus?: any }): Promise<void> {
-  const creds = kisCredsFromEnv();
+const KIS_TOKEN_KEY = "kis_token";
+
+/**
+ * Get a KIS token, reusing a still-valid one cached in Supabase (app_kv) so we
+ * issue at most once/day across separate CI runs. Falls back to a fresh issue
+ * if the cache is empty/expired or the app_kv table doesn't exist yet.
+ */
+async function getKisTokenCached(creds: KisCreds, supabase: SupabaseClient): Promise<string> {
+  try {
+    const { data } = await supabase
+      .from("app_kv")
+      .select("value")
+      .eq("key", KIS_TOKEN_KEY)
+      .maybeSingle();
+    const v = data?.value as { access_token?: string; expires_at?: string } | undefined;
+    if (v?.access_token && v.expires_at && new Date(v.expires_at).getTime() > Date.now() + 5 * 60_000) {
+      console.log(`[finalize] KIS token reused from cache (exp ${v.expires_at})`);
+      return v.access_token;
+    }
+  } catch (e) {
+    console.warn(`[finalize] KIS token cache unavailable (create app_kv table): ${(e as Error).message}`);
+  }
+  const { token, expiresIn } = await issueAccessToken(creds);
+  const expires_at = new Date(Date.now() + expiresIn * 1000).toISOString();
+  try {
+    await supabase
+      .from("app_kv")
+      .upsert({ key: KIS_TOKEN_KEY, value: { access_token: token, expires_at }, updated_at: new Date().toISOString() }, { onConflict: "key" });
+    console.log(`[finalize] KIS token issued & cached (exp ${expires_at})`);
+  } catch (e) {
+    console.warn(`[finalize] KIS token cache write failed: ${(e as Error).message}`);
+  }
+  return token;
+}
+
+async function enrichFocusWithKis(extracted: { focus?: any }, creds: KisCreds, token: string): Promise<void> {
   const focus = extracted.focus;
-  if (!creds || !focus) return;
+  if (!focus) return;
   const code = String(focus.ticker ?? "").match(/\d{6}/)?.[0];
   if (!code) return;
 
   try {
-    const token = await getAccessToken(creds);
     const [quote, daily] = await Promise.all([
       getDomesticQuote(creds, token, code),
       getDomesticDaily(creds, token, code, 10).catch(() => []),
@@ -184,18 +231,20 @@ function fmtKisDate(yyyymmdd: string): string {
  * Correct the movers' percent moves for US tickers using KIS overseas quotes.
  * Only touches structured movers[]; narrative text is left as authored.
  */
-async function enrichMoversWithKis(extracted: {
-  movers?: { gainers?: { ticker: string; pct: number }[]; losers?: { ticker: string; pct: number }[] };
-}): Promise<void> {
-  const creds = kisCredsFromEnv();
+async function enrichMoversWithKis(
+  extracted: {
+    movers?: { gainers?: { ticker: string; pct: number }[]; losers?: { ticker: string; pct: number }[] };
+  },
+  creds: KisCreds,
+  token: string,
+): Promise<void> {
   const movers = extracted.movers;
-  if (!creds || !movers) return;
+  if (!movers) return;
   const all = [...(movers.gainers ?? []), ...(movers.losers ?? [])];
   const us = all.filter((m) => /^[A-Z]{1,5}$/.test(m.ticker)); // US symbols only
   if (us.length === 0) return;
 
   try {
-    const token = await getAccessToken(creds);
     let ok = 0;
     for (const m of us) {
       try {
@@ -221,15 +270,17 @@ const KIS_INDEX_CODE: Record<string, string> = {
 };
 
 /** Overwrite US index values with authoritative KIS overseas-index quotes. */
-async function enrichIndicesWithKis(extracted: {
-  indices?: { name: string; symbol: string; value: number; change_pct: number; change_abs: number }[];
-}): Promise<void> {
-  const creds = kisCredsFromEnv();
+async function enrichIndicesWithKis(
+  extracted: {
+    indices?: { name: string; symbol: string; value: number; change_pct: number; change_abs: number }[];
+  },
+  creds: KisCreds,
+  token: string,
+): Promise<void> {
   const indices = extracted.indices;
-  if (!creds || !indices || indices.length === 0) return;
+  if (!indices || indices.length === 0) return;
 
   try {
-    const token = await getAccessToken(creds);
     let ok = 0;
     for (const idx of indices) {
       const code = KIS_INDEX_CODE[idx.symbol];
