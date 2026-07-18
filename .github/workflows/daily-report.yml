@@ -53,6 +53,8 @@ jobs:
           PIPELINE_OUT: ${{ github.workspace }}/reports
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          KIS_APP_KEY: ${{ secrets.KIS_APP_KEY }}
+          KIS_APP_SECRET: ${{ secrets.KIS_APP_SECRET }}
           AI_HEADER_ENABLED: ${{ vars.AI_HEADER_ENABLED }}
           IMAGE_API_URL: ${{ vars.IMAGE_API_URL }}
           IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}

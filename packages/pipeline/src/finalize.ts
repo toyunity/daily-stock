@@ -13,6 +13,12 @@ import { env, usEasternDate } from "./env";
 import { ARTICLES_PATH, QUOTES_PATH, REPORT_PATH, type ArticlesFile } from "./paths";
 import { renderReportCard } from "./render";
 import { generateAiHeader, renderMoodBanner } from "./header";
+import {
+  kisCredsFromEnv,
+  getAccessToken,
+  getDomesticQuote,
+  getDomesticDaily,
+} from "./kis";
 
 /**
  * Finalize stage (runs on GitHub Actions, open network). Takes the dispatch
@@ -33,6 +39,11 @@ async function main() {
 
   // Required: the agent-produced report.
   const extracted = LlmReportOutputSchema.parse(readJson(REPORT_PATH));
+
+  // Anchor the focus (Korean-listed) price to authoritative KIS data when
+  // credentials are present. The narrative stays as written; only the numbers
+  // are corrected. Best-effort — never blocks the report.
+  await enrichFocusWithKis(extracted);
 
   // Optional collect artifacts (present when collect ran first).
   const articles = existsSync(ARTICLES_PATH) ? readJson<ArticlesFile>(ARTICLES_PATH) : null;
@@ -123,6 +134,46 @@ async function main() {
 
   await fanOutUserReports(supabase, saved.id, reportDate, master);
   console.log(`[finalize] done in ${Date.now() - runStart}ms`);
+}
+
+/**
+ * Overwrite the focus block's price + recent series with authoritative KIS
+ * quotes (SK Hynix etc.). No-op when creds are absent or the focus ticker is
+ * not a 6-digit KRX code. Never throws — accuracy is a bonus, not a blocker.
+ */
+async function enrichFocusWithKis(extracted: { focus?: any }): Promise<void> {
+  const creds = kisCredsFromEnv();
+  const focus = extracted.focus;
+  if (!creds || !focus) return;
+  const code = String(focus.ticker ?? "").match(/\d{6}/)?.[0];
+  if (!code) return;
+
+  try {
+    const token = await getAccessToken(creds);
+    const [quote, daily] = await Promise.all([
+      getDomesticQuote(creds, token, code),
+      getDomesticDaily(creds, token, code, 10).catch(() => []),
+    ]);
+
+    const asOf = daily.length ? fmtKisDate(daily[daily.length - 1].date) : "";
+    focus.price = {
+      value: quote.price,
+      currency: "KRW",
+      change_pct: quote.changePct,
+      change_abs: quote.changeAbs,
+      as_of: asOf || focus.price?.as_of || "",
+    };
+    if (daily.length >= 2) {
+      focus.price_series = daily.map((c) => ({ label: fmtKisDate(c.date), value: c.close }));
+    }
+    console.log(`[finalize] KIS focus ${code}: ₩${quote.price.toLocaleString()} (${quote.changePct}%), ${daily.length} candles`);
+  } catch (e) {
+    console.warn(`[finalize] KIS enrichment skipped: ${(e as Error).message}`);
+  }
+}
+
+function fmtKisDate(yyyymmdd: string): string {
+  return yyyymmdd.length === 8 ? `${yyyymmdd.slice(4, 6)}/${yyyymmdd.slice(6, 8)}` : yyyymmdd;
 }
 
 async function fanOutUserReports(
