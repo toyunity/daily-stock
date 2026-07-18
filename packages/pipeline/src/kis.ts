@@ -97,6 +97,59 @@ export async function getDomesticQuote(creds: KisCreds, token: string, code: str
   };
 }
 
+export interface KisOverseasQuote {
+  symbol: string;
+  exchange: string; // NAS | NYS | AMS
+  price: number; // last (USD)
+  changeAbs: number;
+  changePct: number;
+}
+
+const US_EXCHANGES = ["NAS", "NYS", "AMS"] as const;
+
+/**
+ * Current price for a US ticker via KIS overseas quotes. KIS needs the exchange
+ * code, so try NASDAQ → NYSE → AMEX until one returns data.
+ */
+export async function getOverseasQuote(
+  creds: KisCreds,
+  token: string,
+  symbol: string,
+  exchanges: readonly string[] = US_EXCHANGES,
+): Promise<KisOverseasQuote> {
+  const domain = creds.domain || REAL_DOMAIN;
+  let lastErr: unknown = null;
+  for (const excd of exchanges) {
+    try {
+      const url =
+        `${domain}/uapi/overseas-price/v1/quotations/price` +
+        `?AUTH=&EXCD=${excd}&SYMB=${encodeURIComponent(symbol)}`;
+      const res = await fetch(url, { headers: headers(creds, token, "HHDFS00000300") });
+      if (!res.ok) {
+        lastErr = new Error(`KIS overseas ${symbol}@${excd} ${res.status}`);
+        continue;
+      }
+      const data = (await res.json()) as { output?: Record<string, string> };
+      const o = data.output;
+      const last = o ? Number(o.last) : NaN;
+      if (!o || !Number.isFinite(last) || last === 0) {
+        lastErr = new Error(`KIS overseas ${symbol}@${excd}: empty`);
+        continue;
+      }
+      // `rate`/`diff` may arrive signed or as magnitudes; sign: 4/5 = down.
+      const down = o.sign === "4" || o.sign === "5";
+      const rate = Number(o.rate);
+      const diff = Number(o.diff);
+      const signedRate = down ? -Math.abs(rate) : Math.abs(rate || 0);
+      const signedDiff = down ? -Math.abs(diff) : Math.abs(diff || 0);
+      return { symbol, exchange: excd, price: last, changeAbs: signedDiff, changePct: signedRate };
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error(`KIS overseas ${symbol}: not found`);
+}
+
 /** Recent daily closes (most-recent last), up to ~30 sessions. */
 export async function getDomesticDaily(
   creds: KisCreds,

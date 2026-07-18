@@ -18,6 +18,7 @@ import {
   getAccessToken,
   getDomesticQuote,
   getDomesticDaily,
+  getOverseasQuote,
 } from "./kis";
 
 /**
@@ -40,10 +41,11 @@ async function main() {
   // Required: the agent-produced report.
   const extracted = LlmReportOutputSchema.parse(readJson(REPORT_PATH));
 
-  // Anchor the focus (Korean-listed) price to authoritative KIS data when
-  // credentials are present. The narrative stays as written; only the numbers
-  // are corrected. Best-effort — never blocks the report.
+  // Anchor Korean (focus) + US (movers) numbers to authoritative KIS quotes
+  // when credentials are present. The narrative stays as written; only the
+  // structured numbers are corrected. Best-effort — never blocks the report.
   await enrichFocusWithKis(extracted);
+  await enrichMoversWithKis(extracted);
 
   // Optional collect artifacts (present when collect ran first).
   const articles = existsSync(ARTICLES_PATH) ? readJson<ArticlesFile>(ARTICLES_PATH) : null;
@@ -174,6 +176,38 @@ async function enrichFocusWithKis(extracted: { focus?: any }): Promise<void> {
 
 function fmtKisDate(yyyymmdd: string): string {
   return yyyymmdd.length === 8 ? `${yyyymmdd.slice(4, 6)}/${yyyymmdd.slice(6, 8)}` : yyyymmdd;
+}
+
+/**
+ * Correct the movers' percent moves for US tickers using KIS overseas quotes.
+ * Only touches structured movers[]; narrative text is left as authored.
+ */
+async function enrichMoversWithKis(extracted: {
+  movers?: { gainers?: { ticker: string; pct: number }[]; losers?: { ticker: string; pct: number }[] };
+}): Promise<void> {
+  const creds = kisCredsFromEnv();
+  const movers = extracted.movers;
+  if (!creds || !movers) return;
+  const all = [...(movers.gainers ?? []), ...(movers.losers ?? [])];
+  const us = all.filter((m) => /^[A-Z]{1,5}$/.test(m.ticker)); // US symbols only
+  if (us.length === 0) return;
+
+  try {
+    const token = await getAccessToken(creds);
+    let ok = 0;
+    for (const m of us) {
+      try {
+        const q = await getOverseasQuote(creds, token, m.ticker);
+        m.pct = q.changePct;
+        ok++;
+      } catch (e) {
+        console.warn(`[finalize] KIS mover ${m.ticker} skipped: ${(e as Error).message}`);
+      }
+    }
+    console.log(`[finalize] KIS movers: ${ok}/${us.length} US tickers anchored`);
+  } catch (e) {
+    console.warn(`[finalize] KIS movers enrichment skipped: ${(e as Error).message}`);
+  }
 }
 
 async function fanOutUserReports(
