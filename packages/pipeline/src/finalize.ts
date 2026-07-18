@@ -167,29 +167,28 @@ const KIS_TOKEN_KEY = "kis_token";
  * if the cache is empty/expired or the app_kv table doesn't exist yet.
  */
 async function getKisTokenCached(creds: KisCreds, supabase: SupabaseClient): Promise<string> {
-  try {
-    const { data } = await supabase
-      .from("app_kv")
-      .select("value")
-      .eq("key", KIS_TOKEN_KEY)
-      .maybeSingle();
-    const v = data?.value as { access_token?: string; expires_at?: string } | undefined;
+  // supabase-js returns { data, error } rather than throwing on DB errors, so we
+  // must inspect `error` explicitly — otherwise a failed write reads as success.
+  const read = await supabase.from("app_kv").select("value").eq("key", KIS_TOKEN_KEY).maybeSingle();
+  if (read.error) {
+    console.warn(`[finalize] KIS token cache READ error (${read.error.message}) — app_kv missing?`);
+  } else {
+    const v = read.data?.value as { access_token?: string; expires_at?: string } | undefined;
     if (v?.access_token && v.expires_at && new Date(v.expires_at).getTime() > Date.now() + 5 * 60_000) {
       console.log(`[finalize] KIS token reused from cache (exp ${v.expires_at})`);
       return v.access_token;
     }
-  } catch (e) {
-    console.warn(`[finalize] KIS token cache unavailable (create app_kv table): ${(e as Error).message}`);
   }
+
   const { token, expiresIn } = await issueAccessToken(creds);
   const expires_at = new Date(Date.now() + expiresIn * 1000).toISOString();
-  try {
-    await supabase
-      .from("app_kv")
-      .upsert({ key: KIS_TOKEN_KEY, value: { access_token: token, expires_at }, updated_at: new Date().toISOString() }, { onConflict: "key" });
+  const write = await supabase
+    .from("app_kv")
+    .upsert({ key: KIS_TOKEN_KEY, value: { access_token: token, expires_at }, updated_at: new Date().toISOString() }, { onConflict: "key" });
+  if (write.error) {
+    console.warn(`[finalize] KIS token cache WRITE FAILED (${write.error.message}) — will re-issue every run until app_kv exists & is writable`);
+  } else {
     console.log(`[finalize] KIS token issued & cached (exp ${expires_at})`);
-  } catch (e) {
-    console.warn(`[finalize] KIS token cache write failed: ${(e as Error).message}`);
   }
   return token;
 }
