@@ -85,11 +85,15 @@ export async function getDomesticQuote(creds: KisCreds, token: string, code: str
   const data = (await res.json()) as { output?: Record<string, string> };
   const o = data.output;
   if (!o || o.stck_prpr == null) throw new Error(`KIS price ${code}: empty output`);
+  // prdy_vrss_sign: 1 상한 / 2 상승 / 3 보합 / 4 하한 / 5 하락. prdy_vrss and
+  // prdy_ctrt come back as magnitudes, so apply the sign ourselves.
+  const down = o.prdy_vrss_sign === "4" || o.prdy_vrss_sign === "5";
+  const sign = down ? -1 : 1;
   return {
     code,
     price: Number(o.stck_prpr),
-    changeAbs: Number(o.prdy_vrss) * (o.prdy_vrss_sign === "4" || o.prdy_vrss_sign === "5" ? -1 : 1),
-    changePct: Number(o.prdy_ctrt),
+    changeAbs: Math.abs(Number(o.prdy_vrss)) * sign,
+    changePct: Math.abs(Number(o.prdy_ctrt)) * sign,
   };
 }
 
