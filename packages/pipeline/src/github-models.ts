@@ -17,8 +17,9 @@ export async function chatJson(
   user: string,
   maxTokens = 8000,
 ): Promise<string> {
-  const endpoint = (cfg.endpoint ?? "https://models.github.ai/inference").replace(/\/+$/, "");
-  const model = cfg.model ?? "openai/gpt-4o";
+  // Use || (not ??): unset workflow `vars` arrive as "" which ?? would keep.
+  const endpoint = (cfg.endpoint || "https://models.github.ai/inference").replace(/\/+$/, "");
+  const model = cfg.model || "openai/gpt-4o";
   const url = `${endpoint}/chat/completions`;
 
   const res = await fetch(url, {
