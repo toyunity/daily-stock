@@ -4,8 +4,12 @@ name: daily-report
 #   1) generate.ts  — free market data (stooq) + real news (Google News RSS)
 #                     turned into report.json by GitHub Models (gpt-4o) via the
 #                     built-in GITHUB_TOKEN (permissions: models: read).
-#   2) finalize.ts  — fetch quotes, render images, upsert Supabase.
-#   3) commit reports/report.json as an audit trail ([skip ci] — no re-trigger).
+#   2) finalize.ts  — KIS-anchor quotes, render images, upsert Supabase.
+#
+# This is the *baseline* (unattended, guaranteed). The Claude self-bind routine
+# fires ~15 min later and, when the session is warm, republishes a premium
+# report that overwrites this day's row. It does NOT commit report.json, so the
+# Claude-authored file in git is never clobbered.
 #
 # Runs on Actions' open network with the repo checked out, so it does not suffer
 # the scheduled-container "no repo cloned" failure the Max-dispatch path hit.
@@ -19,7 +23,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
   models: read
 
 jobs:
@@ -58,15 +62,3 @@ jobs:
           AI_HEADER_ENABLED: ${{ vars.AI_HEADER_ENABLED }}
           IMAGE_API_URL: ${{ vars.IMAGE_API_URL }}
           IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
-
-      - name: Commit report.json (audit trail)
-        run: |
-          if ! git diff --quiet -- reports/report.json; then
-            git config user.name "daily-report-bot"
-            git config user.email "actions@users.noreply.github.com"
-            git add reports/report.json
-            git commit -m "chore(report): $(date -u +%Y-%m-%d) daily report [skip ci]"
-            git push
-          else
-            echo "report.json unchanged; nothing to commit"
-          fi
