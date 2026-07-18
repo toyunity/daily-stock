@@ -216,8 +216,8 @@ async function enrichMoversWithKis(extracted: {
 const KIS_INDEX_CODE: Record<string, string> = {
   "^GSPC": "SPX",
   "^IXIC": "COMP",
-  "^DJI": "DJI",
-  "^VIX": "VIX",
+  "^DJI": ".DJI",
+  "^VIX": ".VIX",
 };
 
 /** Overwrite US index values with authoritative KIS overseas-index quotes. */
