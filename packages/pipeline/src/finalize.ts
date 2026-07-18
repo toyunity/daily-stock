@@ -19,6 +19,7 @@ import {
   getDomesticQuote,
   getDomesticDaily,
   getOverseasQuote,
+  getOverseasIndex,
 } from "./kis";
 
 /**
@@ -46,6 +47,7 @@ async function main() {
   // structured numbers are corrected. Best-effort — never blocks the report.
   await enrichFocusWithKis(extracted);
   await enrichMoversWithKis(extracted);
+  await enrichIndicesWithKis(extracted);
 
   // Optional collect artifacts (present when collect ran first).
   const articles = existsSync(ARTICLES_PATH) ? readJson<ArticlesFile>(ARTICLES_PATH) : null;
@@ -207,6 +209,44 @@ async function enrichMoversWithKis(extracted: {
     console.log(`[finalize] KIS movers: ${ok}/${us.length} US tickers anchored`);
   } catch (e) {
     console.warn(`[finalize] KIS movers enrichment skipped: ${(e as Error).message}`);
+  }
+}
+
+/** KIS overseas-index code for a report index symbol/name, or null. */
+const KIS_INDEX_CODE: Record<string, string> = {
+  "^GSPC": "SPX",
+  "^IXIC": "COMP",
+  "^DJI": "DJI",
+  "^VIX": "VIX",
+};
+
+/** Overwrite US index values with authoritative KIS overseas-index quotes. */
+async function enrichIndicesWithKis(extracted: {
+  indices?: { name: string; symbol: string; value: number; change_pct: number; change_abs: number }[];
+}): Promise<void> {
+  const creds = kisCredsFromEnv();
+  const indices = extracted.indices;
+  if (!creds || !indices || indices.length === 0) return;
+
+  try {
+    const token = await getAccessToken(creds);
+    let ok = 0;
+    for (const idx of indices) {
+      const code = KIS_INDEX_CODE[idx.symbol];
+      if (!code) continue;
+      try {
+        const q = await getOverseasIndex(creds, token, code);
+        idx.value = q.value;
+        idx.change_abs = q.changeAbs;
+        idx.change_pct = q.changePct;
+        ok++;
+      } catch (e) {
+        console.warn(`[finalize] KIS index ${idx.symbol}→${code} skipped: ${(e as Error).message}`);
+      }
+    }
+    console.log(`[finalize] KIS indices: ${ok} anchored`);
+  } catch (e) {
+    console.warn(`[finalize] KIS indices enrichment skipped: ${(e as Error).message}`);
   }
 }
 

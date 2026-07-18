@@ -150,6 +150,68 @@ export async function getOverseasQuote(
   throw lastErr instanceof Error ? lastErr : new Error(`KIS overseas ${symbol}: not found`);
 }
 
+export interface KisIndex {
+  code: string;
+  value: number;
+  changeAbs: number;
+  changePct: number;
+}
+
+function ymd(d: Date): string {
+  return `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, "0")}${String(d.getUTCDate()).padStart(2, "0")}`;
+}
+function round2(n: number): number {
+  return Math.round(n * 100) / 100;
+}
+
+/**
+ * US index quote via KIS overseas index chart (tr_id FHKST03030100, market "N").
+ * Codes: SPX (S&P 500), COMP (Nasdaq Composite), DJI (Dow), VIX. Parses the
+ * current fields when present, else derives last/prev from the daily series.
+ * Throws with the observed output keys so wrong codes/fields are diagnosable.
+ */
+export async function getOverseasIndex(creds: KisCreds, token: string, code: string): Promise<KisIndex> {
+  const domain = creds.domain || REAL_DOMAIN;
+  const now = Date.now();
+  const url =
+    `${domain}/uapi/overseas-price/v1/quotations/inquire-daily-chartprice` +
+    `?FID_COND_MRKT_DIV_CODE=N&FID_INPUT_ISCD=${encodeURIComponent(code)}` +
+    `&FID_INPUT_DATE_1=${ymd(new Date(now - 25 * 864e5))}&FID_INPUT_DATE_2=${ymd(new Date(now))}` +
+    `&FID_PERIOD_DIV_CODE=D`;
+  const res = await fetch(url, { headers: headers(creds, token, "FHKST03030100") });
+  if (!res.ok) throw new Error(`KIS index ${code} ${res.status}: ${(await res.text()).slice(0, 160)}`);
+  const data = (await res.json()) as {
+    output1?: Record<string, string>;
+    output2?: Record<string, string>[];
+  };
+
+  const n = (v: unknown) => Number(v);
+  const o1 = data.output1;
+  const cur = o1 ? n(o1.ovrs_nmix_prpr) : NaN;
+  if (o1 && Number.isFinite(cur) && cur !== 0) {
+    const down = o1.prdy_vrss_sign === "4" || o1.prdy_vrss_sign === "5";
+    const abs = Math.abs(n(o1.ovrs_nmix_prdy_vrss)) * (down ? -1 : 1);
+    const pct = Math.abs(n(o1.prdy_ctrt)) * (down ? -1 : 1);
+    if (Number.isFinite(abs) && Number.isFinite(pct)) {
+      return { code, value: cur, changeAbs: round2(abs), changePct: round2(pct) };
+    }
+  }
+
+  // Fallback: derive from the daily series (output2, newest-first).
+  const closes = (data.output2 ?? [])
+    .map((r) => n(r.ovrs_nmix_prpr))
+    .filter((x) => Number.isFinite(x) && x !== 0);
+  if (closes.length >= 2) {
+    const [last, prev] = [closes[0], closes[1]];
+    const abs = last - prev;
+    return { code, value: last, changeAbs: round2(abs), changePct: round2(prev ? (abs / prev) * 100 : 0) };
+  }
+
+  throw new Error(
+    `KIS index ${code}: unparseable (o1 keys=${Object.keys(o1 ?? {}).slice(0, 10).join(",")}; o2 keys=${Object.keys(data.output2?.[0] ?? {}).slice(0, 10).join(",")})`,
+  );
+}
+
 /** Recent daily closes (most-recent last), up to ~30 sessions. */
 export async function getDomesticDaily(
   creds: KisCreds,
