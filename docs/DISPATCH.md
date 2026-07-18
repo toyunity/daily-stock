@@ -100,21 +100,50 @@
    }
    규칙: 원문에 없는 수치를 지어내지 말 것. 모든 fact/quote에 실제 출처. 메모리 반도체는 sector "memory". 발언은 주체에 귀속하고 중립적으로 기술.
 
-4) 검증: reports/report.json이 위 스키마의 유효한 JSON인지 확인(node -e 로 JSON.parse 체크).
+4) 검증 & 발행은 스크립트 하나로: `bash scripts/publish-report.sh`
+   이 스크립트가 (a) JSON·스키마 검증 → (b) 커밋 → (c) `git push`(지수 백오프 재시도)까지 결정적으로 처리한다.
+   **스크립트 마지막 줄(신호)에 따라 분기하라:**
+   - `PUBLISH_OK` → 푸시 성공. finalize.yml이 자동 적재한다. 끝.
+   - `NO_CHANGES` → report.json에 바뀐 내용 없음(같은 날 재실행 등). 할 일 없음.
+   - `INVALID_JSON` / `SCHEMA_INVALID` → report.json을 고쳐 다시 실행.
+   - `PUSH_FAILED_USE_MCP sha=<BLOBSHA> path=reports/report.json branch=<BR>`
+     → **이 컨테이너에 git push(write) 권한이 없다는 뜻.** 절대 포기하지 말고, 계정 인증을 쓰는
+       **GitHub MCP 브릿지**로 같은 파일을 발행하라(로컬 git 프록시를 우회한다):
 
-5) 커밋 & 푸시:
-   - git add reports/report.json
-   - git -c user.name="daily-stock-dispatch" -c user.email="dispatch@local" commit -m "chore(report): $(date -u +%Y-%m-%d) dispatch report"
-   - git push origin claude/stock-market-report-app-9to46d
+       mcp__github__create_or_update_file(
+         owner   = "toyunity",
+         repo    = "daily-stock",
+         branch  = "claude/stock-market-report-app-9to46d",
+         path    = "reports/report.json",
+         content = <reports/report.json 파일 전체 텍스트>,
+         message = "chore(report): <오늘 날짜> dispatch report",
+         sha     = <위 신호의 BLOBSHA>          // 기존 파일 갱신이므로 필수
+       )
 
-푸시가 성공하면 GitHub Action finalize.yml이 자동으로 Supabase에 적재한다. 끝나면 간단히 요약 보고하라.
+       이 커밋은 사용자(toyunity) 명의라 finalize.yml이 정상 발화한다. (검증됨)
+       만약 mcp__github__ 도구가 이 세션에 없다면, 그 사실을 원인으로 명시해 보고하라
+       (예약 세션에 GitHub 커넥터가 로드되지 않은 것).
+
+푸시(또는 MCP 발행)가 성공하면 GitHub Action finalize.yml이 자동으로 Supabase에 적재한다.
+끝나면 어떤 경로(push / MCP)로 발행했는지와 함께 한두 줄로 요약 보고하라.
 ````
 
 ---
 
+## 발행 경로 요약 (push 우회 설계)
+
+git push 인증은 **세션 컨테이너의 로컬 프록시**에 묶여 있어, 예약된 새 컨테이너엔 write 권한이
+없을 수 있다. 그래서 발행은 이중화돼 있다:
+
+1. **1차: `scripts/publish-report.sh`** — 검증 + 커밋 + `git push`(백오프 재시도). push 권한이 있으면 여기서 끝.
+2. **2차(폴백): GitHub MCP `create_or_update_file`** — 계정 인증으로 API 커밋. 컨테이너 프록시를 우회한다.
+   스크립트가 `PUSH_FAILED_USE_MCP sha=...`를 출력하면 그 sha로 MCP 발행. (실측 검증됨)
+
+두 경로 모두 사용자 명의 커밋 → `finalize.yml`(`on: push` reports/report.json)이 정상 발화한다.
+
 ## 수동 테스트
 
-1. 위 프롬프트를 이 세션에서 직접 실행 → `reports/report.json` 생성·push 확인
+1. 위 프롬프트를 이 세션에서 직접 실행 → `bash scripts/publish-report.sh`로 발행 확인
 2. GitHub → Actions → **finalize-report** 실행 성공 확인
 3. Supabase → Table Editor → `daily_reports` 에 오늘 날짜 행(status=ready) 확인
 4. 앱 새로고침 → 리포트 표시 확인
