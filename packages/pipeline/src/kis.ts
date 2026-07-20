@@ -267,6 +267,18 @@ export async function getOverseasIndex(creds: KisCreds, token: string, code: str
   );
 }
 
+/** Parse daily candles. KIS returns newest-first; we emit oldest-first. */
+export function parseDomesticDaily(
+  rows: Record<string, string>[] | undefined,
+  limit: number,
+): KisCandle[] {
+  const candles: KisCandle[] = (rows ?? [])
+    .filter((r) => r.stck_bsop_date && r.stck_clpr)
+    .map((r) => ({ date: r.stck_bsop_date, close: Number(r.stck_clpr) }));
+  candles.reverse();
+  return candles.slice(-limit);
+}
+
 /** Recent daily closes (most-recent last), up to ~30 sessions. */
 export async function getDomesticDaily(
   creds: KisCreds,
@@ -283,11 +295,5 @@ export async function getDomesticDaily(
   if (!res.ok) throw new Error(`KIS daily ${code} ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const data = (await res.json()) as { output?: Record<string, string>[] };
   await dumpResponse(url, `domestic-daily-${code}`, data);
-  const rows = data.output ?? [];
-  const candles: KisCandle[] = rows
-    .filter((r) => r.stck_bsop_date && r.stck_clpr)
-    .map((r) => ({ date: r.stck_bsop_date, close: Number(r.stck_clpr) }));
-  // API returns newest-first; return oldest-first, trimmed to `limit`.
-  candles.reverse();
-  return candles.slice(-limit);
+  return parseDomesticDaily(data.output, limit);
 }

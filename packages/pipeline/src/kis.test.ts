@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { shouldDumpResponse, parseDomesticQuote } from "./kis";
+import { shouldDumpResponse, parseDomesticQuote, parseDomesticDaily } from "./kis";
 
 describe("shouldDumpResponse", () => {
   it("토큰 발급 응답은 덤프하지 않는다 — access_token이 들어 있다", () => {
@@ -47,5 +47,33 @@ describe("parseDomesticQuote", () => {
 
   it("output이 비면 code를 담아 throw한다", () => {
     expect(() => parseDomesticQuote(undefined, "000660")).toThrow("000660");
+  });
+});
+
+describe("parseDomesticDaily", () => {
+  // KIS returns newest-first.
+  const rows = [
+    { stck_bsop_date: "20260716", stck_clpr: "1842000" },
+    { stck_bsop_date: "20260715", stck_clpr: "2082000" },
+    { stck_bsop_date: "20260714", stck_clpr: "1959000" },
+  ];
+
+  it("newest-first를 oldest-first로 뒤집는다", () => {
+    const c = parseDomesticDaily(rows, 10);
+    expect(c.map((x) => x.date)).toEqual(["20260714", "20260715", "20260716"]);
+  });
+
+  it("limit을 적용하되 최신 쪽을 남긴다", () => {
+    const c = parseDomesticDaily(rows, 2);
+    expect(c.map((x) => x.date)).toEqual(["20260715", "20260716"]);
+  });
+
+  it("종가나 날짜가 없는 행은 버린다", () => {
+    const c = parseDomesticDaily([...rows, { stck_bsop_date: "20260717", stck_clpr: "" }], 10);
+    expect(c).toHaveLength(3);
+  });
+
+  it("rows가 undefined면 빈 배열을 준다", () => {
+    expect(parseDomesticDaily(undefined, 10)).toEqual([]);
   });
 });
