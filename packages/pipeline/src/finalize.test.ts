@@ -41,11 +41,15 @@ function fakeSupabase(opts: {
 }
 
 describe("getKisTokenCached", () => {
+  let warnSpy: ReturnType<typeof vi.spyOn>;
+
   beforeEach(() => {
     vi.clearAllMocks();
     mocked.issueAccessToken.mockResolvedValue({ token: "FRESH", expiresIn: 86400 });
     vi.spyOn(console, "log").mockImplementation(() => {});
-    vi.spyOn(console, "warn").mockImplementation(() => {});
+    // Keep a handle on the spy (instead of discarding it) so tests can assert
+    // that a warning was actually emitted, not just that it was silenced.
+    warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
   });
   afterEach(() => vi.restoreAllMocks());
 
@@ -77,13 +81,30 @@ describe("getKisTokenCached", () => {
     expect(mocked.issueAccessToken).toHaveBeenCalledOnce();
   });
 
-  it("캐시 읽기가 실패하면 재발급한다", async () => {
-    const sb = fakeSupabase({ readError: { message: "relation does not exist" } });
-    expect(await getKisTokenCached(CREDS, sb as never)).toBe("FRESH");
+  it("캐시 읽기가 실패하면 유효한 캐시가 있어도 무시하고 재발급한다", async () => {
+    // A valid, non-expired cached token sits behind the read error. If the
+    // error branch were skipped, this cached token would be returned — so
+    // asserting we get the freshly-issued token instead actually proves the
+    // read error was detected (not just that it was non-fatal).
+    const sb = fakeSupabase({
+      readData: {
+        value: {
+          access_token: "CACHED",
+          expires_at: new Date(Date.now() + 3600_000).toISOString(),
+        },
+      },
+      readError: { message: "relation does not exist" },
+    });
+    const token = await getKisTokenCached(CREDS, sb as never);
+    expect(token).toBe("FRESH");
+    expect(mocked.issueAccessToken).toHaveBeenCalledOnce();
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("READ error"));
   });
 
-  it("캐시 쓰기가 실패해도 토큰은 반환한다", async () => {
+  it("캐시 쓰기가 실패해도 토큰은 반환하고 경고를 남긴다", async () => {
     const sb = fakeSupabase({ writeError: { message: "permission denied" } });
-    expect(await getKisTokenCached(CREDS, sb as never)).toBe("FRESH");
+    const token = await getKisTokenCached(CREDS, sb as never);
+    expect(token).toBe("FRESH");
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("WRITE FAILED"));
   });
 });
