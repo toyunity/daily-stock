@@ -37,7 +37,7 @@ packages/shared/         리포트 zod 스키마 · 소스 어댑터 · Claude L
 packages/pipeline/       매일 실행되는 수집·정제·생성 Node 파이프라인
 supabase/migrations/     스키마 + RLS + 트리거
 supabase/functions/      personalize (Deno Edge Function)
-.github/workflows/       daily-report.yml (cron)
+.github/workflows/       finalize.yml (reports/report.json push 시 발화)
 DEVELOPMENT_PROMPT.md    전체 설계 명세
 ```
 
@@ -85,7 +85,10 @@ VITE_SUPABASE_ANON_KEY=...
 SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ANTHROPIC_API_KEY
 FINNHUB_API_KEY (선택), ALPHAVANTAGE_API_KEY (선택)
 ```
-`Actions → daily-report → Run workflow`로 수동 실행해 스모크 테스트. 이후 매일 21:15 UTC 자동 실행.
+리포트 발행은 Claude Routine이 매일 05:50 KST에 `reports/report.json`을 push하면
+`finalize.yml`이 자동으로 KIS 시세 앵커링 + 이미지 + Supabase 적재를 처리한다.
+수동 스모크 테스트는 `Actions → finalize-report → Run workflow` (현재 report.json으로 재적재).
+자세한 내용은 `docs/HANDOFF.md` §5 참고.
 
 ---
 

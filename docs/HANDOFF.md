@@ -36,8 +36,7 @@ Claude 세션(WebSearch 리서치·분석)
 - `packages/shared/src/schema.ts` — 정본 zod 스키마. `LlmReportOutputSchema` = `{ headline_summary, indices?, macro?, movers?, sector_perf?, focus?, headlines, sections, geopolitics? }`. 필수: headline_summary·headlines·sections, 각 fact는 `sources`(min1, url 유효), `focus.price.value`(number).
 - `packages/pipeline/src/finalize.ts` — report.json → **KIS 앵커링 + Supabase 적재**. 순서: report 파싱 → KIS 토큰(캐시) → focus/movers/indices 보정 → daily_reports upsert → user_reports fan-out.
 - `packages/pipeline/src/kis.ts` — KIS(한국투자증권) 클라이언트: `issueAccessToken`(발급), 국내 현재가(`FHKST01010100`)·일별(`FHKST01010400`), 해외 현재가(`HHDFS00000300`, NAS→NYS→AMS), 해외지수(`FHKST03030100`, SPX/COMP/.DJI).
-- `packages/pipeline/src/generate.ts` — **gpt-4o 베이스라인(무료, 수동 전용)**. 무료 데이터(stooq/Google News RSS) + GitHub Models. `repairForSchema()`로 불완전 출력 보정.
-- `packages/pipeline/src/github-models.ts` — GitHub Models 호출(무료, GITHUB_TOKEN).
+- ~~`generate.ts` / `github-models.ts`~~ — **2026-07-20 삭제됨**. gpt-4o 베이스라인 폐기(§9).
 - `apps/web/src/styles/report.css`, `components/ReportView.tsx`, `FocusSection.tsx`, `GeopoliticsSection.tsx` — variant B 라이트 브로드시트 디자인(하이닉스 심층분석·지정학).
 - `docs/DISPATCH.md` — 리포트 스키마 상세.
 
@@ -62,7 +61,7 @@ Claude 세션(WebSearch 리서치·분석)
 - ✅ **정답 = `RemoteTrigger` 툴로 직접 create** (`/schedule` 스킬이 이 툴을 로드해준다).
   `session_context.sources: [{git_repository:{url}}]` 를 넣으면 예약 세션이 레포를 갖고 뜬다.
   ~~claude.ai/code/routines UI에서만 가능~~ ← **이전 결론은 틀렸다.**
-- **gpt-4o `daily-report.yml`** = cron 제거, **수동 break-glass 전용**.
+- **gpt-4o `daily-report.yml`** = **2026-07-20 삭제됨**(§9). 리포트 생성 경로는 Claude 루틴 하나뿐이다.
 
 ### 운영 중인 루틴
 
@@ -131,8 +130,37 @@ success → `master report ready` + `fanned out to 1 users`.
 | KIS 시세 정확화(하이닉스·미국종목·지수3) | ✅ |
 | KIS 토큰 캐싱(하루 1회, app_kv) | ✅ |
 | Supabase 적재·개인화·프론트 표시 | ✅ |
-| gpt-4o 베이스라인 | ⚠️ 수동 전용(보정 패스 적용, cron 제거) |
+| gpt-4o 베이스라인 | 🗑️ 삭제됨(2026-07-20) — 성공 이력 0회, §9 |
 | Claude 매일 무인 자동 | ✅ **완성** — 루틴 `trig_01UPrD29cUaEAUVpb3VZMMMs`, end-to-end 검증됨 |
 | 클라우드 세션 git push | ✅ 검증됨(커밋 `f444cfb`) |
 | 한국장(코스피·코스닥) 커버리지 | ✅ 리포트 포함 — 단 KIS 앵커링 대상 아님(§6) |
 | 코스피·VIX 시세 앵커링 | ❌ 미구현 — 리서치값 그대로 |
+
+---
+
+## 9) gpt-4o 베이스라인 폐기 (2026-07-20)
+
+**삭제한 것:** `.github/workflows/daily-report.yml`, `packages/pipeline/src/generate.ts`,
+`packages/pipeline/src/github-models.ts`, pipeline package.json의 `"generate"` 스크립트.
+
+**폐기 사유.** 이 워크플로는 **19번의 전체 run 중 2번 실행돼 2번 다 실패, 성공 이력이 0회**다
+(`SCHEMA_INVALID` — gpt-4o가 `focus.price`를 누락하고 `indices`를 빈 배열로 반환).
+`repairForSchema()`가 이를 메우려고 `e2bf2b4`에서 추가됐지만 **두 실패 모두 그 커밋보다 앞서서
+수정 코드는 한 번도 실행된 적이 없다.** 즉 "한 번도 작동을 확인하지 못한 백업"이었고,
+그 사이 Claude 루틴(§5)이 end-to-end로 검증되면서 존재 이유가 사라졌다.
+
+**대체 가능 검증 (삭제 전 확인함).**
+
+| daily-report.yml이 하던 일 | 대체 경로 |
+|---|---|
+| report.json 생성 | Claude 루틴 `trig_01UPrD29cUaEAUVpb3VZMMMs` — 검증 완료 |
+| finalize 직접 실행 | `finalize.yml`에 **`workflow_dispatch: {}`가 이미 있음** → 수동 재적재 가능 |
+
+의존성은 완전히 격리돼 있었다: `github-models.ts`는 `generate.ts`만 import했고, 둘 다
+`daily-report.yml`과 package.json 스크립트에서만 참조됐다. `GITHUB_MODELS_*` 변수도 이 둘 전용.
+삭제 후 **pipeline·shared typecheck 모두 exit 0, `validate` = SCHEMA_OK**로 실측 확인.
+
+**유일하게 잃은 것:** Claude 없이 report.json을 새로 생성하는 능력. 사용자가 불필요하다고 판단함.
+되살리려면 이 커밋을 revert하면 된다.
+
+**남는 GitHub Actions는 `finalize.yml` 하나뿐이다** (push 시 발화 + 수동 dispatch).
