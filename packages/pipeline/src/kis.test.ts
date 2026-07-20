@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { shouldDumpResponse, parseDomesticQuote, parseDomesticDaily, parseOverseasQuote } from "./kis";
+import {
+  shouldDumpResponse,
+  parseDomesticQuote,
+  parseDomesticDaily,
+  parseOverseasQuote,
+  parseOverseasIndex,
+} from "./kis";
 
 describe("shouldDumpResponse", () => {
   it("토큰 발급 응답은 덤프하지 않는다 — access_token이 들어 있다", () => {
@@ -103,5 +109,56 @@ describe("parseOverseasQuote", () => {
 
   it("last가 숫자가 아니면 null", () => {
     expect(parseOverseasQuote({ last: "" }, "MU", "NAS")).toBeNull();
+  });
+});
+
+describe("parseOverseasIndex", () => {
+  it("output1이 정상이면 그것을 쓴다", () => {
+    const i = parseOverseasIndex(
+      {
+        output1: {
+          ovrs_nmix_prpr: "7457.69",
+          ovrs_nmix_prdy_vrss: "76.1",
+          prdy_ctrt: "1.01",
+          prdy_vrss_sign: "5",
+        },
+      },
+      "SPX",
+    );
+    expect(i.value).toBe(7457.69);
+    expect(i.changeAbs).toBe(-76.1);
+    expect(i.changePct).toBe(-1.01);
+  });
+
+  it("output1이 비면 output2에서 파생한다 — newest-first 가정", () => {
+    const i = parseOverseasIndex(
+      { output2: [{ ovrs_nmix_prpr: "110" }, { ovrs_nmix_prpr: "100" }] },
+      "SPX",
+    );
+    expect(i.value).toBe(110);
+    expect(i.changeAbs).toBe(10);
+    expect(i.changePct).toBe(10);
+  });
+
+  it("output1의 현재가가 0이면 output2로 넘어간다", () => {
+    const i = parseOverseasIndex(
+      {
+        output1: { ovrs_nmix_prpr: "0" },
+        output2: [{ ovrs_nmix_prpr: "110" }, { ovrs_nmix_prpr: "100" }],
+      },
+      "SPX",
+    );
+    expect(i.value).toBe(110);
+  });
+
+  it("둘 다 못 쓰면 진단용 키 목록을 담아 throw한다", () => {
+    // .VIX의 실제 실패 형태: output1은 오지만 값이 비어 있고 output2가 없다.
+    expect(() =>
+      parseOverseasIndex({ output1: { acml_vol: "0", ovrs_nmix_prpr: "" }, output2: [] }, ".VIX"),
+    ).toThrow(/\.VIX.*acml_vol/s);
+  });
+
+  it("output2가 1개뿐이면 등락을 계산할 수 없어 throw한다", () => {
+    expect(() => parseOverseasIndex({ output2: [{ ovrs_nmix_prpr: "110" }] }, "SPX")).toThrow();
   });
 });

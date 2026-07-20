@@ -237,6 +237,42 @@ function round2(n: number): number {
 }
 
 /**
+ * Parse a US index payload. Prefers output1's current fields; falls back to
+ * deriving last/prev from the daily series in output2 (newest-first). Throws
+ * with the observed keys so a wrong code or renamed field is diagnosable —
+ * that error is how the .VIX gap was identified.
+ */
+export function parseOverseasIndex(
+  data: { output1?: Record<string, string>; output2?: Record<string, string>[] },
+  code: string,
+): KisIndex {
+  const n = (v: unknown) => Number(v);
+  const o1 = data.output1;
+  const cur = o1 ? n(o1.ovrs_nmix_prpr) : NaN;
+  if (o1 && Number.isFinite(cur) && cur !== 0) {
+    const down = o1.prdy_vrss_sign === "4" || o1.prdy_vrss_sign === "5";
+    const abs = Math.abs(n(o1.ovrs_nmix_prdy_vrss)) * (down ? -1 : 1);
+    const pct = Math.abs(n(o1.prdy_ctrt)) * (down ? -1 : 1);
+    if (Number.isFinite(abs) && Number.isFinite(pct)) {
+      return { code, value: cur, changeAbs: round2(abs), changePct: round2(pct) };
+    }
+  }
+
+  const closes = (data.output2 ?? [])
+    .map((r) => n(r.ovrs_nmix_prpr))
+    .filter((x) => Number.isFinite(x) && x !== 0);
+  if (closes.length >= 2) {
+    const [last, prev] = [closes[0], closes[1]];
+    const abs = last - prev;
+    return { code, value: last, changeAbs: round2(abs), changePct: round2(prev ? (abs / prev) * 100 : 0) };
+  }
+
+  throw new Error(
+    `KIS index ${code}: unparseable (o1 keys=${Object.keys(o1 ?? {}).slice(0, 10).join(",")}; o2 keys=${Object.keys(data.output2?.[0] ?? {}).slice(0, 10).join(",")})`,
+  );
+}
+
+/**
  * US index quote via KIS overseas index chart (tr_id FHKST03030100, market "N").
  * Codes: SPX (S&P 500), COMP (Nasdaq Composite), DJI (Dow), VIX. Parses the
  * current fields when present, else derives last/prev from the daily series.
@@ -257,32 +293,7 @@ export async function getOverseasIndex(creds: KisCreds, token: string, code: str
     output2?: Record<string, string>[];
   };
   await dumpResponse(url, `overseas-index-${code.replace(/^\./, "dot-")}`, data);
-
-  const n = (v: unknown) => Number(v);
-  const o1 = data.output1;
-  const cur = o1 ? n(o1.ovrs_nmix_prpr) : NaN;
-  if (o1 && Number.isFinite(cur) && cur !== 0) {
-    const down = o1.prdy_vrss_sign === "4" || o1.prdy_vrss_sign === "5";
-    const abs = Math.abs(n(o1.ovrs_nmix_prdy_vrss)) * (down ? -1 : 1);
-    const pct = Math.abs(n(o1.prdy_ctrt)) * (down ? -1 : 1);
-    if (Number.isFinite(abs) && Number.isFinite(pct)) {
-      return { code, value: cur, changeAbs: round2(abs), changePct: round2(pct) };
-    }
-  }
-
-  // Fallback: derive from the daily series (output2, newest-first).
-  const closes = (data.output2 ?? [])
-    .map((r) => n(r.ovrs_nmix_prpr))
-    .filter((x) => Number.isFinite(x) && x !== 0);
-  if (closes.length >= 2) {
-    const [last, prev] = [closes[0], closes[1]];
-    const abs = last - prev;
-    return { code, value: last, changeAbs: round2(abs), changePct: round2(prev ? (abs / prev) * 100 : 0) };
-  }
-
-  throw new Error(
-    `KIS index ${code}: unparseable (o1 keys=${Object.keys(o1 ?? {}).slice(0, 10).join(",")}; o2 keys=${Object.keys(data.output2?.[0] ?? {}).slice(0, 10).join(",")})`,
-  );
+  return parseOverseasIndex(data, code);
 }
 
 /** Parse daily candles. KIS returns newest-first; we emit oldest-first. */
