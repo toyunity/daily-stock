@@ -1,0 +1,164 @@
+{
+  "output1": {
+    "ovrs_nmix_prdy_vrss": "-361.71",
+    "prdy_vrss_sign": "5",
+    "prdy_ctrt": "-1.40",
+    "ovrs_nmix_prdy_clpr": "25881.95",
+    "acml_vol": "7941637100",
+    "hts_kor_isnm": "나스닥 종합",
+    "ovrs_nmix_prpr": "25520.24",
+    "stck_shrn_iscd": "COMP",
+    "ovrs_prod_oprc": "25412.26",
+    "ovrs_prod_hgpr": "25703.01",
+    "ovrs_prod_lwpr": "25250.63"
+  },
+  "output2": [
+    {
+      "stck_bsop_date": "20260717",
+      "ovrs_nmix_prpr": "25520.24",
+      "ovrs_nmix_oprc": "25412.26",
+      "ovrs_nmix_hgpr": "25703.01",
+      "ovrs_nmix_lwpr": "25250.63",
+      "acml_vol": "7941637100",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260716",
+      "ovrs_nmix_prpr": "25881.95",
+      "ovrs_nmix_oprc": "26155.41",
+      "ovrs_nmix_hgpr": "26165.16",
+      "ovrs_nmix_lwpr": "25765.45",
+      "acml_vol": "8380476900",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260715",
+      "ovrs_nmix_prpr": "26269.23",
+      "ovrs_nmix_oprc": "26261.18",
+      "ovrs_nmix_hgpr": "26316.81",
+      "ovrs_nmix_lwpr": "26041.13",
+      "acml_vol": "7539902700",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260714",
+      "ovrs_nmix_prpr": "26107.01",
+      "ovrs_nmix_oprc": "26015.49",
+      "ovrs_nmix_hgpr": "26168.81",
+      "ovrs_nmix_lwpr": "25912.40",
+      "acml_vol": "7471709000",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260713",
+      "ovrs_nmix_prpr": "25873.18",
+      "ovrs_nmix_oprc": "26088.31",
+      "ovrs_nmix_hgpr": "26139.37",
+      "ovrs_nmix_lwpr": "25822.10",
+      "acml_vol": "7400311900",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260710",
+      "ovrs_nmix_prpr": "26281.61",
+      "ovrs_nmix_oprc": "26175.54",
+      "ovrs_nmix_hgpr": "26301.54",
+      "ovrs_nmix_lwpr": "26009.49",
+      "acml_vol": "7379930100",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260709",
+      "ovrs_nmix_prpr": "26206.89",
+      "ovrs_nmix_oprc": "25918.31",
+      "ovrs_nmix_hgpr": "26215.83",
+      "ovrs_nmix_lwpr": "25825.85",
+      "acml_vol": "7528550000",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260708",
+      "ovrs_nmix_prpr": "25870.65",
+      "ovrs_nmix_oprc": "25689.88",
+      "ovrs_nmix_hgpr": "25896.07",
+      "ovrs_nmix_lwpr": "25526.47",
+      "acml_vol": "8088580200",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260707",
+      "ovrs_nmix_prpr": "25818.69",
+      "ovrs_nmix_oprc": "25960.13",
+      "ovrs_nmix_hgpr": "26010.02",
+      "ovrs_nmix_lwpr": "25684.15",
+      "acml_vol": "8449222800",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260706",
+      "ovrs_nmix_prpr": "26121.16",
+      "ovrs_nmix_oprc": "25999.61",
+      "ovrs_nmix_hgpr": "26209.76",
+      "ovrs_nmix_lwpr": "25963.44",
+      "acml_vol": "8146863000",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260702",
+      "ovrs_nmix_prpr": "25832.67",
+      "ovrs_nmix_oprc": "26047.38",
+      "ovrs_nmix_hgpr": "26261.09",
+      "ovrs_nmix_lwpr": "25630.51",
+      "acml_vol": "9915190500",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260701",
+      "ovrs_nmix_prpr": "26040.03",
+      "ovrs_nmix_oprc": "26039.51",
+      "ovrs_nmix_hgpr": "26238.06",
+      "ovrs_nmix_lwpr": "25954.46",
+      "acml_vol": "9473510500",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260630",
+      "ovrs_nmix_prpr": "26213.72",
+      "ovrs_nmix_oprc": "25824.47",
+      "ovrs_nmix_hgpr": "26253.04",
+      "ovrs_nmix_lwpr": "25808.06",
+      "acml_vol": "10310266100",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260629",
+      "ovrs_nmix_prpr": "25820.14",
+      "ovrs_nmix_oprc": "25502.09",
+      "ovrs_nmix_hgpr": "25834.35",
+      "ovrs_nmix_lwpr": "25289.76",
+      "acml_vol": "10133764700",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260626",
+      "ovrs_nmix_prpr": "25297.62",
+      "ovrs_nmix_oprc": "25105.41",
+      "ovrs_nmix_hgpr": "25491.38",
+      "ovrs_nmix_lwpr": "25014.96",
+      "acml_vol": "17732168500",
+      "mod_yn": "N"
+    },
+    {
+      "stck_bsop_date": "20260625",
+      "ovrs_nmix_prpr": "25358.60",
+      "ovrs_nmix_oprc": "25724.78",
+      "ovrs_nmix_hgpr": "25724.78",
+      "ovrs_nmix_lwpr": "25123.43",
+      "acml_vol": "10275286300",
+      "mod_yn": "N"
+    }
+  ],
+  "rt_cd": "0",
+  "msg_cd": "MCA00000",
+  "msg1": "정상처리 되었습니다."
+}

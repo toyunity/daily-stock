@@ -41,15 +41,3 @@ jobs:
           AI_HEADER_ENABLED: ${{ vars.AI_HEADER_ENABLED }}
           IMAGE_API_URL: ${{ vars.IMAGE_API_URL }}
           IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
-          KIS_DUMP_DIR: ${{ github.workspace }}/kis-dump
-
-      # TEMPORARY (2026-07-20): capture real KIS responses once for test
-      # fixtures. Remove with the dump hook after fixtures are committed.
-      - name: Upload KIS response fixtures
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kis-fixtures
-          path: kis-dump/
-          if-no-files-found: warn
-          retention-days: 7

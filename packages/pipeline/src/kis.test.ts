@@ -1,29 +1,13 @@
 import { describe, it, expect } from "vitest";
+import { readFileSync, existsSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
-  shouldDumpResponse,
   parseDomesticQuote,
   parseDomesticDaily,
   parseOverseasQuote,
   parseOverseasIndex,
 } from "./kis";
-
-describe("shouldDumpResponse", () => {
-  it("토큰 발급 응답은 덤프하지 않는다 — access_token이 들어 있다", () => {
-    expect(shouldDumpResponse("https://openapi.koreainvestment.com:9443/oauth2/tokenP")).toBe(false);
-  });
-
-  it("시세 엔드포인트는 덤프한다", () => {
-    expect(
-      shouldDumpResponse(
-        "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-price?FID_INPUT_ISCD=000660",
-      ),
-    ).toBe(true);
-  });
-
-  it("경로에 oauth2가 포함되면 어떤 형태든 거부한다", () => {
-    expect(shouldDumpResponse("https://example.com/v1/oauth2/anything")).toBe(false);
-  });
-});
 
 describe("parseDomesticQuote", () => {
   const base = { stck_prpr: "1842000", prdy_vrss: "240000", prdy_ctrt: "11.53" };
@@ -186,5 +170,59 @@ describe("parseOverseasIndex", () => {
 
   it("output2가 1개뿐이면 등락을 계산할 수 없어 throw한다", () => {
     expect(() => parseOverseasIndex({ output2: [{ ovrs_nmix_prpr: "110" }] }, "SPX")).toThrow();
+  });
+});
+
+const FIXTURES = resolve(dirname(fileURLToPath(import.meta.url)), "__fixtures__/kis");
+
+function fixture(name: string): any {
+  const p = resolve(FIXTURES, name);
+  // A missing fixture must fail loudly — silently skipping would let the suite
+  // pass while testing nothing.
+  if (!existsSync(p)) throw new Error(`fixture missing: ${p}`);
+  return JSON.parse(readFileSync(p, "utf8"));
+}
+
+describe("실물 KIS 응답 (픽스처)", () => {
+  it("국내 현재가를 파싱한다", () => {
+    const q = parseDomesticQuote(fixture("domestic-quote-000660.json").output, "000660");
+    expect(q.price).toBeGreaterThan(0);
+    expect(Number.isFinite(q.changePct)).toBe(true);
+  });
+
+  it("국내 일별봉을 oldest-first로 파싱한다", () => {
+    const c = parseDomesticDaily(fixture("domestic-daily-000660.json").output, 10);
+    expect(c.length).toBeGreaterThanOrEqual(2);
+    expect(c.every((x) => x.close > 0)).toBe(true);
+    expect(Number(c[0].date)).toBeLessThan(Number(c[c.length - 1].date));
+  });
+
+  it("해외 현재가를 파싱한다", () => {
+    const q = parseOverseasQuote(fixture("overseas-quote-MU-NAS.json").output, "MU", "NAS");
+    expect(q).not.toBeNull();
+    expect(q!.price).toBeGreaterThan(0);
+    expect(Number.isFinite(q!.changePct)).toBe(true);
+  });
+
+  it("해외지수 SPX를 output1 경로로 파싱한다", () => {
+    const i = parseOverseasIndex(fixture("overseas-index-SPX.json"), "SPX");
+    expect(i.value).toBeGreaterThan(0);
+  });
+
+  // .DJI는 코드에 점(.)이 붙는 다우존스 지수다. 점 접두사 코드가 실제로 파싱
+  // 가능한지 확인한다 — 예전에 .DJI/.VIX의 점 접두사가 실물 버그를 일으킨 적이
+  // 있어(ef0e208), 캡처된 실물 응답으로 회귀를 막는다.
+  it("해외지수 .DJI(점 접두사)를 output1 경로로 파싱한다", () => {
+    const i = parseOverseasIndex(fixture("overseas-index-dot-DJI.json"), ".DJI");
+    expect(i.value).toBeGreaterThan(0);
+    expect(Number.isFinite(i.changeAbs)).toBe(true);
+    expect(Number.isFinite(i.changePct)).toBe(true);
+  });
+
+  // exit 2(output2 시계열 파생)는 실물 픽스처로 덮을 수 없다 — 정상 심볼은 exit 1,
+  // .VIX는 output1/output2가 모두 비어 exit 3으로 간다. spec §4.2 정정 참조.
+  // 해당 경로는 위쪽 인라인 테스트가 계속 담당한다.
+  it(".VIX는 여전히 파싱 불가이며 진단 정보를 담아 throw한다", () => {
+    expect(() => parseOverseasIndex(fixture("overseas-index-dot-VIX.json"), ".VIX")).toThrow(/\.VIX/);
   });
 });
