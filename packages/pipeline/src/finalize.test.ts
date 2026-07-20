@@ -173,6 +173,19 @@ describe("enrichIndicesWithKis", () => {
     expect(report.indices[0].value).toBe(7457.69);
     expect(report.indices[1].value).toBe(6820.6); // KIS_INDEX_CODE에 없음
     expect(mocked.getOverseasIndex).toHaveBeenCalledOnce();
+    expect(mocked.getOverseasIndex).toHaveBeenCalledWith(CREDS, "TOKEN", "SPX");
+  });
+
+  it("점(.)으로 시작하는 코드(다우)를 그대로 전달한다", async () => {
+    mocked.getOverseasIndex.mockResolvedValue({
+      code: ".DJI", value: 44910.65, changeAbs: -231.49, changePct: -0.51,
+    });
+    const report = {
+      indices: [{ name: "다우", symbol: "^DJI", value: 0, change_pct: 0, change_abs: 0 }],
+    };
+    await enrichIndicesWithKis(report, CREDS, "TOKEN");
+    expect(report.indices[0].value).toBe(44910.65);
+    expect(mocked.getOverseasIndex).toHaveBeenCalledWith(CREDS, "TOKEN", ".DJI");
   });
 
   it("개별 지수 실패가 나머지를 막지 않는다", async () => {

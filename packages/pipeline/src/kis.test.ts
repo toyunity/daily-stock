@@ -96,6 +96,7 @@ describe("parseOverseasQuote", () => {
 
   it("sign이 2면 양수를 유지한다", () => {
     const q = parseOverseasQuote({ last: "98.5", diff: "4.3", rate: "4.2", sign: "2" }, "MU", "NAS");
+    expect(q!.changeAbs).toBe(4.3);
     expect(q!.changePct).toBe(4.2);
   });
 

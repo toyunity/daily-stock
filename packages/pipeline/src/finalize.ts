@@ -360,7 +360,7 @@ async function loadFont(): Promise<ArrayBuffer | null> {
 
 // Only run the pipeline when executed as a script. Tests import this module for
 // its helpers and must not kick off a real Supabase/KIS run.
-if (process.env.VITEST === undefined) {
+if (!process.env.VITEST) {
   main().catch((e) => {
     console.error("[finalize] failed:", e);
     process.exit(1);
