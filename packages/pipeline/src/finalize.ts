@@ -230,7 +230,7 @@ function fmtKisDate(yyyymmdd: string): string {
  * Correct the movers' percent moves for US tickers using KIS overseas quotes.
  * Only touches structured movers[]; narrative text is left as authored.
  */
-async function enrichMoversWithKis(
+export async function enrichMoversWithKis(
   extracted: {
     movers?: { gainers?: { ticker: string; pct: number }[]; losers?: { ticker: string; pct: number }[] };
   },
@@ -269,7 +269,7 @@ const KIS_INDEX_CODE: Record<string, string> = {
 };
 
 /** Overwrite US index values with authoritative KIS overseas-index quotes. */
-async function enrichIndicesWithKis(
+export async function enrichIndicesWithKis(
   extracted: {
     indices?: { name: string; symbol: string; value: number; change_pct: number; change_abs: number }[];
   },

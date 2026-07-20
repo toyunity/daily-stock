@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { getKisTokenCached } from "./finalize";
+import { getKisTokenCached, enrichMoversWithKis, enrichIndicesWithKis } from "./finalize";
 import * as kis from "./kis";
 
 // Real ESM namespace objects are not extensible, so vi.spyOn cannot patch them.
@@ -106,5 +106,87 @@ describe("getKisTokenCached", () => {
     const token = await getKisTokenCached(CREDS, sb as never);
     expect(token).toBe("FRESH");
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("WRITE FAILED"));
+  });
+});
+
+describe("enrichMoversWithKis", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(console, "log").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+  });
+  afterEach(() => vi.restoreAllMocks());
+
+  it("미국 티커만 앵커링하고 한국 코드는 건드리지 않는다", async () => {
+    mocked.getOverseasQuote.mockResolvedValue({
+      symbol: "MU", exchange: "NAS", price: 98.5, changeAbs: -4.3, changePct: -4.2,
+    });
+    const report = {
+      movers: {
+        gainers: [{ ticker: "MU", pct: 0 }],
+        losers: [{ ticker: "000660.KS", pct: -11.53 }],
+      },
+    };
+    await enrichMoversWithKis(report, CREDS, "TOKEN");
+    expect(report.movers.gainers[0].pct).toBe(-4.2);
+    expect(report.movers.losers[0].pct).toBe(-11.53); // 정규식에 걸러져 그대로
+    expect(mocked.getOverseasQuote).toHaveBeenCalledOnce();
+  });
+
+  it("개별 티커 실패가 나머지를 막지 않는다", async () => {
+    mocked.getOverseasQuote
+      .mockRejectedValueOnce(new Error("not found"))
+      .mockResolvedValueOnce({
+        symbol: "AMD", exchange: "NAS", price: 200, changeAbs: -8, changePct: -4.1,
+      });
+    const report = { movers: { gainers: [{ ticker: "XXXX", pct: 0 }, { ticker: "AMD", pct: 0 }], losers: [] } };
+    await enrichMoversWithKis(report, CREDS, "TOKEN");
+    expect(report.movers.gainers[1].pct).toBe(-4.1);
+  });
+
+  it("movers가 없으면 아무 것도 하지 않는다", async () => {
+    mocked.getOverseasQuote.mockResolvedValue({} as never);
+    await enrichMoversWithKis({}, CREDS, "TOKEN");
+    expect(mocked.getOverseasQuote).not.toHaveBeenCalled();
+  });
+});
+
+describe("enrichIndicesWithKis", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(console, "log").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+  });
+  afterEach(() => vi.restoreAllMocks());
+
+  it("매핑된 심볼만 덮어쓰고 코스피는 리서치값을 유지한다", async () => {
+    mocked.getOverseasIndex.mockResolvedValue({
+      code: "SPX", value: 7457.69, changeAbs: -76.1, changePct: -1.01,
+    });
+    const report = {
+      indices: [
+        { name: "S&P 500", symbol: "^GSPC", value: 0, change_pct: 0, change_abs: 0 },
+        { name: "코스피", symbol: "^KS11", value: 6820.6, change_pct: -6.37, change_abs: -463.81 },
+      ],
+    };
+    await enrichIndicesWithKis(report, CREDS, "TOKEN");
+    expect(report.indices[0].value).toBe(7457.69);
+    expect(report.indices[1].value).toBe(6820.6); // KIS_INDEX_CODE에 없음
+    expect(mocked.getOverseasIndex).toHaveBeenCalledOnce();
+  });
+
+  it("개별 지수 실패가 나머지를 막지 않는다", async () => {
+    mocked.getOverseasIndex
+      .mockRejectedValueOnce(new Error("unparseable"))
+      .mockResolvedValueOnce({ code: "SPX", value: 7457.69, changeAbs: -76.1, changePct: -1.01 });
+    const report = {
+      indices: [
+        { name: "VIX", symbol: "^VIX", value: 18.53, change_pct: 10.76, change_abs: 1.8 },
+        { name: "S&P 500", symbol: "^GSPC", value: 0, change_pct: 0, change_abs: 0 },
+      ],
+    };
+    await enrichIndicesWithKis(report, CREDS, "TOKEN");
+    expect(report.indices[0].value).toBe(18.53); // 실패 → 리서치값 유지
+    expect(report.indices[1].value).toBe(7457.69);
   });
 });
