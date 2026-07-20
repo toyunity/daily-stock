@@ -1,0 +1,33 @@
+name: ci
+
+# Independent of finalize.yml on purpose: a failing unit test must never stop
+# the 06:15 KST report from publishing. Gating publication is harness C's job.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
