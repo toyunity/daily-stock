@@ -161,6 +161,31 @@ export interface KisOverseasQuote {
 const US_EXCHANGES = ["NAS", "NYS", "AMS"] as const;
 
 /**
+ * Parse one overseas quote payload. Returns null when this exchange has no data
+ * for the symbol, which tells the caller to try the next one.
+ *
+ * `rate`/`diff` may arrive signed or as magnitudes; sign: 4/5 = down.
+ */
+export function parseOverseasQuote(
+  output: Record<string, string> | undefined,
+  symbol: string,
+  exchange: string,
+): KisOverseasQuote | null {
+  const last = output ? Number(output.last) : NaN;
+  if (!output || !Number.isFinite(last) || last === 0) return null;
+  const down = output.sign === "4" || output.sign === "5";
+  const rate = Number(output.rate);
+  const diff = Number(output.diff);
+  return {
+    symbol,
+    exchange,
+    price: last,
+    changeAbs: down ? -Math.abs(diff) : Math.abs(diff || 0),
+    changePct: down ? -Math.abs(rate) : Math.abs(rate || 0),
+  };
+}
+
+/**
  * Current price for a US ticker via KIS overseas quotes. KIS needs the exchange
  * code, so try NASDAQ → NYSE → AMEX until one returns data.
  */
@@ -184,19 +209,12 @@ export async function getOverseasQuote(
       }
       const data = (await res.json()) as { output?: Record<string, string> };
       await dumpResponse(url, `overseas-quote-${symbol}-${excd}`, data);
-      const o = data.output;
-      const last = o ? Number(o.last) : NaN;
-      if (!o || !Number.isFinite(last) || last === 0) {
+      const parsed = parseOverseasQuote(data.output, symbol, excd);
+      if (!parsed) {
         lastErr = new Error(`KIS overseas ${symbol}@${excd}: empty`);
         continue;
       }
-      // `rate`/`diff` may arrive signed or as magnitudes; sign: 4/5 = down.
-      const down = o.sign === "4" || o.sign === "5";
-      const rate = Number(o.rate);
-      const diff = Number(o.diff);
-      const signedRate = down ? -Math.abs(rate) : Math.abs(rate || 0);
-      const signedDiff = down ? -Math.abs(diff) : Math.abs(diff || 0);
-      return { symbol, exchange: excd, price: last, changeAbs: signedDiff, changePct: signedRate };
+      return parsed;
     } catch (e) {
       lastErr = e;
     }

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { shouldDumpResponse, parseDomesticQuote, parseDomesticDaily } from "./kis";
+import { shouldDumpResponse, parseDomesticQuote, parseDomesticDaily, parseOverseasQuote } from "./kis";
 
 describe("shouldDumpResponse", () => {
   it("토큰 발급 응답은 덤프하지 않는다 — access_token이 들어 있다", () => {
@@ -75,5 +75,33 @@ describe("parseDomesticDaily", () => {
 
   it("rows가 undefined면 빈 배열을 준다", () => {
     expect(parseDomesticDaily(undefined, 10)).toEqual([]);
+  });
+});
+
+describe("parseOverseasQuote", () => {
+  it("sign이 5면 등락을 음수로 만든다", () => {
+    const q = parseOverseasQuote({ last: "98.5", diff: "4.3", rate: "4.2", sign: "5" }, "MU", "NAS");
+    expect(q).not.toBeNull();
+    expect(q!.price).toBe(98.5);
+    expect(q!.changeAbs).toBe(-4.3);
+    expect(q!.changePct).toBe(-4.2);
+    expect(q!.exchange).toBe("NAS");
+  });
+
+  it("sign이 2면 양수를 유지한다", () => {
+    const q = parseOverseasQuote({ last: "98.5", diff: "4.3", rate: "4.2", sign: "2" }, "MU", "NAS");
+    expect(q!.changePct).toBe(4.2);
+  });
+
+  it("last가 0이면 null — 다음 거래소를 시도해야 한다", () => {
+    expect(parseOverseasQuote({ last: "0" }, "MU", "NAS")).toBeNull();
+  });
+
+  it("output이 없으면 null", () => {
+    expect(parseOverseasQuote(undefined, "MU", "NAS")).toBeNull();
+  });
+
+  it("last가 숫자가 아니면 null", () => {
+    expect(parseOverseasQuote({ last: "" }, "MU", "NAS")).toBeNull();
   });
 });
