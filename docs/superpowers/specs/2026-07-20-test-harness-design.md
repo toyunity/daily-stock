@@ -95,7 +95,20 @@ export async function getDomesticQuote(creds, token, code): Promise<KisQuote>
 | `domestic-daily-000660.json` | 국내 일별봉 — newest-first 순서 확인용 |
 | `overseas-quote-MU.json` | 해외 현재가 — 거래소 폴백·부호 검증용 |
 | `overseas-index-SPX.json` | 해외지수 **성공** (`output1` 경로) |
-| `overseas-index-VIX-empty.json` | 해외지수 **실패** (`output2` 빈 케이스). **최우선** — 폴백 경로를 검증할 유일한 실물이다 |
+| `overseas-index-dot-VIX.json` | 해외지수 **실패**. 진단 throw 경로(exit 3)를 고정한다 |
+
+> **2026-07-20 정정 — 최초 기술이 틀렸다.** 이 픽스처를 "`output2` 폴백 경로를 검증할
+> 유일한 실물"이라고 적었으나 **범주 오류다.** `parseOverseasIndex`의 세 exit은 이렇게 갈린다.
+>
+> - **exit 1** (`output1` 사용): 정상 심볼(SPX 등)은 여기서 끝난다
+> - **exit 2** (`output2` 시계열 파생): `output1`이 못 쓰는 값이면서 `output2`에 유효 종가가 2개 이상일 때만
+> - **exit 3** (진단 throw): 둘 다 못 쓸 때
+>
+> 실제 `.VIX`는 `output1`도 `output2`도 비어서 **exit 3으로 간다.** 즉 어떤 실물 심볼도
+> exit 2에 착지하지 않는다 — 정상 심볼은 exit 1, `.VIX`는 exit 3이다.
+> **따라서 exit 2는 실물 픽스처로 덮을 수 없고, 인라인 테스트(`kis.test.ts`)로만 남는다.**
+> 파일명도 실제 캡처 결과에 맞춰 `dot-VIX`로 정정한다(선행 점이 숨김 파일이 되는 것을 피하려
+> `dot-` 치환을 넣었기 때문).
 
 수집 후 `packages/pipeline/src/__fixtures__/kis/`에 커밋하고,
 **덤프 훅과 일회성 step은 제거한다.** 프로덕션에 남기지 않는다.
@@ -172,7 +185,10 @@ packages/shared/src/schema.test.ts              신규
 1. `npm test`가 로컬에서 통과한다
 2. `ci.yml`이 push에서 실행되어 green이다
 3. 위 4.3 표의 모든 항목에 테스트가 존재한다
-4. 픽스처가 **실물 캡처**로 교체되어 있다 (손으로 지은 것이 아님)
+4. 커밋된 픽스처 파일이 **전부 실물 캡처**다 (손으로 지은 것이 하나도 없다).
+   단 `parseOverseasIndex`의 **exit 2(`output2` 시계열 파생)는 예외로 인정한다** — 위 §4.2
+   정정대로 어떤 실물 심볼도 그 경로에 착지하지 않으므로 인라인 테스트로 남긴다.
+   이 예외를 "픽스처를 못 구했다"로 오해해 손으로 지어내지 말 것.
 5. 덤프 훅과 일회성 CI step이 프로덕션 코드에서 제거되어 있다
 6. `finalize.yml`이 픽스처 수집 이전 상태로 되돌아가 있다 — 일회성 덤프 step이
    추가됐다가 제거되므로, 최종 diff는 `finalize.yml`에 대해 비어 있어야 한다

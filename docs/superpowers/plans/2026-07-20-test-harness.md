@@ -1316,6 +1316,9 @@ describe("실물 KIS 응답 (픽스처)", () => {
     expect(i.value).toBeGreaterThan(0);
   });
 
+  // exit 2(output2 시계열 파생)는 실물 픽스처로 덮을 수 없다 — 정상 심볼은 exit 1,
+  // .VIX는 output1/output2가 모두 비어 exit 3으로 간다. spec §4.2 정정 참조.
+  // 해당 경로는 위쪽 인라인 테스트가 계속 담당한다.
   it(".VIX는 여전히 파싱 불가이며 진단 정보를 담아 throw한다", () => {
     expect(() => parseOverseasIndex(fixture("overseas-index-dot-VIX.json"), ".VIX")).toThrow(/\.VIX/);
   });
@@ -1339,6 +1342,13 @@ Expected: PASS. 픽스처 파일명이 다르면 `fixture missing:` 에러가 �
 `packages/pipeline/src/kis.test.ts`에서 `describe("shouldDumpResponse", ...)` 블록 전체와 import의 `shouldDumpResponse`를 삭제한다.
 
 - [ ] **Step 7: `finalize.yml` 원복**
+
+> 손으로 지우지 말고 **체크아웃으로 되돌려라.** Task 2가 파일 끝에 덧붙이는 형태라
+> 공백 줄 하나까지 손으로 맞추기 어렵다:
+> `git checkout 1726262 -- .github/workflows/finalize.yml`
+> 그 다음 `git diff 1726262 -- .github/workflows/finalize.yml` 이 비어 있는지 확인한다.
+> `.gitignore`의 `kis-dump/` 항목도 훅이 사라지면 무의미하므로 같이 제거한다
+> (`.superpowers/` 항목은 남긴다).
 
 `.github/workflows/finalize.yml`에서 다음을 삭제한다.
 
