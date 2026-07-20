@@ -13,7 +13,36 @@
  *   KIS_DOMAIN                    (optional; defaults to the real-trading host)
  */
 
+import { mkdir, writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
 const REAL_DOMAIN = "https://openapi.koreainvestment.com:9443";
+
+/**
+ * TEMPORARY (2026-07-20): one-shot capture of real KIS responses so the test
+ * fixtures are actual API output rather than hand-authored guesses. Active only
+ * when KIS_DUMP_DIR is set. Remove once fixtures are committed.
+ *
+ * SECURITY: token issuance responses carry access_token and must never be
+ * written to a CI artifact. Only quote endpoints are dumped, and request
+ * headers (appkey/appsecret/authorization) are never recorded.
+ */
+export function shouldDumpResponse(url: string): boolean {
+  return !url.includes("/oauth2/");
+}
+
+async function dumpResponse(url: string, name: string, body: unknown): Promise<void> {
+  const dir = process.env.KIS_DUMP_DIR;
+  if (!dir || !shouldDumpResponse(url)) return;
+  try {
+    await mkdir(dir, { recursive: true });
+    await writeFile(resolve(dir, `${name}.json`), JSON.stringify(body, null, 2));
+    console.log(`[kis] dumped ${name}.json`);
+  } catch (e) {
+    // Capture is a side errand — never let it break the report.
+    console.warn(`[kis] dump ${name} skipped: ${(e as Error).message}`);
+  }
+}
 
 export interface KisCreds {
   appkey: string;
@@ -96,6 +125,7 @@ export async function getDomesticQuote(creds: KisCreds, token: string, code: str
   const res = await fetch(url, { headers: headers(creds, token, "FHKST01010100") });
   if (!res.ok) throw new Error(`KIS price ${code} ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const data = (await res.json()) as { output?: Record<string, string> };
+  await dumpResponse(url, `domestic-quote-${code}`, data);
   const o = data.output;
   if (!o || o.stck_prpr == null) throw new Error(`KIS price ${code}: empty output`);
   // prdy_vrss_sign: 1 상한 / 2 상승 / 3 보합 / 4 하한 / 5 하락. prdy_vrss and
@@ -143,6 +173,7 @@ export async function getOverseasQuote(
         continue;
       }
       const data = (await res.json()) as { output?: Record<string, string> };
+      await dumpResponse(url, `overseas-quote-${symbol}-${excd}`, data);
       const o = data.output;
       const last = o ? Number(o.last) : NaN;
       if (!o || !Number.isFinite(last) || last === 0) {
@@ -197,6 +228,7 @@ export async function getOverseasIndex(creds: KisCreds, token: string, code: str
     output1?: Record<string, string>;
     output2?: Record<string, string>[];
   };
+  await dumpResponse(url, `overseas-index-${code.replace(/^\./, "dot-")}`, data);
 
   const n = (v: unknown) => Number(v);
   const o1 = data.output1;
@@ -240,6 +272,7 @@ export async function getDomesticDaily(
   const res = await fetch(url, { headers: headers(creds, token, "FHKST01010400") });
   if (!res.ok) throw new Error(`KIS daily ${code} ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const data = (await res.json()) as { output?: Record<string, string>[] };
+  await dumpResponse(url, `domestic-daily-${code}`, data);
   const rows = data.output ?? [];
   const candles: KisCandle[] = rows
     .filter((r) => r.stck_bsop_date && r.stck_clpr)
