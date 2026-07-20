@@ -166,7 +166,7 @@ const KIS_TOKEN_KEY = "kis_token";
  * issue at most once/day across separate CI runs. Falls back to a fresh issue
  * if the cache is empty/expired or the app_kv table doesn't exist yet.
  */
-async function getKisTokenCached(creds: KisCreds, supabase: SupabaseClient): Promise<string> {
+export async function getKisTokenCached(creds: KisCreds, supabase: SupabaseClient): Promise<string> {
   // supabase-js returns { data, error } rather than throwing on DB errors, so we
   // must inspect `error` explicitly — otherwise a failed write reads as success.
   const read = await supabase.from("app_kv").select("value").eq("key", KIS_TOKEN_KEY).maybeSingle();
@@ -358,7 +358,11 @@ async function loadFont(): Promise<ArrayBuffer | null> {
   }
 }
 
-main().catch((e) => {
-  console.error("[finalize] failed:", e);
-  process.exit(1);
-});
+// Only run the pipeline when executed as a script. Tests import this module for
+// its helpers and must not kick off a real Supabase/KIS run.
+if (process.env.VITEST === undefined) {
+  main().catch((e) => {
+    console.error("[finalize] failed:", e);
+    process.exit(1);
+  });
+}
