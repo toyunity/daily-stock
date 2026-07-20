@@ -14,3 +14,4 @@ packages/pipeline/out/
 briefing.html
 *.mockup.html
 briefing-light.html
+.superpowers/

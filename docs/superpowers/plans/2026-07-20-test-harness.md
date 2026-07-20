@@ -12,7 +12,12 @@
 
 - 대상 브랜치는 **`claude/stock-market-report-app-9to46d`** 하나뿐이다. 다른 브랜치를 만들지 않는다.
 - **`reports/report.json`을 절대 수정하지 않는다.** 수정 후 push하면 `finalize.yml`이 발화해 KIS 토큰을 소모하고 Supabase의 오늘자 행을 덮어쓴다.
-- `finalize.ts` · `render.ts` · `header.ts` · `env.ts` · `validate.ts`는 이 계획에서 수정하지 않는다. 유일한 예외는 Task 7(테스트 추가 목적으로 `getKisTokenCached`를 export)이다.
+- `render.ts` · `header.ts` · `env.ts` · `validate.ts` · `collect.ts` · `index.ts`는 이 계획에서 **전혀** 수정하지 않는다.
+- `finalize.ts`는 **테스트가 접근할 수 있게 만드는 변경만** 허용한다. 구체적으로 이 셋뿐이다:
+  (a) `getKisTokenCached`에 `export` 부여 (Task 7),
+  (b) 파일 끝 `main()` 호출을 스크립트 실행 시에만 돌도록 가드 (Task 7),
+  (c) `enrichMoversWithKis`·`enrichIndicesWithKis`에 `export` 부여 (Task 8).
+  **함수 본문 로직은 한 줄도 바꾸지 않는다.** 시그니처·동작·로그 문구 모두 그대로다.
 - `kis.ts` 리팩토링은 **동작을 바꾸지 않는다.** 기존의 이상해 보이는 표현(`Math.abs(rate || 0)` 등)도 그대로 옮긴다. 개선은 이 계획의 범위가 아니다.
 - 커밋 메시지는 영문, 마지막 줄에 `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`.
 - Node 22, npm workspaces 루트에서 실행.
@@ -121,7 +126,7 @@ Expected: FAIL — `npm error Missing script: "test"`
 
 - [ ] **Step 3: vitest 설치 및 설정**
 
-Run: `npm install -D vitest@^2.1.0 -w daily-stock`
+Run: `npm install -D vitest@^2.1.0` (루트에서 실행. `-w daily-stock`은 실패한다 — daily-stock은 루트 패키지명이지 워크스페이스 멤버가 아니다)
 
 `vitest.config.ts` (루트):
 
