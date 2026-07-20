@@ -110,6 +110,10 @@ describe("parseOverseasQuote", () => {
   it("last가 숫자가 아니면 null", () => {
     expect(parseOverseasQuote({ last: "" }, "MU", "NAS")).toBeNull();
   });
+
+  it("last가 파싱 불가능한 문자열(NaN)이면 null", () => {
+    expect(parseOverseasQuote({ last: "abc" }, "MU", "NAS")).toBeNull();
+  });
 });
 
 describe("parseOverseasIndex", () => {
@@ -149,6 +153,27 @@ describe("parseOverseasIndex", () => {
       "SPX",
     );
     expect(i.value).toBe(110);
+  });
+
+  it("output1의 현재가는 정상이지만 등락 필드가 없어 NaN이면 output2로 넘어간다", () => {
+    const i = parseOverseasIndex(
+      {
+        // Valid, non-zero current price — passes the OUTER guard — but no
+        // change fields at all, so the computed abs/pct are NaN and must
+        // fail the INNER finite check, falling through to the series.
+        output1: { ovrs_nmix_prpr: "999" },
+        output2: [{ ovrs_nmix_prpr: "220" }, { ovrs_nmix_prpr: "200" }],
+      },
+      "SPX",
+    );
+    // These values (220/20/10) are only reachable via the output2 series —
+    // output1's current price is 999, so exit-1-unconditionally would fail this.
+    expect(i.value).toBe(220);
+    expect(i.changeAbs).toBe(20);
+    expect(i.changePct).toBe(10);
+    expect(Number.isFinite(i.value)).toBe(true);
+    expect(Number.isFinite(i.changeAbs)).toBe(true);
+    expect(Number.isFinite(i.changePct)).toBe(true);
   });
 
   it("둘 다 못 쓰면 진단용 키 목록을 담아 throw한다", () => {
