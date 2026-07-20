@@ -116,6 +116,27 @@ function headers(creds: KisCreds, token: string, trId: string) {
   };
 }
 
+/**
+ * Parse a domestic quote payload. Pure — the fetch lives in getDomesticQuote.
+ *
+ * prdy_vrss_sign: 1 상한 / 2 상승 / 3 보합 / 4 하한 / 5 하락. prdy_vrss and
+ * prdy_ctrt come back as magnitudes, so apply the sign ourselves.
+ */
+export function parseDomesticQuote(
+  output: Record<string, string> | undefined,
+  code: string,
+): KisQuote {
+  if (!output || output.stck_prpr == null) throw new Error(`KIS price ${code}: empty output`);
+  const down = output.prdy_vrss_sign === "4" || output.prdy_vrss_sign === "5";
+  const sign = down ? -1 : 1;
+  return {
+    code,
+    price: Number(output.stck_prpr),
+    changeAbs: Math.abs(Number(output.prdy_vrss)) * sign,
+    changePct: Math.abs(Number(output.prdy_ctrt)) * sign,
+  };
+}
+
 /** Current price for a domestic (KRX) ticker code, e.g. "000660". */
 export async function getDomesticQuote(creds: KisCreds, token: string, code: string): Promise<KisQuote> {
   const domain = creds.domain || REAL_DOMAIN;
@@ -126,18 +147,7 @@ export async function getDomesticQuote(creds: KisCreds, token: string, code: str
   if (!res.ok) throw new Error(`KIS price ${code} ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const data = (await res.json()) as { output?: Record<string, string> };
   await dumpResponse(url, `domestic-quote-${code}`, data);
-  const o = data.output;
-  if (!o || o.stck_prpr == null) throw new Error(`KIS price ${code}: empty output`);
-  // prdy_vrss_sign: 1 상한 / 2 상승 / 3 보합 / 4 하한 / 5 하락. prdy_vrss and
-  // prdy_ctrt come back as magnitudes, so apply the sign ourselves.
-  const down = o.prdy_vrss_sign === "4" || o.prdy_vrss_sign === "5";
-  const sign = down ? -1 : 1;
-  return {
-    code,
-    price: Number(o.stck_prpr),
-    changeAbs: Math.abs(Number(o.prdy_vrss)) * sign,
-    changePct: Math.abs(Number(o.prdy_ctrt)) * sign,
-  };
+  return parseDomesticQuote(data.output, code);
 }
 
 export interface KisOverseasQuote {
