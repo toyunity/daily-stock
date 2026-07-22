@@ -1,6 +1,18 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { getKisTokenCached, enrichMoversWithKis, enrichIndicesWithKis } from "./finalize";
+import { readFileSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { getKisTokenCached, enrichMoversWithKis, enrichIndicesWithKis, focusPriceFromKis } from "./finalize";
 import * as kis from "./kis";
+
+const FIXTURES = resolve(dirname(fileURLToPath(import.meta.url)), "__fixtures__/kis");
+// The real captured daily candles for SK Hynix; last two are 20260720 (1,764,000)
+// and 20260716 (1,842,000) → a true -78,000 / -4.23% last-session move. kis is
+// mocked below but the factory spreads `...actual`, so parseDomesticDaily is real.
+function hynixCandles() {
+  const raw = JSON.parse(readFileSync(resolve(FIXTURES, "domestic-daily-000660.json"), "utf8"));
+  return kis.parseDomesticDaily(raw.output, 10);
+}
 
 // Real ESM namespace objects are not extensible, so vi.spyOn cannot patch them.
 // vi.mock is hoisted above the imports and replaces the module for the whole file.
@@ -201,5 +213,33 @@ describe("enrichIndicesWithKis", () => {
     await enrichIndicesWithKis(report, CREDS, "TOKEN");
     expect(report.indices[0].value).toBe(18.53); // 실패 → 리서치값 유지
     expect(report.indices[1].value).toBe(7457.69);
+  });
+});
+
+describe("focusPriceFromKis", () => {
+  it("개장 전 스폿이 0%여도 일별 봉으로 실제 등락을 계산한다", () => {
+    // 정규 스케줄(05:50 KST)은 KRX 개장 전이라 getDomesticQuote 가 전일 종가를
+    // 현재가로, 등락을 0% 로 준다. 진짜 직전 세션 등락은 일별 봉에서 나와야 한다.
+    const preMarketSpot = { price: 1764000, changeAbs: 0, changePct: 0 };
+    const p = focusPriceFromKis(preMarketSpot, hynixCandles());
+    expect(p.change_pct).toBe(-4.23); // 스폿의 0% 가 아니라 봉 기반 실제값
+    expect(p.change_abs).toBe(-78000);
+    expect(p.value).toBe(1764000);
+    expect(p.as_of).toBe("07/20");
+  });
+
+  it("봉이 있으면 스폿 값을 완전히 무시한다", () => {
+    const bogusSpot = { price: 999, changeAbs: 999, changePct: 999 };
+    const p = focusPriceFromKis(bogusSpot, hynixCandles());
+    expect(p.value).toBe(1764000);
+    expect(p.change_pct).toBe(-4.23);
+  });
+
+  it("봉이 2개 미만이면 스폿 값으로 폴백한다", () => {
+    const spot = { price: 1764000, changeAbs: -78000, changePct: -4.23 };
+    const p = focusPriceFromKis(spot, []);
+    expect(p.value).toBe(1764000);
+    expect(p.change_pct).toBe(-4.23);
+    expect(p.change_abs).toBe(-78000);
   });
 });

@@ -21,6 +21,7 @@ import {
   getOverseasQuote,
   getOverseasIndex,
   type KisCreds,
+  type KisCandle,
 } from "./kis";
 
 /**
@@ -193,6 +194,44 @@ export async function getKisTokenCached(creds: KisCreds, supabase: SupabaseClien
   return token;
 }
 
+/**
+ * Assemble the focus price block, preferring the daily candles over the spot
+ * quote for the value + change.
+ *
+ * Why: the scheduled run fires pre-market for KRX (05:50 KST). At that hour
+ * getDomesticQuote returns the previous close as the "current" price with a 0%
+ * change, so anchoring to the spot quote prints a false flat move every day —
+ * and overwrites the researched figure with something less accurate. The last
+ * two daily candles give the real last-session move (correct after-hours too),
+ * so we derive value + change from them and fall back to the spot quote only
+ * when fewer than two candles are available.
+ */
+export function focusPriceFromKis(
+  quote: { price: number; changeAbs: number; changePct: number },
+  daily: KisCandle[],
+): { value: number; currency: "KRW"; change_pct: number; change_abs: number; as_of: string } {
+  const r2 = (n: number) => Math.round(n * 100) / 100;
+  if (daily.length >= 2) {
+    const last = daily[daily.length - 1];
+    const prev = daily[daily.length - 2];
+    const abs = last.close - prev.close;
+    return {
+      value: last.close,
+      currency: "KRW",
+      change_abs: r2(abs),
+      change_pct: prev.close ? r2((abs / prev.close) * 100) : 0,
+      as_of: fmtKisDate(last.date),
+    };
+  }
+  return {
+    value: quote.price,
+    currency: "KRW",
+    change_pct: quote.changePct,
+    change_abs: quote.changeAbs,
+    as_of: "",
+  };
+}
+
 async function enrichFocusWithKis(extracted: { focus?: any }, creds: KisCreds, token: string): Promise<void> {
   const focus = extracted.focus;
   if (!focus) return;
@@ -205,18 +244,13 @@ async function enrichFocusWithKis(extracted: { focus?: any }, creds: KisCreds, t
       getDomesticDaily(creds, token, code, 10).catch(() => []),
     ]);
 
-    const asOf = daily.length ? fmtKisDate(daily[daily.length - 1].date) : "";
-    focus.price = {
-      value: quote.price,
-      currency: "KRW",
-      change_pct: quote.changePct,
-      change_abs: quote.changeAbs,
-      as_of: asOf || focus.price?.as_of || "",
-    };
+    const priorAsOf = focus.price?.as_of ?? "";
+    focus.price = focusPriceFromKis(quote, daily);
+    if (!focus.price.as_of) focus.price.as_of = priorAsOf;
     if (daily.length >= 2) {
       focus.price_series = daily.map((c) => ({ label: fmtKisDate(c.date), value: c.close }));
     }
-    console.log(`[finalize] KIS focus ${code}: ₩${quote.price.toLocaleString()} (${quote.changePct}%), ${daily.length} candles`);
+    console.log(`[finalize] KIS focus ${code}: ₩${focus.price.value.toLocaleString()} (${focus.price.change_pct}%), ${daily.length} candles`);
   } catch (e) {
     console.warn(`[finalize] KIS enrichment skipped: ${(e as Error).message}`);
   }
