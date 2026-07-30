@@ -1,153 +1,147 @@
 {
-  "headline_summary": "직전 거래일(7월 27일 월요일) 뉴욕 증시는 반도체·기술주 약세와 블루칩 강세가 맞서며 3대 지수가 혼조로 마감했다. 유가 급락에 다우가 262포인트 넘게 오르고 S&P500도 강보합으로 마쳤으나, 중국 D램 업체 CXMT의 상하이 상장과 AI 자본지출 지속성 우려가 겹치며 샌디스크·마이크론 등 메모리주와 엔비디아가 밀려 나스닥이 홀로 하락했다. 애플은 강세를 보이며 시가총액 1위 자리를 엔비디아로부터 되찾았다. 한국 증시는 장중 2% 급락 충격을 딛고 코스피가 0.97% 오른 6,755.62, 코스닥이 2.22% 오른 764.86으로 반등 마감했으며, 외국인이 유가증권시장에서 2조9천억원 넘게 순매도했으나 개인·기관이 이를 받아냈다. 이재명 대통령의 방미를 계기로 발표된 한미 AI·반도체 협력과 삼성전자·브로드컴의 대규모 파운드리·메모리 협력 소식이 투자심리를 지지했다. 원/달러 환율은 1,468.5원에 마감했다. 심층분석 대상 SK하이닉스는 6월 사상 최고가 대비 크게 조정받은 뒤 직전 거래일 반도체주 반등 흐름에 동참했으며, 7월 29일로 예정된 2분기 실적발표·콘퍼런스콜과 HBM4 양산 시점, 삼성전자·마이크론·중국 CXMT와의 경쟁 구도가 방향성을 가를 촉매로 지목된다. 국제 유가는 미국-이란 군사행동 중단이 유지되며 추가 하락했고, 7월 28~29일 연방공개시장위원회(FOMC)는 기준금리 동결이 우세하게 점쳐진다.",
+  "headline_summary": "직전 거래일(7월 29일) 글로벌 증시는 반도체·메모리주를 중심으로 큰 폭의 조정을 겪었다. 뉴욕 증시는 연방준비제도(연준)의 매파적 금리 동결과 중동 정세 재악화가 겹치며 3대 지수가 일제히 하락했고, 변동성지수(VIX)는 20.66으로 13% 넘게 급등했다. 특히 한 매체가 중국 국유기업이 자체 심자외선(DUV) 노광장비 양산에 착수했다고 보도하면서 삼성전자·SK하이닉스·엔비디아 등 글로벌 반도체주가 동반 급락했고, 중국 CXMT 상장과 인공지능(AI) 설비투자 지속성에 대한 회의론이 매도를 키웠다. 한국 증시는 이 충격을 정면으로 받아 코스피가 5.98% 내린 5,663.24, 코스닥이 6.12% 내린 662.68로 마감했으며, 유가증권·코스닥 양대 시장에 이틀 연속 서킷브레이커가 발동됐다. 심층분석 대상 SK하이닉스는 2분기 매출 79조3,187억원, 영업이익 60조5,426억원으로 분기 사상 최대 실적을 발표했으나 시장 기대치를 밑돌면서 주가가 큰 폭으로 조정받았고, 복수 증권사가 목표주가를 잇달아 하향했다. 원/달러 환율은 1,446.7원에 마감했다. 중동에서는 미군이 이란의 기습 공격을 요격하고 이란 연계 세력이 사우디 원유시설을 겨냥한 드론 공격을 이어가면서 국제 유가가 6% 넘게 반등했다. 연준은 기준금리를 3.50~3.75%로 동결했으나 3명의 지역 연은 총재가 0.25%포인트 인상을 주장하며 반대표를 던졌고, 미 국채 10년물 금리는 4.63%로 소폭 올랐다. 장 마감 후 메타는 시장 예상을 밑도는 실적·전망을 내놓으며 시간외에서 급락했고 마이크로소프트는 클라우드 호조로 강세를 보였다.",
   "indices": [
-    { "name": "S&P 500", "symbol": "^GSPC", "value": 7413.18, "change_pct": 0.02, "change_abs": 1.20 },
-    { "name": "나스닥 종합", "symbol": "^IXIC", "value": 24932.08, "change_pct": -0.18, "change_abs": -43.74 },
-    { "name": "다우존스", "symbol": "^DJI", "value": 52210.08, "change_pct": 0.51, "change_abs": 262.83 },
-    { "name": "러셀 2000", "symbol": "^RUT", "value": 2948.03, "change_pct": 0.62, "change_abs": 18.03 },
-    { "name": "VIX 변동성지수", "symbol": "^VIX", "value": 18.67, "change_pct": 0.48, "change_abs": 0.09 },
-    { "name": "코스피", "symbol": "^KS11", "value": 6755.62, "change_pct": 0.97, "change_abs": 65.00 },
-    { "name": "코스닥", "symbol": "^KQ11", "value": 764.86, "change_pct": 2.22, "change_abs": 16.64 }
+    { "name": "S&P 500", "symbol": "^GSPC", "value": 7316.15, "change_pct": -1.52, "change_abs": -112.63 },
+    { "name": "나스닥 종합", "symbol": "^IXIC", "value": 24442.94, "change_pct": -1.74, "change_abs": -433.97 },
+    { "name": "다우존스", "symbol": "^DJI", "value": 51594.14, "change_pct": -2.19, "change_abs": -1153.18 },
+    { "name": "러셀 2000", "symbol": "^RUT", "value": 2906.31, "change_pct": -1.61, "change_abs": -47.49 },
+    { "name": "VIX 변동성지수", "symbol": "^VIX", "value": 20.66, "change_pct": 13.45, "change_abs": 2.45 },
+    { "name": "코스피", "symbol": "^KS11", "value": 5663.24, "change_pct": -5.98, "change_abs": -360.42 },
+    { "name": "코스닥", "symbol": "^KQ11", "value": 662.68, "change_pct": -6.12, "change_abs": -43.17 }
   ],
   "macro": [
-    { "label": "미 국채 10년물", "value": 4.66, "unit": "%", "change": -0.03 },
-    { "label": "WTI 원유 (7/27 종가)", "value": 82.4, "unit": "USD", "change": -8.0 },
-    { "label": "브렌트유 (7/27 종가)", "value": 88.5, "unit": "USD", "change": -7.0 },
-    { "label": "원/달러 환율", "value": 1468.5, "unit": "KRW", "change": 0.0 },
+    { "label": "미 국채 10년물", "value": 4.63, "unit": "%", "change": 0.02 },
+    { "label": "WTI 원유 (7/29)", "value": 84.18, "unit": "USD", "change": 4.9 },
+    { "label": "브렌트유 (7/29)", "value": 89.43, "unit": "USD", "change": 5.8 },
+    { "label": "원/달러 환율", "value": 1446.7, "unit": "KRW", "change": -15.8 },
     { "label": "연준 기준금리(상단)", "value": 3.75, "unit": "%", "change": 0 },
-    { "label": "나스닥100 선물 (7/28 미 정규장 개장 전 기준)", "value": -0.9, "unit": "%", "change": -0.9 },
-    { "label": "S&P500 선물 (7/28 미 정규장 개장 전 기준)", "value": -0.2, "unit": "%", "change": -0.2 },
-    { "label": "다우 선물 (7/28 미 정규장 개장 전 기준)", "value": 0.8, "unit": "%", "change": 0.8 }
+    { "label": "나스닥100 선물 (7/30 오전 한국시각·아시아장 초반 기준)", "value": -0.5, "unit": "%", "change": -0.5 },
+    { "label": "S&P500 선물 (7/30 오전 한국시각·아시아장 초반 기준)", "value": -0.4, "unit": "%", "change": -0.4 }
   ],
   "movers": {
     "gainers": [
-      { "ticker": "NOW", "pct": 6.5 },
-      { "ticker": "INTC", "pct": 4.0 },
-      { "ticker": "AAPL", "pct": 2.5 }
+      { "ticker": "XOM", "pct": 2.5 },
+      { "ticker": "CVX", "pct": 2.2 },
+      { "ticker": "JNJ", "pct": 1.8 }
     ],
     "losers": [
-      { "ticker": "SNDK", "pct": -11.0 },
-      { "ticker": "MU", "pct": -5.5 },
-      { "ticker": "NVDA", "pct": -3.5 }
+      { "ticker": "MU", "pct": -9.46 },
+      { "ticker": "SNDK", "pct": -6.9 },
+      { "ticker": "NVDA", "pct": -3.42 }
     ]
   },
   "sector_perf": [
-    { "sector": "realestate", "label": "부동산", "pct": 2.2 },
-    { "sector": "materials", "label": "소재", "pct": 1.9 },
-    { "sector": "finance", "label": "금융", "pct": 0.6 },
-    { "sector": "energy", "label": "에너지", "pct": -0.4 },
-    { "sector": "communication", "label": "커뮤니케이션", "pct": -0.6 },
-    { "sector": "tech", "label": "기술", "pct": -1.4 },
-    { "sector": "memory", "label": "반도체·메모리", "pct": -3.0 }
+    { "sector": "healthcare", "label": "헬스케어", "pct": 2.4 },
+    { "sector": "consumer", "label": "필수소비재", "pct": 2.0 },
+    { "sector": "communication", "label": "커뮤니케이션", "pct": 1.9 },
+    { "sector": "energy", "label": "에너지", "pct": 0.8 },
+    { "sector": "tech", "label": "기술", "pct": -2.36 },
+    { "sector": "industrials", "label": "산업재", "pct": -3.42 },
+    { "sector": "memory", "label": "반도체·메모리", "pct": -5.0 }
   ],
   "focus": {
     "ticker": "000660",
     "name": "SK하이닉스",
-    "price": { "value": 1816000, "currency": "KRW", "change_pct": 3.24, "change_abs": 57000, "as_of": "2026-07-27" },
-    "price_context": "코스피 시가총액 상위 대형 반도체주로, 6월 기록한 사상 최고가 298만7,000원 대비 약 39% 물러선 수준까지 조정받은 상태다. 직전 거래일에는 장 초반 낙폭을 모두 만회하며 반도체주 반등에 동참했는데, 이재명 대통령 방미를 계기로 발표된 한미 AI·반도체 협력과 삼성전자·브로드컴의 대규모 협력 소식이 투자심리에 작용한 것으로 풀이된다.",
+    "price": { "value": 1401000, "currency": "KRW", "change_pct": -9.61, "change_abs": -149000, "as_of": "2026-07-29" },
+    "price_context": "코스피 시가총액 상위 대형 반도체주로, 올해 기록한 장중 최고가 298만7,000원 대비 절반 이하 수준까지 밀리며 큰 폭의 조정 국면에 들어섰다. 직전 거래일에는 장중 124만원대까지 낙폭을 키웠다가 일부 만회했으며, 분기 사상 최대 실적 발표에도 시장 기대치를 밑돌았다는 평가와 함께 매물이 쏟아졌다. 중국의 자체 노광장비 양산 보도와 CXMT 상장에 따른 경쟁 심화 우려, AI 설비투자 지속성에 대한 회의론이 겹치며 반도체 대형주 전반이 동반 약세를 보였다.",
     "price_series": [
-      { "label": "6월 고점", "value": 2987000 },
-      { "label": "7/24", "value": 1759000 },
-      { "label": "7/27", "value": 1816000 }
+      { "label": "연중 고점", "value": 2987000 },
+      { "label": "7/27", "value": 1816000 },
+      { "label": "7/28", "value": 1550000 },
+      { "label": "7/29", "value": 1401000 }
     ],
-    "thesis": "SK하이닉스는 <b>HBM 시장 주도력</b>과 <b>HBM4 양산 준비</b>라는 구조적 강점을 유지하고 있다. 고대역폭메모리(HBM) 시장에서 약 60%의 점유율을 확보한 것으로 추정되며, 프리미엄 메모리 가격 강세와 AI 서버 수요가 실적을 밀어올리는 상승 논거의 핵심이다. 증권가는 7월 29일 발표될 2분기 실적이 매출·영업이익 모두 분기 사상 최대를 기록할 것으로 보고 있으나, 차세대 HBM4의 본격 양산 시점이 3분기로 미뤄진 것으로 전해지면서 물량 반영 속도가 단기 논쟁의 중심이 되고 있다. 여기에 삼성전자·마이크론의 추격과 상장으로 존재감을 키운 중국 CXMT까지 경쟁 구도가 넓어지는 가운데, 목표주가가 185만~430만원으로 크게 갈리는 밸류에이션 논쟁이 진행 중이다. 7월 29일 실적과 HBM4 출하·가격 코멘터리가 방향성을 가를 이벤트로 지목된다.",
-    "rating": "매수(컨센서스, 일부 하우스 중립)",
-    "target": { "avg": 3105000, "high": 4300000, "low": 1850000, "currency": "KRW" },
+    "thesis": "SK하이닉스는 <b>HBM 시장 주도력</b>과 고부가 메모리 중심의 <b>수익성</b>이라는 구조적 강점을 유지하고 있다. 2분기 매출 79조3,187억원, 영업이익 60조5,426억원으로 분기 사상 최대 실적을 기록했고 상반기 누적 매출이 처음으로 100조원을 넘어섰다. 다만 실적이 컨센서스를 밑돌면서 '실적 발표=차익실현'의 전형적인 반응이 나타났고, 낸드 가격 하락 가능성과 차세대 HBM4 물량 반영 속도, 중국의 자체 DUV 노광장비 양산·CXMT 상장에 따른 중장기 경쟁 심화, AI 설비투자 순환 출자 구조에 대한 회의론이 하방 논거로 부각됐다. 여러 증권사가 목표주가를 잇달아 하향하면서도 대체로 매수 의견은 유지하고 있어, HBM4 양산 진척과 메모리 가격·수요 흐름이 방향성을 가를 변수로 지목된다.",
+    "rating": "매수 유지(목표주가 하향 잇따라)",
+    "target": { "avg": 2140000, "high": 2800000, "low": 1480000, "currency": "KRW" },
     "drivers": [
-      { "point": "증권가 컨센서스(14개 증권사)는 2분기 매출 약 84조1,000억원, 영업이익 약 64조1,000억원의 분기 사상 최대 실적을 전망하며, 60%대 HBM 점유율과 프리미엄 메모리 가격 강세를 근거로 높은 영업이익률을 예상", "source": { "name": "TradingKey", "url": "https://www.tradingkey.com/analysis/stocks/more/262055802-sk-hynix-q2-earnings-preview-record-profits-expected-tradingkey" } },
-      { "point": "인베스팅닷컴 집계 평균 목표주가는 약 310만원으로 현재 주가를 약 20% 상회하며, 애널리스트들은 실적·마진 가정을 상향하며 적정가치 추정치를 끌어올리는 중", "source": { "name": "Simply Wall St", "url": "https://simplywall.st/stocks/kr/semiconductors/kose-a000660/sk-hynix-shares/future" } },
-      { "point": "이재명 대통령 방미를 계기로 한미 기업 간 대규모 AI·반도체 협력이 발표되고 삼성전자가 브로드컴과 2030년까지 총 2,000억달러 규모 파운드리·메모리 협력을 추진하는 등 국내 반도체 투자심리가 개선", "source": { "name": "CBC뉴스", "url": "https://www.cbci.co.kr/news/articleView.html?idxno=592222" } },
-      { "point": "주말 미국-이란 군사행동 중단과 유가 급락으로 위험선호가 회복되며 직전 거래일 반도체주 반등을 견인", "source": { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/28/oil-price-today-wti-brent-us-iran-hormuz.html" } }
+      { "point": "2분기 매출 79조3,187억원(전년 동기 대비 +257%), 영업이익 60조5,426억원(+557%)으로 분기 사상 최대 실적을 기록했고 상반기 누적 매출이 처음으로 100조원을 돌파했으며, HBM·AI 서버용 D램·eSSD 등 고부가 제품 중심으로 높은 수익성을 창출했다고 회사가 밝힘", "source": { "name": "SK하이닉스 뉴스룸", "url": "https://news.skhynix.co.kr/q2-2026-business-results/" } },
+      { "point": "D램과 낸드플래시 모두 전분기에 이어 큰 폭의 가격 상승을 기록했으며, HBM과 고용량 서버 메모리 수요가 실적을 견인했다고 회사가 콘퍼런스콜에서 설명", "source": { "name": "디일렉", "url": "https://www.thelec.kr/news/articleView.html?idxno=60209" } },
+      { "point": "미래에셋증권은 목표주가를 하향하면서도 '과격한 조정이지만 업황·펀더멘털의 실질 변화는 제한적'이라며 매수 의견을 유지", "source": { "name": "파이낸셜뉴스", "url": "https://www.fnnews.com/news/202607290929317152" } },
+      { "point": "분기 사상 최대 실적으로 상반기 영업이익이 약 98조원에 달하며 고부가 메모리 중심의 이익 체력을 재확인", "source": { "name": "헤럴드경제", "url": "https://biz.heraldcorp.com/article/10823557" } }
     ],
     "risks": [
-      { "point": "차세대 HBM4 본격 양산 개시 시점이 3분기로 지연된 것으로 전해지면서, 29일 실적이 HBM4 출하·가격을 둘러싼 이진법적(binary) 촉매로 작용", "source": { "name": "SimplyWall St", "url": "https://simplywall.st/community/narratives/kr/semiconductors/kose-a000660/sk-hynix-shares/s5vdhf05-a000660-next-generation-ai-memory-will-drive-sector-leadership/updates/15-narrative-update-analyst-price-target-raised-for-sk-hynix-a" } },
-      { "point": "6월 사상 최고가(298만7,000원) 대비 약 39% 급락하는 등 밸류에이션 부담·차익실현 압력이 노출된 가운데 실적 발표를 앞두고 투자자 경계감이 확대", "source": { "name": "ad-hoc-news", "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/sk-hynix-stands-at-a-crossroads-record-earnings-loom-as-a-39-percent/69886027" } },
-      { "point": "세계 4위 D램 업체 중국 CXMT의 상하이 상장으로 중장기 경쟁 심화 가능성이 부각되고, 직전 거래일 뉴욕 증시에서 관련 메모리주가 동반 약세", "source": { "name": "The Motley Fool", "url": "https://www.fool.com/coverage/stock-market-today/2026/07/27/stock-market-today-july-27-dow-rises-on-oil-retreat-and-sandisk-plunges-11-on-memory-weakness/" } },
-      { "point": "외국인 매도가 이어질 경우 반도체 대형주 전반의 수급 부담 지속(직전 거래일 외국인 유가증권시장 약 2조9,000억원 순매도)", "source": { "name": "슬라이스트", "url": "https://www.slist.kr/news/articleView.html?idxno=754524" } }
+      { "point": "미래에셋증권이 목표주가를 420만원에서 280만원으로 약 33% 하향하며 낸드 계약가격 하락 가능성과 중국의 DUV 노광장비 개발 진전을 근거로 제시", "source": { "name": "글로벌이코노믹", "url": "https://www.g-enews.com/article/Securities/2026/07/2026072908352918144093b5d4e_1" } },
+      { "point": "분기 사상 최대 실적에도 시장 기대치를 밑돈 것으로 평가되며 IR에 대한 실망감이 확산돼 주가가 큰 폭으로 하락하고 코스피를 끌어내림", "source": { "name": "아시아경제", "url": "https://view.asiae.co.kr/article/2026072910332662006" } },
+      { "point": "한 매체 보도로 촉발된 중국의 자체 심자외선(DUV) 노광장비 양산 착수와 CXMT 상장이 중장기 메모리 경쟁 심화 우려를 키움", "source": { "name": "Tom's Hardware", "url": "https://www.tomshardware.com/tech-industry/semiconductors/china-begins-mass-production-of-domestic-immersion-duv-lithography-machines" } },
+      { "point": "AI 인프라 설비투자를 둘러싼 순환 출자 구조 우려가 재부각되며 반도체 대형주 전반이 동반 약세를 보임", "source": { "name": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/article/nvidia-drops-nearly-5-leading-chip-stocks-lower-amid-renewed-worries-of-circular-financing-193309793.html" } }
     ],
     "catalysts": [
-      { "date": "07-29", "event": "2026년 2분기 실적발표 및 투자자·언론 대상 콘퍼런스콜(HBM4 출하·가격 코멘터리 주목)" },
-      { "date": "3Q26", "event": "HBM4 본격 양산 개시 및 주요 고객사 인증 진척" }
+      { "date": "3Q26", "event": "차세대 HBM4 양산 진척과 주요 고객사 인증·물량 반영 속도" },
+      { "date": "3Q26", "event": "D램·낸드 계약가격 흐름과 메모리 재고·수요 지표 확인" }
     ],
     "scenarios": [
-      { "kind": "bull", "label": "실적 서프라이즈·HBM4 순항", "condition": "2분기 실적이 컨센서스를 웃돌고 HBM4 출하·가격 코멘터리가 긍정적이며 한미 반도체 협력 기대가 이어지는 경우", "implication": "메모리 슈퍼사이클 기대가 재부각되며 반등 지속" },
-      { "kind": "base", "label": "실적 견조·박스권", "condition": "역대급 2분기 실적에도 HBM4 양산 시점 지연이 확인되고 외국인 수급 부담이 남는 경우", "implication": "실적 모멘텀과 밸류에이션 부담이 상쇄되며 박스권 등락" },
-      { "kind": "bear", "label": "HBM4 지연·경쟁 심화", "condition": "HBM4 램프업 지연이 재확인되거나 삼성·마이크론·CXMT 경쟁 우려가 커지고 외국인 매도가 재개되는 경우", "implication": "반도체 대형주 전반과 함께 추가 조정 압력" }
+      { "kind": "bull", "label": "메모리 가격 강세·HBM4 순항", "condition": "D램·낸드 가격 강세가 이어지고 HBM4 양산·인증이 순조로우며 AI 서버 수요가 견조하게 유지되는 경우", "implication": "이익 체력 재평가와 함께 낙폭 과대 인식이 부각되며 반등 시도" },
+      { "kind": "base", "label": "실적 견조·변동성 지속", "condition": "고부가 메모리 수익성은 유지되나 낸드 가격 둔화와 중국 경쟁·AI 투자 회의론이 병존하는 경우", "implication": "실적 모멘텀과 밸류에이션·수급 부담이 상쇄되며 높은 변동성 속 등락" },
+      { "kind": "bear", "label": "낸드 약세·경쟁 심화", "condition": "낸드 계약가격이 하락하고 중국의 노광장비·CXMT발 경쟁 우려가 커지며 외국인 매도가 이어지는 경우", "implication": "반도체 대형주 전반과 함께 추가 조정 압력" }
     ],
     "watch": [
-      "7월 29일 2분기 실적·콘퍼런스콜과 HBM4 출하·가격 가이던스",
-      "HBM4 양산 개시 시점과 고객사 인증 진척",
-      "삼성전자·마이크론·중국 CXMT의 HBM·D램 동향",
-      "엔비디아 AI 반도체 수요와 HBM 공급 계약",
+      "차세대 HBM4 양산 개시 시점과 고객사 인증 진척",
+      "D램·낸드 계약가격과 메모리 재고·수요 흐름",
+      "중국 자체 DUV 노광장비 양산·CXMT 등 경쟁 지형 변화",
+      "엔비디아 등 AI 반도체 수요와 설비투자 지속성",
       "외국인 수급과 원/달러 환율",
-      "국제 유가·미 국채 금리와 7월 28~29일 FOMC"
+      "국제 유가·미 국채 금리와 중동 정세"
     ]
   },
   "headlines": [
     {
-      "fact": "직전 거래일인 7월 27일(현지) 뉴욕 증시는 유가 급락에 힘입어 다우가 262.83포인트(0.51%) 오른 52,210.08, S&P500이 0.02% 오른 7,413.18로 마감한 반면, 반도체주 약세에 나스닥 종합은 0.18% 내린 24,932.08을 기록하며 혼조 마감했다.",
-      "sources": [{ "name": "The Motley Fool", "url": "https://www.fool.com/coverage/stock-market-today/2026/07/27/stock-market-today-july-27-dow-rises-on-oil-retreat-and-sandisk-plunges-11-on-memory-weakness/" }, { "name": "The Washington Post", "url": "https://www.washingtonpost.com/business/2026/07/27/wall-street-stocks-dow-nasdaq/504db546-89f8-11f1-8912-d71e69d679d7_story.html" }],
+      "fact": "직전 거래일인 7월 29일(현지) 뉴욕 증시는 연준의 매파적 금리 동결과 중동 정세 재악화가 겹치며 3대 지수가 일제히 하락했다. 다우존스가 1,153.18포인트(2.19%) 내린 51,594.14, S&P500이 1.52% 내린 7,316.15, 나스닥 종합이 1.74% 내린 24,442.94로 마감했고, 러셀2000은 1.61% 하락했다. 변동성지수(VIX)는 20.66으로 13.45% 급등했다.",
+      "sources": [{ "name": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/stocks/articles/stock-market-today-july-29-212135780.html" }, { "name": "The Washington Post", "url": "https://www.washingtonpost.com/business/2026/07/29/wall-street-stocks-dow-nasdaq/7aafba20-8b8b-11f1-8912-d71e69d679d7_story.html" }],
       "tickers": [],
       "topic": "macro"
     },
     {
-      "fact": "직전 거래일 뉴욕 증시에서 애플이 강세를 보이며 시가총액 1위 자리를 엔비디아로부터 되찾았고, 소프트웨어주 서비스나우가 급등한 반면, 엔비디아는 중국 기업의 반도체 장비 양산 가능성 보도에 하락하고 샌디스크가 약 11%, 마이크론이 약 6% 밀리는 등 메모리주가 약세를 보였다.",
-      "sources": [{ "name": "The Motley Fool", "url": "https://www.fool.com/coverage/stock-market-today/2026/07/27/stock-market-today-july-27-dow-rises-on-oil-retreat-and-sandisk-plunges-11-on-memory-weakness/" }, { "name": "The Globe and Mail", "url": "https://www.theglobeandmail.com/investing/markets/stocks/META/pressreleases/3481300/stock-market-news-for-july-27-2026/" }],
-      "tickers": ["AAPL", "NVDA", "SNDK", "MU", "NOW"],
+      "fact": "한 IT 전문매체가 중국의 한 국유기업이 자체 심자외선(DUV) 침지 노광장비 양산에 착수했으며 첫 물량이 올해 SMIC·화훙·CXMT 등에 공급될 것이라고 보도하면서 반도체 장비·메모리주가 동반 급락했다. 도쿄일렉트론·니콘·어드반테스트 등 일본 반도체 장비주가 약 11% 밀리고 닛케이지수가 4% 하락하는 등 아시아 반도체주 전반이 충격을 받았다.",
+      "sources": [{ "name": "Tom's Hardware", "url": "https://www.tomshardware.com/tech-industry/semiconductors/china-begins-mass-production-of-domestic-immersion-duv-lithography-machines" }, { "name": "The Information", "url": "https://www.theinformation.com/articles/china-starts-mass-producing-homegrown-duv-chipmaking-tools-advance-local-chip-industry" }, { "name": "Asia Financial", "url": "https://www.asiafinancial.com/asia-tech-stocks-sink-on-china-chipmaking-advance-ai-doubts" }],
+      "tickers": [],
       "sector": "memory",
-      "topic": "macro"
+      "topic": "regulation"
     },
     {
-      "fact": "코스피는 장 초반 2% 급락 충격을 딛고 전 거래일 대비 65포인트(0.97%) 오른 6,755선에 반등 마감했고, 코스닥은 16.64포인트(2.22%) 오른 764.86에 마쳤다. 외국인은 유가증권시장에서 약 2조9,000억원을 순매도했으나 개인이 약 1조9,800억원, 기관이 약 8,600억원을 순매수하며 지수를 끌어올렸다.",
-      "sources": [{ "name": "Businesskorea", "url": "https://www.businesskorea.co.kr/news/articleView.html?idxno=273665" }, { "name": "슬라이스트", "url": "https://www.slist.kr/news/articleView.html?idxno=754524" }],
+      "fact": "코스피는 전 거래일 대비 360.42포인트(5.98%) 내린 5,663.24, 코스닥은 43.17포인트(6.12%) 내린 662.68로 마감했다. 유가증권·코스닥 양대 시장에 이틀 연속 서킷브레이커가 발동됐으며, 이는 관련 제도 도입 이래 처음 있는 일이다. 장중 코스피는 8% 넘게 밀리며 5,532선까지 내려앉기도 했다.",
+      "sources": [{ "name": "머니투데이", "url": "https://www.mt.co.kr/stock/2026/07/29/2026072916062263660" }, { "name": "오마이뉴스", "url": "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003255138&PAGE_CD=ET001&BLCK_NO=1&CMPT_CD=T0016" }, { "name": "머니투데이", "url": "https://www.mt.co.kr/stock/2026/07/29/2026072912365087773" }],
       "tickers": [],
       "topic": "macro"
     },
     {
-      "fact": "직전 거래일 한국 증시에서 삼성전자가 1.8%, SK하이닉스가 3.24% 오른 181만6,000원에 마감하며 대형 반도체주가 반등을 주도했다. 이재명 대통령 방미를 계기로 한미 기업 간 대규모 AI·반도체 협력이 발표되고 삼성전자가 브로드컴과 2030년까지 총 2,000억달러 규모 협력을 추진한다는 소식이 투자심리에 작용했다.",
-      "sources": [{ "name": "CBC뉴스", "url": "https://www.cbci.co.kr/news/articleView.html?idxno=592222" }, { "name": "슬라이스트", "url": "https://www.slist.kr/news/articleView.html?idxno=754524" }],
-      "tickers": ["000660", "005930"],
-      "sector": "memory",
-      "topic": "macro"
-    },
-    {
-      "fact": "SK하이닉스는 7월 29일 오전 2026년 2분기 실적을 발표하고 콘퍼런스콜을 열 예정이며, 14개 증권사 컨센서스는 매출 약 84조1,000억원, 영업이익 약 64조1,000억원의 분기 사상 최대 실적을 전망한다. 다만 차세대 HBM4의 본격 양산 시점이 3분기로 미뤄진 것으로 전해지면서 물량 반영 여부가 핵심 변수로 지목된다.",
-      "sources": [{ "name": "TradingKey", "url": "https://www.tradingkey.com/analysis/stocks/more/262055802-sk-hynix-q2-earnings-preview-record-profits-expected-tradingkey" }, { "name": "한국경제", "url": "https://www.hankyung.com/article/202607289527i" }],
+      "fact": "SK하이닉스는 7월 29일 2026년 2분기 매출 79조3,187억원, 영업이익 60조5,426억원(영업이익률 76%)의 분기 사상 최대 실적을 발표했다. 매출과 영업이익은 전년 동기 대비 각각 257%, 557% 늘었고 상반기 누적 매출은 처음으로 100조원을 넘어섰으나, 시장 기대치를 밑돌았다는 평가 속에 주가는 큰 폭으로 조정받았다.",
+      "sources": [{ "name": "헤럴드경제", "url": "https://biz.heraldcorp.com/article/10823557" }, { "name": "SK하이닉스 뉴스룸", "url": "https://news.skhynix.co.kr/q2-2026-business-results/" }, { "name": "MBC", "url": "https://imnews.imbc.com/news/2026/econo/article/6840831_36932.html" }],
       "tickers": ["000660"],
       "sector": "memory",
       "topic": "earnings"
     },
     {
-      "fact": "국제 유가는 미국-이란 군사행동 중단이 유지되고 협상 재개 기대가 커지며 하락세를 이어갔다. 트럼프 미국 대통령은 이란과 '좋은 대화'를 하고 있으며 합의 가능성이 있다고 밝히면서도 협상이 실패하면 공격을 재개할 수 있다고 언급했고, 이란은 오만을 통해 호르무즈 해협 항행 관련 협의에 나섰다.",
-      "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/28/oil-price-today-wti-brent-us-iran-hormuz.html" }, { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/27/oil-price-wti-brent-slide-as-iran-reportedly-may-halt-attacks.html" }],
+      "fact": "SK하이닉스 실적 발표 직후 복수 증권사가 목표주가를 잇달아 하향했다. 미래에셋증권은 목표주가를 420만원에서 280만원으로 약 33% 낮추면서 낸드 계약가격 하락 가능성과 중국의 DUV 노광장비 개발 진전을 근거로 제시했으나 매수 의견은 유지했다.",
+      "sources": [{ "name": "파이낸셜뉴스", "url": "https://www.fnnews.com/news/202607290929317152" }, { "name": "한국경제", "url": "https://www.hankyung.com/article/202607292047i" }, { "name": "글로벌이코노믹", "url": "https://www.g-enews.com/article/Securities/2026/07/2026072908352918144093b5d4e_1" }],
+      "tickers": ["000660"],
+      "sector": "memory",
+      "topic": "guidance"
+    },
+    {
+      "fact": "연방공개시장위원회(FOMC)는 7월 29일 기준금리를 3.50~3.75%로 다섯 번째 연속 동결했다. 다만 클리블랜드·미니애폴리스·댈러스 연은 총재 3명이 0.25%포인트 인상을 주장하며 반대표를 던졌고, 이는 세 위원이 같은 방향의 인상을 주장한 첫 사례로 매파적 신호로 해석됐다. 미 국채 10년물 금리는 4.63%로 소폭 상승했다.",
+      "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/29/fed-rate-decision-july-2026.html" }, { "name": "Fox Business", "url": "https://www.foxbusiness.com/economy/federal-reserve-interest-rate-decision-july-29-2026" }, { "name": "Trading Economics", "url": "https://tradingeconomics.com/united-states/government-bond-yield/news/534551" }],
+      "tickers": [],
+      "topic": "fed"
+    },
+    {
+      "fact": "국제 유가는 중동 정세 재악화로 3거래일 만에 반등했다. WTI 원유가 약 6.2% 오른 배럴당 84.18달러, 브렌트유가 약 6.9% 오른 89.43달러를 기록했다. 미군은 중동 주둔 미군을 겨냥한 이란의 기습 공격을 요격했다고 밝혔고, 이란 연계 세력은 이틀 연속 사우디 동부 원유시설을 향해 드론 공격을 감행했다.",
+      "sources": [{ "name": "Fortune", "url": "https://fortune.com/article/price-of-oil-07-29-2026/" }, { "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-28/latest-oil-market-news-and-analysis-for-july-29" }, { "name": "Trading Economics", "url": "https://tradingeconomics.com/commodity/crude-oil" }],
       "tickers": [],
       "topic": "commodities"
     },
     {
-      "fact": "7월 28일 미 정규장 개장 전 지수 선물은 반도체주 약세가 이어지며 혼조를 보였다. 나스닥100 선물이 약 0.9%(200포인트 이상) 하락하고 S&P500 선물이 약 0.2% 내린 반면, 다우 선물은 셔윈윌리엄스·코카콜라의 실적 호조에 약 400포인트 상승했다.",
-      "sources": [{ "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-500-futures-muted-as-semiconductors-drop-earnings-roll-in" }, { "name": "Schaeffer's Investment Research", "url": "https://www.schaeffersresearch.com/content/ezines/2026/07/28/stock-futures-point-to-another-mixed-session" }],
-      "tickers": [],
+      "fact": "직전 거래일 뉴욕 증시에서 반도체주가 큰 폭으로 하락했다. 마이크론이 약 9.46%, 샌디스크가 약 6.9%, 엔비디아가 약 3.42% 내렸다. AI 인프라 설비투자를 둘러싼 순환 출자 구조 우려와 중국발 경쟁 심화 보도가 매도를 부추긴 것으로 전해졌다. 반면 유가 급등에 에너지주와 헬스케어·필수소비재 등 방어주가 강세를 보였다.",
+      "sources": [{ "name": "TradingKey", "url": "https://www.tradingkey.com/news/market-movers/262061777-market-movers-mu-20260729" }, { "name": "TradingKey", "url": "https://www.tradingkey.com/news/market-movers/262062321-market-movers-nvda-20260729" }, { "name": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/article/nvidia-drops-nearly-5-leading-chip-stocks-lower-amid-renewed-worries-of-circular-financing-193309793.html" }],
+      "tickers": ["MU", "SNDK", "NVDA"],
+      "sector": "memory",
       "topic": "macro"
     },
     {
-      "fact": "중국 D램 업체 CXMT의 상하이 대형 상장 이후, AI 자본지출을 둘러싼 순환 출자 구조가 하이퍼스케일러의 투자 축소 시 흔들릴 수 있다는 우려가 재부각되며 반도체주가 압박을 받았다. 삼성전자·SK하이닉스·마이크론이 주도해온 메모리 경쟁 지형에 중장기 변수가 더해졌다.",
-      "sources": [{ "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-500-futures-muted-as-semiconductors-drop-earnings-roll-in" }, { "name": "The Motley Fool", "url": "https://www.fool.com/coverage/stock-market-today/2026/07/27/stock-market-today-july-27-dow-rises-on-oil-retreat-and-sandisk-plunges-11-on-memory-weakness/" }],
-      "tickers": ["000660", "005930", "MU"],
-      "sector": "memory",
-      "topic": "ipo"
-    },
-    {
-      "fact": "인텔은 2026년 2분기 주당순이익 0.42달러로 시장 예상치(0.21달러)를 크게 웃돌고 매출 161억3,000만달러로 컨센서스를 약 12% 상회하는 실적을 발표했다.",
-      "sources": [{ "name": "The Globe and Mail", "url": "https://www.theglobeandmail.com/investing/markets/stocks/META/pressreleases/3481300/stock-market-news-for-july-27-2026/" }],
-      "tickers": ["INTC"],
+      "fact": "장 마감 후 실적을 발표한 메타플랫폼스는 조정 주당순이익 6.18달러로 시장 예상치(약 7.17달러)를 밑돌고 설비투자 확대가 부각되며 시간외에서 약 9.6% 급락했다. 반면 마이크로소프트는 매출 900억1,000만달러로 예상치를 웃돌고 애저(Azure) 매출이 회계연도 처음으로 1,000억달러를 넘어서는 등 클라우드 호조에 시간외에서 약 3% 상승했다.",
+      "sources": [{ "name": "Investing.com", "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-meta-misses-eps-in-q2-2026-as-stock-sinks-after-hours-93CH-4821910" }, { "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-29/microsoft-meta-earnings-face-a-market-growing-skeptical-of-ai" }],
+      "tickers": ["META", "MSFT"],
       "sector": "tech",
       "topic": "earnings"
-    },
-    {
-      "fact": "연방공개시장위원회(FOMC)는 7월 28~29일 회의를 열며, 이코노미스트 다수와 CME 페드워치는 기준금리를 3.50~3.75%에서 동결할 가능성을 높게 보고 있다. 미 국채 10년물 금리는 유가 하락에 따른 인플레이션 우려 완화로 상단 압력이 낮아졌다.",
-      "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/27/stock-market-today-live-updates.html" }, { "name": "Schaeffer's Investment Research", "url": "https://www.schaeffersresearch.com/content/ezines/2026/07/28/stock-futures-point-to-another-mixed-session" }],
-      "tickers": [],
-      "topic": "fed"
     }
   ],
   "sections": [
@@ -155,17 +149,23 @@
       "title": "미국 증시",
       "facts": [
         {
-          "fact": "7월 27일 다우는 유가 급락에 따른 인플레이션 우려 완화로 262.83포인트(0.51%) 오른 52,210.08에 마감했고, S&P500은 0.02% 오른 7,413.18로 강보합 마쳤다. 반면 나스닥 종합은 반도체주 약세로 0.18% 내린 24,932.08을 기록했고, 러셀2000은 0.62% 올랐다. 변동성지수(VIX)는 18.67 수준을 나타냈다.",
-          "sources": [{ "name": "The Motley Fool", "url": "https://www.fool.com/coverage/stock-market-today/2026/07/27/stock-market-today-july-27-dow-rises-on-oil-retreat-and-sandisk-plunges-11-on-memory-weakness/" }, { "name": "The Washington Post", "url": "https://www.washingtonpost.com/business/2026/07/27/wall-street-stocks-dow-nasdaq/504db546-89f8-11f1-8912-d71e69d679d7_story.html" }],
+          "fact": "7월 29일 뉴욕 증시는 연준의 매파적 금리 동결과 중동 정세 재악화, 반도체주 급락이 겹치며 큰 폭으로 하락했다. 다우가 2.19%, S&P500이 1.52%, 나스닥 종합이 1.74%, 러셀2000이 1.61% 내렸고, 변동성지수(VIX)는 20.66으로 13% 넘게 급등하며 위험회피 심리가 확산됐다.",
+          "sources": [{ "name": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/stocks/articles/stock-market-today-july-29-212135780.html" }, { "name": "TheStreet", "url": "https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-july-29-2026stock-market-today-july-29-2026" }],
           "tickers": [],
           "topic": "macro"
         },
         {
-          "fact": "업종별로는 부동산(약 +2.2%)과 소재(약 +1.9%)가 강세를 보인 반면 기술(약 -1.4%) 업종이 가장 부진했다. 애플이 강세를 보이며 시가총액 1위에 다시 올랐고 서비스나우 등 소프트웨어주가 반등했으나, 엔비디아·마이크론·샌디스크 등 반도체주는 약세를 보였다. 이번 주에는 대형 기술주 실적과 7월 28~29일 FOMC가 집중돼 있다.",
-          "sources": [{ "name": "The Globe and Mail", "url": "https://www.theglobeandmail.com/investing/markets/stocks/META/pressreleases/3481300/stock-market-news-for-july-27-2026/" }, { "name": "Investrade", "url": "https://investrade.com/market-review-july-27-2026/" }],
-          "tickers": ["AAPL", "NVDA", "NOW"],
+          "fact": "업종별로는 유가 급등에 에너지주가, 매파적 금리 환경에 헬스케어·필수소비재·커뮤니케이션 등 방어 업종이 상대적으로 강세를 보인 반면, 기술(약 -2.4%)과 산업재(약 -3.4%)가 부진했다. 나스닥100지수는 최고가 대비 약 11% 하락하며 기술적 조정 국면에 진입했다.",
+          "sources": [{ "name": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/stocks/articles/stock-market-today-july-29-212135780.html" }, { "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates" }],
+          "tickers": [],
           "sector": "tech",
           "topic": "other"
+        },
+        {
+          "fact": "7월 30일 오전(한국시각) 아시아장 초반 미국 지수 선물은 반도체주 약세와 메타의 부진한 실적·전망 여파로 하락 압력을 받았다. 장 마감 후 메타가 시간외에서 급락한 반면 마이크로소프트는 클라우드 호조로 강세를 보이며 나스닥100 선물의 낙폭을 일부 완화했다.",
+          "sources": [{ "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-29/stock-market-today-dow-s-p-live-updates" }, { "name": "Stocktwits", "url": "https://stocktwits.com/news-articles/markets/equity/nasdaq-sp500-futures-mixed-fed-verdict-microsoft-meta-earnings-oil-rally-why-skhy-spcx-hood-be-are-in-focus/cZNRo6ARJRi" }],
+          "tickers": ["META", "MSFT"],
+          "topic": "macro"
         }
       ]
     },
@@ -173,21 +173,20 @@
       "title": "한국 증시",
       "facts": [
         {
-          "fact": "직전 거래일 코스피는 장 초반 2% 넘게 급락해 6,557선까지 밀렸다가 낙폭을 만회하고 0.97% 오른 6,755선에 반등 마감했으며, 코스닥은 2.22% 오른 764.86으로 마쳤다. 원/달러 환율은 증시 반등에도 원화 약세 흐름 속에 1,468.5원에 마감했다.",
-          "sources": [{ "name": "Businesskorea", "url": "https://www.businesskorea.co.kr/news/articleView.html?idxno=273665" }, { "name": "미디어워치", "url": "https://www.mediawatch.kr/news/article.html?no=260482" }],
+          "fact": "직전 거래일 코스피는 5.98% 내린 5,663.24, 코스닥은 6.12% 내린 662.68로 마감했다. 장중 코스피가 8% 넘게 급락하며 5,532선까지 밀려 서킷브레이커가 발동됐고, 양대 시장에 이틀 연속 서킷브레이커가 발동된 것은 제도 도입 이래 처음이다. 원/달러 환율은 전일 주간종가 대비 15.8원 내린 1,446.7원에 마감했다.",
+          "sources": [{ "name": "머니투데이", "url": "https://www.mt.co.kr/stock/2026/07/29/2026072916062263660" }, { "name": "연합·CRI", "url": "https://korean.cri.cn/2026/07/29/ARTI1785312207037438" }],
           "tickers": [],
           "topic": "macro"
         },
         {
-          "fact": "외국인은 유가증권시장에서 약 2조9,000억원을 순매도하며 지수를 짓눌렀으나, 개인이 약 1조9,800억원, 기관이 약 8,600억원을 순매수하며 반등을 이끌었다. 지난주 뉴욕 반도체주 약세로 급락했던 대형주가 한미 반도체 협력 기대에 되돌림을 나타냈다.",
-          "sources": [{ "name": "슬라이스트", "url": "https://www.slist.kr/news/articleView.html?idxno=754524" }, { "name": "미디어워치", "url": "https://www.mediawatch.kr/news/article.html?no=260482" }],
-          "tickers": ["000660", "005930"],
-          "sector": "memory",
+          "fact": "외국인은 7월 들어 유가증권·코스닥시장에서 대규모 순매도를 이어가며 그간 상승을 주도했던 반도체주를 중심으로 매물을 쏟아냈다. 코스피는 7월 한 달 동안 30% 넘게 하락했고, 전 거래일인 7월 28일에도 10.84% 급락하며 6,023.66에 마친 바 있다.",
+          "sources": [{ "name": "헤럴드경제", "url": "https://biz.heraldcorp.com/article/10824319" }, { "name": "머니투데이", "url": "https://www.mt.co.kr/stock/2026/07/28/2026072815271496219" }],
+          "tickers": [],
           "topic": "macro"
         },
         {
-          "fact": "삼성전자가 1.8%, SK하이닉스가 3.24% 오르며 반등을 주도했다. 이재명 대통령 방미를 계기로 발표된 한미 AI·반도체 협력과 삼성전자·브로드컴의 2030년까지 총 2,000억달러 규모 파운드리·메모리 협력 소식이 투자심리를 지지했고, 시장의 초점은 7월 29일 SK하이닉스 실적과 FOMC로 이동하고 있다.",
-          "sources": [{ "name": "CBC뉴스", "url": "https://www.cbci.co.kr/news/articleView.html?idxno=592222" }, { "name": "한국경제", "url": "https://www.hankyung.com/article/202607289527i" }],
+          "fact": "SK하이닉스가 분기 사상 최대 실적 발표에도 시장 기대치를 밑돌았다는 평가 속에 큰 폭으로 하락하며 지수 낙폭을 키웠고, 삼성전자 등 반도체 대형주도 동반 약세를 보였다. 중국의 자체 DUV 노광장비 양산 보도와 CXMT 상장, AI 설비투자 회의론이 겹치며 반도체 중심의 매도가 심화됐다.",
+          "sources": [{ "name": "아시아경제", "url": "https://view.asiae.co.kr/article/2026072910332662006" }, { "name": "SBS", "url": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008680669" }],
           "tickers": ["000660", "005930"],
           "sector": "memory",
           "topic": "macro"
@@ -198,25 +197,25 @@
       "title": "메모리 반도체·AI",
       "facts": [
         {
-          "fact": "SK하이닉스는 HBM 공급 구도에서 약 60% 점유율로 주도력을 유지하며 7월 29일 분기 사상 최대 실적(매출 약 84조1,000억원·영업이익 약 64조1,000억원 컨센서스)이 예상되나, HBM4 본격 양산 시점이 3분기로 미뤄진 것으로 전해지면서 실적발표가 이진법적 촉매로 지목된다. 목표주가는 185만~430만원으로 크게 갈려 AI 낙관론과 피크아웃 우려가 맞서고 있다.",
-          "sources": [{ "name": "TradingKey", "url": "https://www.tradingkey.com/analysis/stocks/more/262055802-sk-hynix-q2-earnings-preview-record-profits-expected-tradingkey" }, { "name": "ad-hoc-news", "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/sk-hynix-stands-at-a-crossroads-record-earnings-loom-as-a-39-percent/69886027" }],
+          "fact": "한 IT 전문매체 보도로 촉발된 중국 국유기업의 자체 심자외선(DUV) 침지 노광장비 양산 착수 소식이 글로벌 반도체 공급망에 파장을 일으켰다. 미국 주도의 수출 통제로 첨단 극자외선(EUV) 장비 접근이 막힌 중국이 DUV 자립에 성과를 냈다는 평가가 나오며, 첫 물량이 올해 SMIC·화훙·CXMT 등에 공급될 것으로 전해졌다. 다만 즉각적인 상업적 위협은 제한적이라는 분석도 함께 제기됐다.",
+          "sources": [{ "name": "Tom's Hardware", "url": "https://www.tomshardware.com/tech-industry/semiconductors/china-begins-mass-production-of-domestic-immersion-duv-lithography-machines" }, { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/28/china-chipmaking-duv-tool-asml-explained.html" }],
+          "tickers": [],
+          "sector": "memory",
+          "topic": "regulation"
+        },
+        {
+          "fact": "SK하이닉스는 HBM과 AI 서버용 D램, 기업용 SSD(eSSD) 등 고부가 제품 중심으로 2분기 사상 최대 실적을 냈으며, D램과 낸드 모두 전분기에 이어 큰 폭의 가격 상승을 기록했다고 콘퍼런스콜에서 밝혔다. 다만 낸드 계약가격 하락 가능성과 중국 CXMT의 상하이 상장, 중국의 자체 노광장비 양산이 중장기 경쟁 변수로 부각되며 목표주가 하향이 이어졌다.",
+          "sources": [{ "name": "디일렉", "url": "https://www.thelec.kr/news/articleView.html?idxno=60209" }, { "name": "글로벌이코노믹", "url": "https://www.g-enews.com/article/Securities/2026/07/2026072908352918144093b5d4e_1" }],
           "tickers": ["000660"],
           "sector": "memory",
           "topic": "guidance"
         },
         {
-          "fact": "중국 CXMT의 상하이 대형 상장 이후 메모리 경쟁 심화 우려와 함께, AI 자본지출을 둘러싼 순환 출자 구조가 하이퍼스케일러의 투자 축소 시 흔들릴 수 있다는 경계가 부각되며 반도체주가 압박을 받았다. 세계 4위 D램 업체의 부상은 삼성전자·SK하이닉스·마이크론이 주도해온 메모리 경쟁 지형에 중장기 변수를 더했다.",
-          "sources": [{ "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-28/s-p-500-futures-muted-as-semiconductors-drop-earnings-roll-in" }, { "name": "The Motley Fool", "url": "https://www.fool.com/coverage/stock-market-today/2026/07/27/stock-market-today-july-27-dow-rises-on-oil-retreat-and-sandisk-plunges-11-on-memory-weakness/" }],
-          "tickers": ["000660", "005930", "MU"],
+          "fact": "미국 증시에서도 마이크론·샌디스크·엔비디아 등 메모리·AI 반도체주가 동반 하락했다. AI 인프라 설비투자를 둘러싼 순환 출자 구조 우려가 재부각된 데다, 장 마감 후 메타가 예상을 밑도는 실적과 공격적 설비투자 계획을 내놓으며 AI 지출의 수익성에 대한 회의론이 확산됐다.",
+          "sources": [{ "name": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/article/nvidia-drops-nearly-5-leading-chip-stocks-lower-amid-renewed-worries-of-circular-financing-193309793.html" }, { "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-29/microsoft-meta-earnings-face-a-market-growing-skeptical-of-ai" }],
+          "tickers": ["MU", "SNDK", "NVDA", "META"],
           "sector": "memory",
-          "topic": "ipo"
-        },
-        {
-          "fact": "직전 거래일 뉴욕 증시에서 샌디스크가 약 11%, 마이크론이 약 6% 밀리고 엔비디아가 중국 기업의 반도체 장비 양산 가능성 보도에 하락하는 등 메모리·AI 반도체주 전반이 조정 압력을 받았다. 반면 인텔은 2분기 실적이 시장 예상을 크게 웃돌았다.",
-          "sources": [{ "name": "The Motley Fool", "url": "https://www.fool.com/coverage/stock-market-today/2026/07/27/stock-market-today-july-27-dow-rises-on-oil-retreat-and-sandisk-plunges-11-on-memory-weakness/" }, { "name": "The Globe and Mail", "url": "https://www.theglobeandmail.com/investing/markets/stocks/META/pressreleases/3481300/stock-market-news-for-july-27-2026/" }],
-          "tickers": ["SNDK", "MU", "NVDA", "INTC"],
-          "sector": "memory",
-          "topic": "other"
+          "topic": "earnings"
         }
       ]
     },
@@ -224,64 +223,68 @@
       "title": "매크로·연준",
       "facts": [
         {
-          "fact": "미 국채 금리는 유가 급락으로 인플레이션 자극 우려가 완화되며 상단 압력이 낮아졌다. 7월 28~29일 FOMC에서는 기준금리 3.50~3.75% 동결이 우세하게 점쳐지며, 시장은 대형 기술주 실적과 함께 향후 정책 경로에 대한 신호에 주목하고 있다.",
-          "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/27/stock-market-today-live-updates.html" }, { "name": "Schaeffer's Investment Research", "url": "https://www.schaeffersresearch.com/content/ezines/2026/07/28/stock-futures-point-to-another-mixed-session" }],
+          "fact": "연준은 7월 29일 기준금리를 3.50~3.75%로 동결했으나, 3명의 지역 연은 총재가 0.25%포인트 인상을 주장하며 반대표를 던졌다. 세 위원이 같은 방향의 인상을 요구한 것은 이례적인 일로 매파적 신호로 해석됐으며, 연준은 중동 분쟁 등 불확실성에도 경제활동이 견조한 속도로 확장되고 있다고 진단했다.",
+          "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/29/fed-meeting-today-live-updates.html" }, { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/29/fed-rate-decision-july-2026.html" }],
           "tickers": [],
           "topic": "fed"
+        },
+        {
+          "fact": "미 국채 10년물 금리는 매파적 동결과 유가 반등에 따른 인플레이션 경계로 4.63% 수준까지 소폭 올라 연중 고점 부근에 머물렀다. 시장은 향후 정책 경로와 물가 지표, AI 대형 기술주 실적에 촉각을 세우고 있다.",
+          "sources": [{ "name": "Trading Economics", "url": "https://tradingeconomics.com/united-states/government-bond-yield/news/534551" }, { "name": "CNBC", "url": "https://www.cnbc.com/quotes/US10Y" }],
+          "tickers": [],
+          "topic": "macro"
         }
       ]
     }
   ],
   "geopolitics": {
-    "headline": "미국-이란 군사행동 중단 유지, 협상 재개 기대에 유가 추가 하락",
-    "theater": "중동(미국-이란, 호르무즈·홍해 해상)",
-    "summary": "7월 들어 호르무즈·홍해 항로를 둘러싼 미국-이란 간 무력 충돌로 유가가 배럴당 100달러 부근까지 급등했으나, 지난 금요일 미국이 이란에 대한 공격을 중단하고 이란도 보복 군사작전을 중지한 뒤 양측이 협상에 나서면서 긴장이 완화되고 있다. 이란은 오만을 통해 호르무즈 해협 항행 관련 협의에 착수했고, 트럼프 미국 대통령은 이란과 '좋은 대화'를 하고 있으며 합의 가능성이 있다고 밝히면서도 협상이 실패하면 공격을 재개할 수 있다고 언급했다. 이에 국제 유가는 위험 프리미엄이 빠지며 하락세를 이어갔다.",
-    "escalation_level": 3,
-    "escalation_label": "군사행동 중단·협상 진행",
+    "headline": "중동 정세 재악화, 미군 이란 공격 요격·사우디 원유시설 드론 피격에 유가 6%대 급등",
+    "theater": "중동(미국-이란, 이라크·사우디, 호르무즈)",
+    "summary": "며칠간의 상대적 소강 이후 중동 긴장이 다시 고조됐다. 미군은 중동에 주둔한 미군 병력을 겨냥한 이란의 기습 공격을 요격했다고 밝혔고, 이란 연계 무장세력은 이틀 연속 사우디 동부 지역 원유시설을 향해 드론 공격을 감행했다. 트럼프 미국 대통령은 이란과 '좋은 대화'를 하고 있으며 합의 가능성이 있다고 밝히면서도 협상이 실패하면 군사행동을 재개할 수 있다고 언급했고, 이란은 보복을 경고했다. 이에 국제 유가는 3거래일 만에 반등하며 WTI가 배럴당 84달러, 브렌트유가 89달러 부근으로 6% 넘게 올랐다.",
+    "escalation_level": 4,
+    "escalation_label": "무력 충돌 재개·협상 병행",
     "actors": [
       {
         "name": "미국(행정부)",
         "role": "분쟁 당사국",
         "stance": "mixed",
         "quotes": [
-          { "text": "이란과 '좋은 대화'를 하고 있으며 합의에 이를 가능성이 있으나, 협상이 실패하면 공격이 재개될 수 있다고 밝힌 것으로 전해졌다.", "source": { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/28/oil-price-today-wti-brent-us-iran-hormuz.html" } }
+          { "text": "이란과 '좋은 대화'를 하고 있으며 합의에 이를 가능성이 있으나, 협상이 실패하면 군사행동이 재개될 수 있다고 밝힌 것으로 전해졌다.", "source": { "name": "Fortune", "url": "https://fortune.com/article/price-of-oil-07-29-2026/" } }
         ]
       },
       {
-        "name": "이란(정부)",
+        "name": "미군",
+        "role": "군사 대응 주체",
+        "stance": "hard",
+        "quotes": [
+          { "text": "중동에 주둔한 미군을 겨냥한 이란의 기습 공격을 성공적으로 요격했다고 밝힌 것으로 보도됐다.", "source": { "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-28/latest-oil-market-news-and-analysis-for-july-29" } }
+        ]
+      },
+      {
+        "name": "이란(정부·연계 세력)",
         "role": "분쟁 당사국",
         "stance": "mixed",
         "quotes": [
-          { "text": "미국의 공격 중단 이후 보복 군사작전을 중지하고, 오만을 통해 호르무즈 해협 항행 문제에 관한 협의에 착수한 것으로 보도됐다.", "source": { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/28/oil-price-today-wti-brent-us-iran-hormuz.html" } }
-        ]
-      },
-      {
-        "name": "이란 외교장관(아락치)",
-        "role": "외교 협상 주체",
-        "stance": "mixed",
-        "quotes": [
-          { "text": "사우디·오만 측과 각각 통화하며 호르무즈 해협의 항행 불안정 문제를 해소할 필요성을 논의한 것으로 전해졌다.", "source": { "name": "CNBC", "url": "https://www.cnbc.com/2026/07/28/oil-price-today-wti-brent-us-iran-hormuz.html" } }
+          { "text": "미국의 대응에 보복을 경고했으며, 이란 연계 무장세력은 이틀 연속 사우디 동부 원유시설을 겨냥한 드론 공격을 감행한 것으로 전해졌다.", "source": { "name": "Fortune", "url": "https://fortune.com/article/price-of-oil-07-29-2026/" } }
         ]
       }
     ],
     "timeline": [
-      { "date": "07-23", "title": "홍해發 공급 차질에 유가 100달러 육박", "detail": "홍해·호르무즈 항로 공급 차질 우려가 확산되며 유가가 배럴당 100달러 부근까지 올랐고 미 국채 금리도 상승했다.", "severity": "high", "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/23/oil-prices-today-wti-brent-trump-iran-hormuz.html" }] },
-      { "date": "07-25", "title": "미국-이란 군사행동 중단", "detail": "미국이 약 2주간의 교전 끝에 금요일 이란에 대한 공격을 멈추고 이란도 보복을 중지하면서 협상 재개 기대가 부각됐다.", "severity": "normal", "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/27/oil-price-wti-brent-slide-as-iran-reportedly-may-halt-attacks.html" }] },
-      { "date": "07-27", "title": "충돌 중단 유지·유가 90달러 아래", "detail": "군사행동 중단이 유지되며 브렌트유가 90달러 아래로 밀렸고 미국 지수 선물과 아시아 증시가 반등했다.", "severity": "normal", "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/27/oil-price-wti-brent-slide-as-iran-reportedly-may-halt-attacks.html" }] },
-      { "date": "07-28", "title": "협상 진행·유가 추가 하락", "detail": "트럼프 대통령이 합의 가능성을 언급하고 이란이 오만을 통해 호르무즈 협의에 나서면서 유가가 추가로 하락했다.", "severity": "normal", "sources": [{ "name": "CNBC", "url": "https://www.cnbc.com/2026/07/28/oil-price-today-wti-brent-us-iran-hormuz.html" }] }
+      { "date": "07-25", "title": "일시적 소강·유가 하락", "detail": "미국-이란 간 무력 충돌이 일시 중단되고 협상 재개 기대가 부각되며 유가가 배럴당 80달러대 초반까지 밀렸다.", "severity": "normal", "sources": [{ "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-28/latest-oil-market-news-and-analysis-for-july-29" }] },
+      { "date": "07-28", "title": "사우디 원유시설 드론 피격", "detail": "이란 연계 무장세력이 사우디 동부 지역 원유시설을 향해 드론 공격을 시작하며 공급 차질 우려가 재부각됐다.", "severity": "high", "sources": [{ "name": "Bloomberg", "url": "https://www.bloomberg.com/news/articles/2026-07-28/latest-oil-market-news-and-analysis-for-july-29" }] },
+      { "date": "07-29", "title": "미군, 이란 기습 공격 요격·유가 급등", "detail": "미군이 미군 주둔지를 겨냥한 이란의 기습 공격을 요격했다고 밝히고 사우디 원유시설 드론 공격이 이틀째 이어지면서 WTI·브렌트유가 6% 넘게 반등했다.", "severity": "high", "sources": [{ "name": "Fortune", "url": "https://fortune.com/article/price-of-oil-07-29-2026/" }, { "name": "Trading Economics", "url": "https://tradingeconomics.com/commodity/brent-crude-oil" }] }
     ],
-    "market_note": "유가 급등 국면에서는 인플레이션 자극 우려로 미 국채 금리가 오르고 반도체·성장주 매도가 나타났으나, 미국-이란 군사행동 중단이 유지되고 협상이 진행되면서 유가가 되돌려지자 금리 상단 압력이 완화되고 위험자산이 반등했다. 다만 협상 결렬 시 공격 재개 가능성이 남아 있어 항로·유가 변동성은 이어질 수 있다.",
+    "market_note": "중동 긴장이 재고조되며 국제 유가가 3거래일 만에 6% 넘게 반등했고, 유가발 인플레이션 우려가 매파적 연준 기조와 맞물려 미 국채 금리 상단 압력과 위험자산 매도를 자극했다. 반면 에너지주는 강세를 보였다. 협상 진전 여부에 따라 항로·유가 변동성은 이어질 수 있다.",
     "oil_series": [
-      { "label": "7/23", "value": 100.7 },
-      { "label": "7/24", "value": 96.78 },
       { "label": "7/27", "value": 88.5 },
-      { "label": "7/28", "value": 84.09 }
+      { "label": "7/28", "value": 83.69 },
+      { "label": "7/29", "value": 89.43 }
     ],
     "watchpoints": [
-      "미국-이란 협상 진전과 결렬 시 공격 재개 여부",
-      "호르무즈·홍해 항로 정상화와 이란-오만 협의 결과",
-      "브렌트유 90달러선 하회 지속과 유가 변동성",
-      "7월 28~29일 FOMC와 유가발 물가 경로",
+      "미국-이란 협상 진전과 결렬 시 군사행동 재개 여부",
+      "사우디·이라크 등 원유시설 추가 피격과 공급 차질",
+      "호르무즈 해협 항행 안정성",
+      "유가 반등에 따른 물가 경로와 연준 정책 방향",
       "유가·금리 변동에 따른 반도체·성장주 수급"
     ]
   }
