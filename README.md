@@ -13,20 +13,19 @@
 
 ## 아키텍처
 
-```
-GitHub Actions cron (21:15 UTC = 06:15 KST)
-        │  npm run start (packages/pipeline, Node)
-        ▼
-  수집(시세+뉴스/RSS) → 정제(Claude, 편향제거·출처부착) → 정형(zod 검증)
-        → 카드 이미지 렌더(Satori) → daily_reports 저장 → 사용자별 개인화(user_reports)
-        │ (service_role, RLS 우회)
-        ▼
-  Supabase Postgres + Storage + Auth
-        ▲
-        │ anon key + RLS(승인자만 열람)
-  React (Vercel)  ── 로그인 · 온보딩 · 오늘의 리포트 · 아카이브 · 설정 · 관리자
-        │
-        └─ preferences 변경 시 → Edge Function `personalize` 재생성
+```mermaid
+flowchart TB
+  CRON[GitHub Actions cron<br/>06:15 KST] --> P[pipeline · Node]
+  P --> S1[수집<br/>시세 Stooq · SEC EDGAR · PR Newswire · Fed · Finnhub]
+  S1 --> S2[정제 · Claude<br/>편향 제거 · 출처 부착]
+  S2 --> S3[정형 · zod 검증]
+  S3 --> S4[카드 이미지 · Satori → PNG]
+  S4 -->|service_role| DB[(Supabase Postgres<br/>daily_reports · user_reports)]
+  S4 --> ST[Supabase Storage]
+  DB --> EF[Edge Function personalize<br/>관심 섹터·토픽·종목 반영]
+  WEB[React · Vercel<br/>로그인 · 오늘의 리포트 · 아카이브 · 설정] -->|anon key + RLS| DB
+  WEB --> AUTH[Supabase Auth<br/>Google OAuth · 매직링크 · 관리자 승인]
+  WEB -->|preferences 변경| EF
 ```
 
 ## 모노레포 구조
